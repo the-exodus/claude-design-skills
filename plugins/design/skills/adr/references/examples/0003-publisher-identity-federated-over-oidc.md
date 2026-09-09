@@ -1,6 +1,6 @@
 # ADR-0003 — Publisher identity federated over OIDC
 
-**Status:** Accepted (2026-06-18) · **Epic:** KEY-1234 · **Supersedes:** part of [ADR-0001](0001-publish-images-on-merge-and-publisher-identity.md)
+**Status:** Accepted (2026-06-18) · **Supersedes:** part of [ADR-0001](0001-publish-images-on-merge-and-publisher-identity.md)
 
 ## Context
 

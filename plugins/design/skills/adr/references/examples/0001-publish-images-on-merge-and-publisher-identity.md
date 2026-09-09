@@ -1,6 +1,6 @@
 # ADR-0001 — Publish images on merge; least-privilege publisher identity
 
-**Status:** Superseded by [ADR-0002](0002-publish-images-on-merge.md) (publishing) and [ADR-0003](0003-publisher-identity-federated-over-oidc.md) (identity), 2026-06-18 · **Epic:** KEY-1234
+**Status:** Superseded by [ADR-0002](0002-publish-images-on-merge.md) (publishing) and [ADR-0003](0003-publisher-identity-federated-over-oidc.md) (identity), 2026-06-18
 
 ## Context
 

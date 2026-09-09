@@ -4,7 +4,7 @@ description: >
   House rules and format for Architecture Decision Records. Load
   before writing, reviewing, superseding, or indexing an ADR in any repo, and
   when asked to record a decision, write something up as an ADR, add to or
-  reindex a docs/adr directory, or change an ADR's Status. Also load when a
+  reindex a directory of ADRs, or change an ADR's Status. Also load when a
   decision already recorded in an ADR has changed, since ADRs are superseded
   rather than edited. NOT for architecture pages on the wiki, RFCs, or design
   docs that record no decision.
@@ -12,10 +12,9 @@ description: >
 
 # Architecture Decision Records
 
-House style, org-wide. It applies in every repo, including ones whose `docs/adr`
-has drifted from it. Existing ADRs in another format stand as valid historical
-records; they are not converted in bulk, and they are not reference material.
-Write new ADRs to this format.
+One format, applied in every repo — including ones whose existing ADRs have
+drifted from it. Those stand as valid historical records; they are not converted
+in bulk, and they are not reference material. Write new ADRs to this format.
 
 Superseding an old ADR does mean editing it — that is the one edit an old ADR
 gets. Record the new status in the field that ADR already uses, whether that is
@@ -28,12 +27,25 @@ supersede.
 
 ## Location and index
 
-ADRs live at `docs/adr/NNNN-kebab-case-title.md`, numbered sequentially from
-`0001` — take the highest number present and add one. If two ADRs land on the
-same number, renumber the later one and fix its links.
+ADRs live wherever the project already keeps them. Scan for the directory:
 
-`docs/adr/README.md` holds the canonical index table. Where a repo has none,
-write it, listing every ADR already in the directory.
+- `docs/adr/`, `docs/adrs/`
+- `docs/architecture/decisions/`, `docs/decisions/`
+- `architecture/decisions/`, `architecture/adr/`
+- `adr/`, `adrs/`
+
+Write into whichever exists. Where several do, use the one holding the most ADRs
+and say which you picked. Where none does, ask — with a concrete suggestion
+drawn from what the repo actually looks like, a `docs/` that already exists or
+its ecosystem's convention. Don't pick silently, and don't create a directory
+this skill preferred.
+
+Files are `NNNN-kebab-case-title.md`, numbered sequentially from `0001` — take
+the highest number present and add one. If two ADRs land on the same number,
+renumber the later one and fix its links.
+
+`README.md` in that same directory holds the canonical index table. Where a repo
+has none, write it, listing every ADR already there.
 
 The index is part of the change. Adding an ADR or changing a Status updates the
 table in the same commit.
@@ -46,7 +58,7 @@ Status.
 ```markdown
 # ADR-NNNN — Title stating the decision
 
-**Status:** Accepted (YYYY-MM-DD) · **Epic:** KEY-1234
+**Status:** Accepted (YYYY-MM-DD)
 
 ## Context
 ## Decision
@@ -71,7 +83,7 @@ one:
 
 A dated `Update YYYY-MM-DD` section appended to a standing ADR is wrong for a
 decision change. An ADR is also not updated when its decision gets implemented —
-implementation is tracked in Jira.
+implementation is tracked wherever the project tracks work.
 
 ## Splitting
 

@@ -8,7 +8,7 @@ two ADRs it split into, and the index that lists all three.
 ```markdown
 # ADR-NNNN — Title stating the decision
 
-**Status:** Proposed (YYYY-MM-DD) · **Epic:** KEY-1234
+**Status:** Proposed (YYYY-MM-DD)
 
 ## Context
 
@@ -36,17 +36,20 @@ for the target ADR's filename.
 
 | Case | Status line |
 |------|-------------|
-| Proposed | `**Status:** Proposed (2026-06-18) · **Epic:** KEY-1234` |
-| Accepted | `**Status:** Accepted (2026-06-18) · **Epic:** KEY-1234` |
-| Accepted, supersedes in full | `**Status:** Accepted (2026-06-18) · **Epic:** KEY-1234 · **Supersedes:** [ADR-0001](NNNN-slug.md)` |
-| Accepted, supersedes part | `**Status:** Accepted (2026-06-18) · **Epic:** KEY-1234 · **Supersedes:** part of [ADR-0001](NNNN-slug.md)` |
-| Accepted, supersedes named items | `**Status:** Accepted (2026-06-18) · **Epic:** KEY-1234 · **Supersedes:** items 1 and 4 of [ADR-0001](NNNN-slug.md)` |
-| Superseded | `**Status:** Superseded by [ADR-0002](NNNN-slug.md) (2026-06-18) · **Epic:** KEY-1234` |
-| Superseded by two | `**Status:** Superseded by [ADR-0002](NNNN-slug.md) (publishing) and [ADR-0003](NNNN-slug.md) (identity), 2026-06-18 · **Epic:** KEY-1234` |
+| Proposed | `**Status:** Proposed (2026-06-18)` |
+| Accepted | `**Status:** Accepted (2026-06-18)` |
+| Accepted, supersedes in full | `**Status:** Accepted (2026-06-18) · **Supersedes:** [ADR-0001](NNNN-slug.md)` |
+| Accepted, supersedes part | `**Status:** Accepted (2026-06-18) · **Supersedes:** part of [ADR-0001](NNNN-slug.md)` |
+| Accepted, supersedes named items | `**Status:** Accepted (2026-06-18) · **Supersedes:** items 1 and 4 of [ADR-0001](NNNN-slug.md)` |
+| Superseded | `**Status:** Superseded by [ADR-0002](NNNN-slug.md) (2026-06-18)` |
+| Superseded by two | `**Status:** Superseded by [ADR-0002](NNNN-slug.md) (publishing) and [ADR-0003](NNNN-slug.md) (identity), 2026-06-18` |
 | Deprecated | `**Status:** Deprecated (2026-06-18) — no longer applies; not replaced` |
 
-`**Epic:**` is omitted when no Jira epic covers the decision. The date is the
-date the status was reached, not the date of the edit.
+The date is the date the status was reached, not the date of the edit.
+
+Projects that track decisions against an issue tracker, epic, or ticket can add
+a field of their own to this line using the same ` · ` separator. Nothing here
+assumes one exists.
 
 When a supersede is partial, the status line says which part. A bare
 `Superseded by` on an ADR where only one of several decisions changed sends the
@@ -54,7 +57,8 @@ reader to an ADR that does not mention the rest.
 
 ## Index table
 
-`docs/adr/README.md` — the full file is in `examples/README.md`.
+`README.md`, in the same directory as the ADRs — the full file is in
+`examples/README.md`.
 
 ```markdown
 ## Index
@@ -81,7 +85,7 @@ The old ADR keeps its body exactly as written. Only the status line changes:
 ```markdown
 # ADR-0001 — Publish images on merge; least-privilege publisher identity
 
-**Status:** Superseded by [ADR-0002](0002-publish-images-on-merge.md) (publishing) and [ADR-0003](0003-publisher-identity-federated-over-oidc.md) (identity), 2026-06-18 · **Epic:** KEY-1234
+**Status:** Superseded by [ADR-0002](0002-publish-images-on-merge.md) (publishing) and [ADR-0003](0003-publisher-identity-federated-over-oidc.md) (identity), 2026-06-18
 ```
 
 The ADR carrying the unchanged half forward:
@@ -89,7 +93,7 @@ The ADR carrying the unchanged half forward:
 ```markdown
 # ADR-0002 — Publish images on merge
 
-**Status:** Accepted (2026-06-18) · **Epic:** KEY-1234 · **Supersedes:** part of [ADR-0001](0001-publish-images-on-merge-and-publisher-identity.md)
+**Status:** Accepted (2026-06-18) · **Supersedes:** part of [ADR-0001](0001-publish-images-on-merge-and-publisher-identity.md)
 ```
 
 Its Context states that ADR-0001 held both decisions, that they are independent,
@@ -100,7 +104,7 @@ The ADR carrying the changed half:
 ```markdown
 # ADR-0003 — Publisher identity federated over OIDC
 
-**Status:** Accepted (2026-06-18) · **Epic:** KEY-1234 · **Supersedes:** part of [ADR-0001](0001-publish-images-on-merge-and-publisher-identity.md)
+**Status:** Accepted (2026-06-18) · **Supersedes:** part of [ADR-0001](0001-publish-images-on-merge-and-publisher-identity.md)
 ```
 
 Its Context states what ADR-0001 decided, what went wrong with it, and what
