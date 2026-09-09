@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-design-skills",
+  "description": "Software design and architecture skills for Claude Code",
+  "owner": {
+    "name": "Tobias Karlsson"
+  },
+  "plugins": [
+    {
+      "name": "design",
+      "description": "Interview-driven software design: takes a rough pitch to a complete, gap-free design tree, then captures it as specs, contracts, and ADRs. Carries a lexicon and open items across a project's lifetime.",
+      "author": {
+        "name": "Tobias Karlsson"
+      },
+      "category": "development",
+      "source": "./plugins/design"
+    }
+  ]
+}
