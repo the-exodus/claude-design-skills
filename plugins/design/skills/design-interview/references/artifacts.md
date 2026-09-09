@@ -2,6 +2,16 @@
 
 Read this at Phase 9, before writing anything.
 
+## Where artifacts go
+
+**Nothing here has a hardcoded path.** The destination comes from the project, and Phase 2 already worked it out: whatever its scans found — ADRs, a lexicon, an open items record — establishes where this project keeps design documentation. Write alongside it.
+
+If the scans found nothing and no documentation directory is obvious, ask. Once, in one line, **with a concrete suggestion** — one that fits what the repo actually looks like, its ecosystem's convention or a `docs/` that already exists, rather than a preference of your own. Use the answer for everything in this capture.
+
+Ask at most once per project. After this, the files exist and Phase 2's scan finds them, so the destination is derived rather than asked.
+
+Keep the artifacts together, and keep their names recognizable, because the next interview's scan has to find them.
+
 ## Provenance
 
 Artifacts need detail the design tree does not always carry. The tree records decisions; a functional spec records behavior, a data model records constraints, acceptance criteria record cases. Some of that was decided in the interview. Some of it will be you filling gaps.
@@ -32,11 +42,11 @@ Every artifact uses the lexicon, and only the lexicon, for anything the lexicon 
 
 A term the artifacts need that isn't in the lexicon is a gap like any other. Surface it; don't quietly coin one.
 
-**Write the lexicon back.** Whenever capture runs, the consolidated lexicon is written to the location it was ingested from, or to `docs/lexicon.md` if there wasn't one. This is unconditional and it is not optional: the artifacts are written in this vocabulary, so a reader without the lexicon has documents whose terms mean whatever they assume. It is also what the next interview ingests. Show which entries are new and which changed before writing.
+**Write the lexicon back.** Whenever capture runs, the consolidated lexicon is written back to where it was ingested from, or to the destination established above if there wasn't one. This is unconditional and it is not optional: the artifacts are written in this vocabulary, so a reader without the lexicon has documents whose terms mean whatever they assume. It is also what the next interview ingests. Show which entries are new and which changed before writing.
 
 ## Open items
 
-**Write the open items record back**, to `docs/design/open-items.md` or wherever it was ingested from. Unconditional, like the lexicon, and for the same reason: it is not a deliverable, it is what the next interview reads.
+**Write the open items record back**, to where it was ingested from, or to the destination established above. Unconditional, like the lexicon, and for the same reason: it is not a deliverable, it is what the next interview reads.
 
 It holds one entry per branch closed *deferred-later*, *blocked*, or *stable-open*, plus the assumptions still standing. Per entry: a stable id, the question in one line, the state, why it's open, **what would resolve it**, the subject area (so a later interview can tell whether it's relevant), and the date.
 

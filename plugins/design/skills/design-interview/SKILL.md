@@ -93,7 +93,11 @@ Every branch that gets constrained by one or more ADRs records this in its state
 
 ### Open items
 
-Prior interviews leave branches that closed *deferred-later*, *blocked*, or *stable-open*, plus assumptions still standing. These are promises to revisit, and they live in `docs/design/open-items.md` (also check `docs/open-items.md`, `docs/design/open-questions.md`).
+Prior interviews leave branches that closed *deferred-later*, *blocked*, or *stable-open*, plus assumptions still standing. These are promises to revisit. Scan for the record that holds them:
+
+- `docs/design/open-items.md`, `docs/open-items.md`
+- `docs/design/open-questions.md`, `docs/open-questions.md`
+- `.claude/open-items.md`
 
 Index it the way ADRs are indexed: id, one-line question, state, subject area. **Do not raise them yet.**
 
@@ -120,6 +124,14 @@ Load it in full — unlike ADRs, it is short by construction and every entry is 
 **Check inherited terms against the code.** A term the codebase no longer uses is a candidate for retirement — note it, don't act on it. A term the code uses with a meaning that has drifted from its entry is worth surfacing immediately, because everything downstream will inherit the confusion.
 
 If no lexicon exists, this is the first interview and it starts empty. Say so in one line; don't treat it as a problem.
+
+### Where this project keeps design documentation
+
+The three scans above answer a question beyond their own contents: **where design documentation lives in this project.** Whatever they found establishes it. ADRs under `documentation/decisions/` means design docs belong under `documentation/`; a lexicon at `.claude/lexicon.md` means this project keeps design state in `.claude/`.
+
+Record that location. Phase 9 writes everything there, and nothing in this skill carries a path of its own — a project's documentation layout is the project's business, and a design skill that imposes one is wrong about whose repo it is.
+
+If the scans found nothing, don't pick a location now. Capture will ask if it ever runs, and most interviews never need one.
 
 ## Phase 3: Scope recap and confirmation
 
