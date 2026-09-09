@@ -35,6 +35,12 @@ Three things persist across a project's lifetime and are read back at the start 
 | **Lexicon** | loaded in full, binding, checked against the code | consolidated and written back |
 | **Open items** | indexed, surfaced *only* on topical relevance | deferred, blocked, and stable-open branches, with what would resolve each |
 
+### `adr`
+
+House rules and format for Architecture Decision Records — Michael Nygard's Context / Decision / Consequences, with a Status. Owns numbering, the index table, and the rule that ADRs are **superseded rather than edited**, including partial supersedes and the split that falls out of one. `design-interview` hands ADR writing to this skill rather than carrying a competing format.
+
+Ships with a worked example set: one ADR holding two decisions, the two it split into when only one of them changed, and the index listing all three.
+
 ### `design-philosophy`
 
 The principles the interview seeds branches from, and that apply again when implementing from a spec: complexity as the thing to minimize, interfaces simpler than implementations, hiding decisions rather than just code, no pass-through layers, pushing complexity down rather than out, considering alternatives before committing, long-term simplicity over short-term speed, and modest generalization.
@@ -49,6 +55,7 @@ plugins/design/
   .claude-plugin/plugin.json
   skills/design-interview/
   skills/design-philosophy/
+  skills/adr/
 ```
 
 ## Releasing
