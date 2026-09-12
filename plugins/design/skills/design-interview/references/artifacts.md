@@ -4,7 +4,7 @@ Read this at Phase 9, before writing anything.
 
 ## Where artifacts go
 
-**Nothing here has a hardcoded path.** The destination comes from the project, and Phase 2 already worked it out: whatever its scans found — ADRs, a lexicon, an open items record — establishes where this project keeps design documentation. Write alongside it.
+**Nothing here has a hardcoded path.** The destination comes from the project, and Phase 2 already worked it out: whatever its scans found — ADRs, a lexicon, an assumptions record — establishes where this project keeps design documentation. Write the durable artifacts alongside it; write the feature's brief where the project's conventions say the build reads it (see *Which artifacts this design needs*).
 
 If the scans found nothing and no documentation directory is obvious, ask. Once, in one line, **with a concrete suggestion** — one that fits what the repo actually looks like, its ecosystem's convention or a `docs/` that already exists, rather than a preference of your own. Use the answer for everything in this capture.
 
@@ -44,17 +44,17 @@ A term the artifacts need that isn't in the lexicon is a gap like any other. Sur
 
 **Write the lexicon back.** Whenever capture runs, the consolidated lexicon is written back to where it was ingested from, or to the destination established above if there wasn't one. This is unconditional and it is not optional: the artifacts are written in this vocabulary, so a reader without the lexicon has documents whose terms mean whatever they assume. It is also what the next interview ingests. Show which entries are new and which changed before writing.
 
-## Open items
+## Assumptions and tracker candidates
 
-**Write the open items record back**, to where it was ingested from, or to the destination established above. Unconditional, like the lexicon, and for the same reason: it is not a deliverable, it is what the next interview reads.
+**Write the assumptions record back**, to where it was ingested from, or to the destination established above. Unconditional, like the lexicon, and for the same reason: it is not a deliverable, it is what the next interview reads, and what a review of the build checks its platform assumptions against.
 
-It holds one entry per branch closed *deferred-later*, *blocked*, or *stable-open*, plus the assumptions still standing. Per entry: a stable id, the question in one line, the state, why it's open, **what would resolve it**, the subject area (so a later interview can tell whether it's relevant), and the date.
+It holds the assumptions still standing, each with a stable id, the assumption in one line, the subject area, and **how you would know it stopped holding** — an assumption recorded without that is decoration; with it, a later interview can actually check — plus the facts the project has measured that would cost time to rediscover. Remove an assumption the interview invalidated rather than annotating it; if the resolution was a real fork it became an ADR, and that is where the history belongs.
 
-For assumptions, the field that matters is **how you would know it stopped holding**. An assumption recorded without that is decoration; with it, a later interview can actually check.
-
-Remove resolved items rather than accumulating them. If a resolution was a real fork it became an ADR, and that is where the history belongs — a record that keeps every closed item grows without bound and stops being read, which is the same failure the lexicon cap exists to prevent.
+**Branches closed *deferred-later*, *blocked*, or *stable-open* are not written to a file.** They are the next design questions, and a file of them turns into a backlog the tracker already is. Emit them as tracker candidates: one line each with the question, why it is open, and **what would resolve it**, for the user to file. The next interview asks which tracker items touch its work.
 
 ## Which artifacts this design needs
+
+**Two outlive the feature: the decision records and the lexicon** (and the assumptions record, above). They are kept in the tree and kept true. Everything else in the tables below is **the feature's brief**: it tells the build and its reviewers what was decided, in the detail the tree does not carry, and it is spent when the feature ships — the code is its own domain model and interface contract, the tests carry the criteria, the project's references carry the behaviour. Write the brief where the project's conventions say the build reads it: on the tracker issue when the project works from one, else in the documentation directory marked as a brief. Do not carry a brief into the next interview as if it described the system; scan the code and the durable three instead.
 
 Four are unconditional:
 

@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "design",
-  "version": "0.3.0",
-  "description": "Interview-driven software design: takes a rough pitch to a complete, gap-free design tree, then captures it as specs, contracts, and ADRs. Carries a lexicon and open items across a project's lifetime.",
+  "version": "0.4.0",
+  "description": "Interview-driven software design: takes a rough pitch to a complete, gap-free design tree, then captures it as specs, contracts, and ADRs. Carries a lexicon and an assumptions record across a project's lifetime; everything else it writes is the feature's brief.",
   "author": {
     "name": "Tobias Karlsson"
   }

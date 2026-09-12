@@ -22,7 +22,7 @@ The two pulls are real and opposed; the skill needs both sets of mechanisms simu
 ## Core flow
 
 1. Intake the pitch.
-2. Scan the codebase, index ADRs and open items, ingest any existing lexicon.
+2. Scan the codebase, index ADRs and the assumptions record, ingest any existing lexicon, ask which open design questions on the tracker touch this work.
 3. Recap scope and understanding; confirm with the user.
 4. Seed the core branches, plus the branches implied by the properties of the work.
 5. Walk the tree adaptively, closing each branch in a terminal state.
@@ -91,21 +91,22 @@ When a branch's topic later intersects with an ADR's title or summary, load that
 
 Every branch that gets constrained by one or more ADRs records this in its state, by ID, so the final tree shows the audit trail.
 
-### Open items
+### Assumptions and open questions
 
-Prior interviews leave branches that closed *deferred-later*, *blocked*, or *stable-open*, plus assumptions still standing. These are promises to revisit. Scan for the record that holds them:
+Prior interviews leave two kinds of promise. **Standing assumptions**, each with how you would know it stopped holding, and the facts the project has since measured, live in the assumptions record. Scan for it:
 
-- `docs/design/open-items.md`, `docs/open-items.md`
-- `docs/design/open-questions.md`, `docs/open-questions.md`
-- `.claude/open-items.md`
+- `docs/design/assumptions.md`, `docs/assumptions.md`
+- `.claude/assumptions.md`
 
-Index it the way ADRs are indexed: id, one-line question, state, subject area. **Do not raise them yet.**
+Index it the way ADRs are indexed: id, the assumption in one line, subject area, the observation that would falsify it. **Do not raise them yet.**
 
-Tell the user: "N open items carried forward. I'll surface them when they touch something." Then say nothing more about them until they do.
+**Open design questions** — branches an earlier interview closed *deferred-later*, *blocked*, or *stable-open* — live on the project's issue tracker, not in a file (an earlier version of this skill kept an open-items record; it turns into a backlog, which the tracker already is). Ask the user, once and in one line, which tracker items touch this work, and index what they name.
 
-**Surface an item only when a branch's topic intersects it.** This is the whole discipline. An open item about transport choice has no business appearing in a data-layer design, and a skill that recites its backlog at every interview trains the user to skip that section. Relevance is the test, not recency and not urgency — an item that has been open for a year and still doesn't touch this design stays quiet.
+Tell the user: "N assumptions and M open questions carried forward. I'll surface them when they touch something." Then say nothing more about them until they do.
 
-When one does intersect, surface it with what would resolve it, and let the user decide whether this interview is the place: it can close now, stay open, or the current branch can be shaped to avoid depending on it.
+**Surface an item only when a branch's topic intersects it.** This is the whole discipline. A question about transport choice has no business appearing in a data-layer design, and a skill that recites its backlog at every interview trains the user to skip that section. Relevance is the test, not recency and not urgency — a question that has been open for a year and still doesn't touch this design stays quiet.
+
+When one does intersect, surface it with what would resolve it, and let the user decide whether this interview is the place: it can close now, stay open, or the current branch can be shaped to avoid depending on it. An assumption a branch contradicts is handled as invalidation (prune-and-regrow), and the record is corrected at capture.
 
 **Check items against the code at ingestion.** An item whose subject no longer exists is a retirement candidate — note it, don't act on it. Same posture as a retired lexicon term.
 
@@ -320,12 +321,13 @@ Then lay out the full tree in the conversation: every branch, its terminal state
 
 The goal is that the design is complete and present in context when the interview ends, not that it has been written somewhere. Mention once that Phase 9 can turn the tree into artifacts, and leave it there — don't generate anything unless the user asks.
 
-Two things are worth offering explicitly, because they aren't deliverables — they're the inputs to the next interview, the same way the ADR index is:
+Three things are worth offering explicitly, because they aren't deliverables — they're the inputs to the next interview, the same way the ADR index is:
 
 - **The lexicon**, showing which entries are new and which changed.
-- **The open items record**: items carried in that are still open, items opened by this interview, and items this interview resolved. Each with what would resolve it.
+- **The assumptions record**: assumptions carried in that still stand, assumptions this interview added (each with how you would know it stopped holding), and assumptions this interview invalidated, removed.
+- **Tracker candidates**: one line per branch closed *deferred-later*, *blocked*, or *stable-open*, with what would resolve it, for the user to file on the project's issue tracker. Never a file in the tree.
 
-Offer both in one line. If the user declines, the vocabulary and the open questions die with the conversation and the next design starts from nothing — which is worth the one line, and is exactly the failure that makes a design skill useless on the second run. Still an offer, not an action.
+Offer all three in one line. If the user declines, the vocabulary, the assumptions and the open questions die with the conversation and the next design starts from nothing — which is worth the one line, and is exactly the failure that makes a design skill useless on the second run. Still an offer, not an action.
 
 ## Phase 9: Capture (on request only)
 
@@ -347,7 +349,7 @@ A confident document built on invented detail is worse than no document, because
 - Surfacing ADRs without the staleness flag when they're old or non-Accepted. Cargo-culting stale decisions is worse than not consulting them.
 - Reaching for a category for the work — "this is a CLI, so..." — instead of checking its properties. What kind of software it is determines nothing; what it does determines everything.
 - Treating the seeded branches as the whole tree. Seeding is a floor, not a ceiling. A tree that ends up as the core branches plus whatever the pitch happened to mention is a tree that missed things.
-- Reciting carried-forward open items that don't touch this design. Relevance is the only trigger. A backlog read aloud at the start of every interview is a section the user learns to skip, and then the one item that mattered gets skipped with it.
+- Reciting carried-forward assumptions or tracker questions that don't touch this design. Relevance is the only trigger. A backlog read aloud at the start of every interview is a section the user learns to skip, and then the one item that mattered gets skipped with it.
 - Closing a branch as *deferred-later*, *blocked*, or *stable-open* without recording what would resolve it. That field is the entire reason the item is worth carrying.
 - Letting the lexicon grow with the conversation instead of with closures. That is the specific failure that makes a lexicon useless: it becomes a glossary of ordinary words, and nobody reads it.
 - Writing an artifact section on inference without saying so. Marked inference is fine and often necessary; unmarked inference is the thing Phase 9 exists to prevent.

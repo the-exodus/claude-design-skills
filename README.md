@@ -33,7 +33,7 @@ Three things persist across a project's lifetime and are read back at the start 
 |---|---|---|
 | **ADRs** | indexed, surfaced when relevant, rejected options included | written via the `adr` skill, with supersession |
 | **Lexicon** | loaded in full, binding, checked against the code | consolidated and written back |
-| **Open items** | indexed, surfaced *only* on topical relevance | deferred, blocked, and stable-open branches, with what would resolve each |
+| **Assumptions** | indexed, surfaced *only* on topical relevance; open design questions come from the tracker | standing assumptions with how you would know each stopped holding, plus measured facts; deferred, blocked and stable-open branches go to the tracker as candidates |
 
 ### `adr`
 
