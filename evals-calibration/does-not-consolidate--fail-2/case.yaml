@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: does-not-consolidate--fail-2
+context:
+  scaffold_script: scaffold.sh

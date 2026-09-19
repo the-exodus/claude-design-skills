@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: says-what-is-new-and-what-changed--fail-1
+context:
+  scaffold_script: scaffold.sh
