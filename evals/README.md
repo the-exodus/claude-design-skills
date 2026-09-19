@@ -22,6 +22,14 @@ claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --case <c
 
 `--tag smoke` runs only the smoke cases; `-j 4` runs four agent runs at once against the same rate limit.
 
+The lexicon fixture cases copy a project into the workspace and rewrite its lexicon, so they need two more flags, and without them they score 0:
+
+```sh
+claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none --tag fixture --scaffold --allow-tools Write Edit
+```
+
+`--scaffold` runs each case's `scaffold.sh` as you, outside the sandbox; it only copies the case's `fixture/` into the workspace. `--allow-tools` applies to every case in the run, so pass it with `--tag fixture` rather than on a smoke run. No case needs Bash, so the sandbox backend (`bubblewrap` and `socat`) is not required.
+
 ## Pinned settings
 
 | Setting | Value | Why |
@@ -44,5 +52,21 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `smoke-design-philosophy` | `design-philosophy` fires on an implementation request whose structure is open |
 | `smoke-adr` | `adr` fires when asked to write a decision up for the record |
 | `smoke-lexicon` | `lexicon` fires when asked to review a glossary |
+| `lexicon-shelfwise` | `lexicon` consolidates a 31-entry lexicon with planted defects (library lending, TypeScript) |
+| `lexicon-stockroom` | the same on a 35-entry root `GLOSSARY.md` in another domain (warehouse, Python) |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired".
+
+## Lexicon fixtures
+
+`lexicon-shelfwise` and `lexicon-stockroom` are invented projects whose lexicon is planted so the right answer is known by construction: each entry exercises one of the skill's rules, and the source code decides several verdicts in both directions, with things a correct run must find and decoys it must not fall for. They can be committed because nothing in them is real.
+
+Each case directory holds:
+
+- `fixture/`: the project, copied into the workspace by `scaffold.sh`. Nothing else is copied.
+- `expected.md`: the verdict for every entry, the drift at `file:line`, the homeless sentence, the outside edges, the gap and the decoys; then what the graders check, what they leave ungraded and why.
+- `graders/`: one deterministic `regex` grader per planted rule, on the written lexicon (entry headings kept or gone, a merge recorded, no entry over 80 words) and on the report (the drift and edge citations, the homeless sentence, the gap). One narrow `llm` grader per case, where a pattern can't decide.
+
+The prompt gives sign-off in advance, since the skill waits for it before writing and a run has nobody to ask.
+
+Neither fixture is held out: both were used while the skill's 0.5.0 text was tuned, and each `expected.md` says how. Items that flipped between those tuning runs are graded only where the key and its amendments leave one right answer.
