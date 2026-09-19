@@ -62,6 +62,10 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `adr-supersede-bold-status`, `-bare-status`, `-status-section` | the old record is marked in the status field it already has and is otherwise untouched; the new one names it; the index follows |
 | `adr-partial-supersede-split` | one of two decisions changes: two successors, and the old record's status names both |
 | `adr-no-directory` | with no ADR directory, it asks where, suggests a concrete place and creates nothing |
+| `philosophy-before-implementation` | `design-philosophy` loads, by its qualified name, before the first edit of a request that adds behaviour |
+| `philosophy-not-for-mechanical-edit`, `philosophy-not-for-rename` | it does not load for a typo fix or a rename |
+| `philosophy-before-seeding` | in a design interview resumed at the scope confirmation, it loads before the tree is seeded |
+| `philosophy-before-next-closure` | in an interview resumed after a branch closed without it, it loads before the next branch is worked |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired".
 
@@ -74,6 +78,29 @@ Nearly everything is graded from the files the run leaves behind. Where a case n
 The supersede cases carry two graders on the new record: `new-names-what-it-supersedes`, that it has a `**Supersedes:**` link at all, and `supersedes-on-the-status-line`, that it sits on the status line after a middle dot, as `references/format.md` lays the header out. Under design 0.5.1, seven of eighteen runs put it on a line of its own, so these three cases fail about four times in ten until the skill changes; nothing else in the ADR cases failed once the graders were right.
 
 The files are generated; the generator is not kept here. Edit them by hand.
+
+## When design-philosophy loads
+
+The `philosophy-*` cases check that `design-philosophy` loads when it should and only then. All are deterministic: `tool_used` on the `Skill` call, and a `regex` over the session trace for order, written so that one pattern covers a run that edits a file and a run that rewrites it whole. `--tag philosophy` runs the five; they need `--scaffold --allow-tools Write Edit`. Fifteen runs took under three minutes at `-j 4` and reported $3.83.
+
+The failure these guard against is intermittent, so read them over several runs rather than one. Under design 0.5.1, over eight runs each: `philosophy-before-seeding` passed eight times, `philosophy-before-implementation` twice, `philosophy-before-next-closure` three times; the two "not for" cases never failed in three. Against the plugin as released at 0.5.0 the two that fail passed in none of five runs each, so they reproduce the original failure and 0.5.1 improved on it without fixing it. Where they fail, the skill is never called at all: an implementation request is carried out without it, and an interview whose tree already exists works the next branch without noticing the principles were never loaded.
+
+### Resumed interviews and their transcripts
+
+The two interview cases resume a conversation (`context.history_file` in `case.yaml`), and the case's prompt is the user's next turn. Established by probe on Claude Code 2.1.278, since the documentation says none of it: a history needs only `user` and `assistant` records chained by `uuid` and `parentUuid`; the trace of a resumed run holds only its new messages, so an order check sees exactly what happened after the resume; and a resumed run saves no session file in its kept run directory. Instead it writes the resumed session into the case directory, beside `history.jsonl`, in a file named by the history's session id, and appends to it on every run. Each run still starts from `history.jsonl` alone, so runs do not see one another; the file is gitignored so that `git status` stays clean after a run.
+
+The transcripts are of an invented project and were produced by the runner itself: a run's stored session (under `config/projects/` in a kept run directory) was cut down to the conversation, and each later turn was appended from the next run's trace, with the user's replies written by hand. For `philosophy-before-next-closure` the tree had to be one really seeded without the principles. 0.5.0 loaded them when tried, the failure being intermittent, so that history was generated with `design-philosophy` removed from a copy of the 0.5.0 plugin, through a first branch closed under the interview's own four locks.
+
+A transcript goes stale. When a skill loads, its whole body is written into the conversation, so a committed history freezes the text of every skill it loaded: edit `design-interview`, and these cases would go on testing the old wording. After editing a skill, run
+
+```sh
+python3 evals/refresh-histories.py          # rewrite the skill text embedded in every history
+python3 evals/refresh-histories.py --check  # exit 1 if any history is stale
+```
+
+and commit the result. Only the embedded skill text changes; what the assistant said in the history stays as written, which is the point where a case starts from a failure state.
+
+Two things about the runner found on the way: `--case` is not repeatable (the last one wins) and takes plain `*` wildcards only; and a `plugins:` entry may not point at a directory beside the cases, so a case that ships its own plugin copy keeps it in its own subdirectory.
 
 ## Lexicon fixtures
 
