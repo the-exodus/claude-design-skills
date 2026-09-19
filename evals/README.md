@@ -40,7 +40,7 @@ claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablatio
 | `--runs` | default, 3 | One run of a non-deterministic agent says little. |
 | `--max-cost-usd` | none | Runs are already bounded by each case's `max_turns` and `timeout_seconds`, and usage is felt as plan session limits rather than dollars; the reported cost is a list-price estimate only. |
 
-A run of the four smoke cases is 12 agent runs; it took about 2.5 minutes at `-j 4` and reported $2.56.
+A run of the four smoke cases is 12 agent runs; it took about 2.5 minutes at `-j 4` and reported $2.56. A run of the three lexicon fixture cases is 9 agent runs of about five minutes each; it took about 16 minutes at `-j 3` and reported $12.07.
 
 ## Cases
 
@@ -69,6 +69,8 @@ Each case directory holds:
 - `graders/`: one deterministic `regex` grader per planted rule, on the written lexicon (entry headings kept or gone, a merge recorded, no entry over 80 words) and on the report (the drift and edge citations, the homeless sentence, the gap). One narrow `llm` grader per case, where a pattern can't decide.
 
 The prompt gives sign-off in advance, since the skill waits for it before writing and a run has nobody to ask.
+
+When writing a grader, keep three dashes in a row out of its frontmatter, comments and patterns included: the runner ends the frontmatter at the first one it meets, even mid-line, and the case then fails to load. In a pattern, write `-{3}`.
 
 Shelfwise and Stockroom are regression fixtures: both were used while the skill's 0.5.0 text was tuned, and each `expected.md` says how. Items that flipped between those tuning runs are graded only where the key and its amendments leave one right answer.
 
