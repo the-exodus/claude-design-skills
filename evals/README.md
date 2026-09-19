@@ -71,7 +71,7 @@ The `adr-*` cases run on Tidewatch, an invented project with a small ADR directo
 
 Nearly everything is graded from the files the run leaves behind. Where a case needs a known file name to read a new record back, the prompt gives the title to use; `adr-title-states-decision` leaves the title to the skill, and one narrow `llm` grader reads the created file's name. In the split case the successors' names are the run's to choose, so "supersedes part of" is matched in the session trace instead, on the old record's file name, which appears in none of the skill's references.
 
-The supersede cases carry two graders on the new record: `new-names-what-it-supersedes`, that it has a `**Supersedes:**` link at all, and `supersedes-on-the-status-line`, that it sits on the status line after a middle dot, as `references/format.md` lays the header out. About one run in three puts it on a line of its own.
+The supersede cases carry two graders on the new record: `new-names-what-it-supersedes`, that it has a `**Supersedes:**` link at all, and `supersedes-on-the-status-line`, that it sits on the status line after a middle dot, as `references/format.md` lays the header out. Under design 0.5.1, seven of eighteen runs put it on a line of its own, so these three cases fail about four times in ten until the skill changes; nothing else in the ADR cases failed once the graders were right.
 
 The files are generated; the generator is not kept here. Edit them by hand.
 
