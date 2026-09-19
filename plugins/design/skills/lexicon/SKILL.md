@@ -198,7 +198,7 @@ the procedure for bringing one back. It changes the lexicon and nothing else.
      word the lexicon doesn't yet give it. If an existing entry is that word,
      name it and carry over only meaning and distinction. Otherwise write a new
      entry under the word the user documentation or the code already uses, and
-     list it in step 6 as a new entry awaiting sign-off — not also as a gap. An
+     list it in step 7 as a new entry awaiting sign-off — not also as a gap. An
      entry for a component that exists, or was named, to avoid a domain word is
      a reframe to that word.
    - **merge** — fails test 3. Name the entry it merges into.
@@ -260,7 +260,14 @@ the procedure for bringing one back. It changes the lexicon and nothing else.
      up — and a domain word some component was named to avoid. Propose these;
      don't brainstorm. Where the file has no gaps line, present them only.
 
-6. **Present, then write.** Show:
+6. **Hold a conversation in it.** Write a handful of sentences someone would
+   actually say about the system — a user's bug report, a question about why
+   something happened, a design question, a review comment — in the consolidated
+   lexicon's words. Where one is ambiguous or misleading, fix the entry; where
+   the ambiguity is an open drift finding, name it instead. A lexicon is judged
+   by whether people can talk in it, not by how short it is.
+
+7. **Present, then write.** Show:
    - entries and words, before and after;
    - the verdicts, grouped by verdict, with the test that decided each, and
      any new entries and renames awaiting sign-off;
