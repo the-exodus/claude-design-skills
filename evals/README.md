@@ -66,6 +66,11 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `philosophy-not-for-mechanical-edit`, `philosophy-not-for-rename` | it does not load for a typo fix or a rename |
 | `philosophy-before-seeding` | in a design interview resumed at the scope confirmation, it loads before the tree is seeded |
 | `philosophy-before-next-closure` | in an interview resumed after a branch closed without it, it loads before the next branch is worked |
+| `interview-component-not-admitted` | a branch closes by introducing a module and a class: `design-interview` admits nothing to the lexicon |
+| `interview-inherited-entry-unchanged` | a branch decides how an inherited concept is shown, not what it means: the inherited entry stays as it is |
+| `interview-narrower-meaning-admitted` | a branch fixes what a word means: it is admitted, by meaning not mechanism, after `design:lexicon` is loaded |
+| `interview-oversized-lexicon-noted` | a 34-entry lexicon is noted at ingestion and consolidation offered as separate work, not done |
+| `interview-lexicon-write-back` | after the wrap-up, the lexicon is written back: inherited entries byte-identical, new terms as entries, and the reply says what is new and what changed |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired".
 
@@ -99,6 +104,18 @@ python3 evals/refresh-histories.py --check  # exit 1 if any history is stale
 ```
 
 and commit the result. Only the embedded skill text changes; what the assistant said in the history stays as written, which is the point where a case starts from a failure state.
+
+A skill called with arguments has them appended to its embedded text as an `ARGUMENTS:` block; the tool keeps that block as it is.
+
+### Lexicon admission inside the interview
+
+The `interview-*` cases cover the half of the lexicon rules that the consolidation fixtures never reach: `design-interview` admitting or refusing words at a branch closure, and leaving inherited entries alone. That is where sprawl starts. `--tag lexicon-admission` runs the five.
+
+Four of them resume one invented interview, about a station that stops answering, on a project with a five-entry lexicon. The interview was chained turn by turn on design 0.5.1, the user's replies written by hand, and each case's history stops where the assistant has asked its probes; the case's prompt is the user's reply that closes the branch, so the run's one message is the closure. The fifth, the oversized lexicon, starts from the pitch on a fixture whose lexicon has 34 entries, a good many of them function and file names.
+
+What a word's admission means is a judgement, so these cases use narrow `llm` graders, each asking one question of one short reply, beside the deterministic ones: no entry drafted for a component, no rewritten *stale* entry, `design:lexicon` loaded (`tool_used`), and for the write-back the file itself: the five inherited entries byte-identical, *miss* and *silent* present as entries, no component name and no mechanism in them.
+
+Under design 0.5.1, over eight runs each unless said: the component was never admitted (three of three), the inherited entry never touched (eight of eight), the write-back correct (three of three). `interview-narrower-meaning-admitted` passed four times in eight, and failed the same way each time: the word was admitted, by meaning, but `design:lexicon` was never loaded, though the interview skill says to load it before the first admission. `interview-oversized-lexicon-noted` passed seven times in eight after one grader fix: a correct run had called the 34 entries "40-odd", which the pattern did not accept. Its one remaining failure, on the offer of consolidation, came from a run whose trace was not kept, so whether the run or the pattern was at fault is unknown; the pattern was widened to the other natural ways of making the offer.
 
 Two things about the runner found on the way: `--case` is not repeatable (the last one wins) and takes plain `*` wildcards only; and a `plugins:` entry may not point at a directory beside the cases, so a case that ships its own plugin copy keeps it in its own subdirectory.
 
