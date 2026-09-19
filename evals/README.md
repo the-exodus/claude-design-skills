@@ -54,12 +54,13 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `smoke-lexicon` | `lexicon` fires when asked to review a glossary |
 | `lexicon-shelfwise` | `lexicon` consolidates a 31-entry lexicon with planted defects (library lending, TypeScript) |
 | `lexicon-stockroom` | the same on a 35-entry root `GLOSSARY.md` in another domain (warehouse, Python) |
+| `lexicon-tessera` | the same on a smaller 22-entry lexicon (tiling window manager, C#). Held out: see below |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired".
 
 ## Lexicon fixtures
 
-`lexicon-shelfwise` and `lexicon-stockroom` are invented projects whose lexicon is planted so the right answer is known by construction: each entry exercises one of the skill's rules, and the source code decides several verdicts in both directions, with things a correct run must find and decoys it must not fall for. They can be committed because nothing in them is real.
+`lexicon-shelfwise`, `lexicon-stockroom` and `lexicon-tessera` are invented projects whose lexicon is planted so the right answer is known by construction: each entry exercises one of the skill's rules, and the source code decides several verdicts in both directions, with things a correct run must find and decoys it must not fall for. They can be committed because nothing in them is real.
 
 Each case directory holds:
 
@@ -69,4 +70,6 @@ Each case directory holds:
 
 The prompt gives sign-off in advance, since the skill waits for it before writing and a run has nobody to ask.
 
-Neither fixture is held out: both were used while the skill's 0.5.0 text was tuned, and each `expected.md` says how. Items that flipped between those tuning runs are graded only where the key and its amendments leave one right answer.
+Shelfwise and Stockroom are regression fixtures: both were used while the skill's 0.5.0 text was tuned, and each `expected.md` says how. Items that flipped between those tuning runs are graded only where the key and its amendments leave one right answer.
+
+Tessera is held out, so that there is always one input no iteration of the skill was tuned on. It was built by an agent that had seen neither the skill nor the other fixtures. It stays held out only under one rule: look at its score, but never edit the skill in response to a specific failure on it. Iterate on Shelfwise and Stockroom; read Tessera as the check that the iteration generalised. `--tag held-out` runs it alone. Once a Tessera failure has shaped the skill's wording, it is a regression fixture like the others and a new held-out one is needed.
