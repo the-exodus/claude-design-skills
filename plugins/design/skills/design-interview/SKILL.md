@@ -118,11 +118,11 @@ The design's vocabulary is not invented fresh each time. Scan for an existing le
 - `docs/glossary.md`, `GLOSSARY.md`, `LEXICON.md`
 - `.claude/lexicon.md`
 
-Load it in full — unlike ADRs, it is short by construction and every entry is potentially in play.
+Load it in full — unlike ADRs, every entry is potentially in play. If it has grown past about thirty entries, or its entries describe code rather than meaning, say so in one line and offer the `lexicon` skill's consolidation as separate work. Don't consolidate inside the interview.
 
 **Inherited terms are binding.** Use them exactly as defined, from the pitch recap onward. If this design needs a term the lexicon already defines differently, that is not a naming preference to resolve quietly: either the design is wrong about the concept, or the established meaning has shifted and the entry needs to change. Surface it and let the user say which.
 
-**Check inherited terms against the code.** A term the codebase no longer uses is a candidate for retirement — note it, don't act on it. A term the code uses with a meaning that has drifted from its entry is worth surfacing immediately, because everything downstream will inherit the confusion.
+**Check inherited terms against the code.** An inherited entry that fails the `lexicon` skill's tests — the name of a component, a word in its ordinary sense — is a candidate for retirement: note it, don't act on it. A term the code uses with a meaning that has drifted from its entry is worth surfacing immediately, because everything downstream will inherit the confusion.
 
 If no lexicon exists, this is the first interview and it starts empty. Say so in one line; don't treat it as a problem.
 
@@ -183,30 +183,30 @@ Branches are not exhaustive; grow more as the conversation reveals them. Prune t
 
 The interview carries two pieces of cross-branch state: the assumption nodes, and the lexicon. Both are first-class, both are surfaceable whenever the user asks, and both get laid out at wrap-up.
 
-The lexicon is the design's vocabulary — the terms that carry a specific agreed meaning. Its job is that every branch closes in words that already mean something exact, so that the design, and anything later written from it, can't diverge on what a word meant.
+The lexicon is the domain's language — the words someone needs defined to talk about using or developing the system. Its job is that every branch closes in words that already mean something exact, so that the design, and anything later written from it, can't diverge on what a word meant. The code takes its names from it, not the other way round.
+
+The `lexicon` skill owns what may enter it and what an entry says. Load it before the first admission; none of it is reimplemented here.
 
 ### Admission
 
 **Terms are admitted only at branch closure, and only when closing that branch required the term to carry a specific meaning.** This is the whole convergence mechanism, so don't route around it. A lexicon whose growth is coupled to how much has been *said* never converges, because conversation doesn't. Coupled to branches closed, it does, because branches are finite and closing.
 
-A term earns an entry only if getting it wrong would produce divergent implementations. At least one must hold:
+A term that closure required is admitted only if it passes the `lexicon` skill's three tests, in order: it is language, not code; it needs defining; it is the one word for its concept.
 
-- **It's overloaded.** The same word means different things in different parts of the system, or the domain meaning differs from the ordinary one.
-- **It names a distinction the code must preserve.** Near-synonyms in English that must never be conflated — archive vs. delete, user vs. member vs. subscriber. These are the highest-value entries.
-- **A branch decided it.** A closure defined it: "pending means X, not Y."
-- **It will be an identifier.** A table, type, endpoint, field, or event name, where divergence gets expensive to fix.
-
-**An entry that only restates the term is noise.** Same rule as a comment that restates the code, and the same fix: delete it. If the definition is the ordinary meaning of the word, the term doesn't belong here.
+- **A branch deciding something is not a reason to admit a word.** The decision belongs to the tree and, when ADR-worthy, to an ADR. The word is admitted only if the closure fixed what it *means*.
+- **The names of components this design introduces are never admitted** — modules, types, mechanisms. They are the design's structure, recorded in the tree and then in the code, which is what anyone reads to talk about them.
 
 ### Inherited and new
 
 Track which entries came from the ingested lexicon and which this interview added. The distinction matters at wrap-up: inherited terms belong to the codebase and outlive this design, while new ones are this interview's claim on the vocabulary and need the user's explicit sign-off before they're written back.
 
-Inherited entries are not subject to the admission test — they already passed it, or they predate it. They are subject to the use rule.
+Inherited entries are binding whether or not they would pass the tests today; the interview doesn't re-litigate them. One that fails is noted for consolidation (Phase 2), not dropped.
+
+**A closure amends an inherited entry only when it changes what the word means.** A decision about how the concept behaves goes to the tree and its ADR, and the entry stays as it is. An entry that grows a sentence with every decision touching its concept becomes a second, drifting description of the system.
 
 ### Size
 
-Target roughly 20 to 30 entries, inherited and new together. Past that, adding one means arguing another out — say so out loud when it happens. A lexicon is an interface, and one with two hundred entries is a shallow module that isn't pulling its weight.
+Target roughly 20 to 30 entries, inherited and new together. Past that, adding one means arguing another out — say so out loud when it happens — and an inherited lexicon already past it needs the `lexicon` skill's consolidation, as separate work. A lexicon is an interface, and one with two hundred entries is a shallow module that isn't pulling its weight.
 
 ### Use
 
@@ -270,7 +270,7 @@ If a branch resolves an item carried in from a prior interview, say so at closur
 
 Don't manufacture a fork to make a closure look thorough. "No fork, forced by ADR-0012" is an honest and useful thing to write. Phase 9 reads this line directly rather than trying to infer from the rationale whether a choice ever existed.
 
-**Lexicon admission happens here.** If closing this branch required a term to carry a specific meaning, admit it now against the admission test in *The lexicon*. This is the only moment terms are admitted. Say which terms you added and why, in one line — a term entering the design's vocabulary is a small decision, not bookkeeping.
+**Lexicon admission happens here.** If closing this branch required a term to carry a specific meaning, admit it now against the `lexicon` skill's tests, and write its entry in that skill's shape. This is the only moment terms are admitted. Say which terms you added and why, in one line — a term entering the design's vocabulary is a small decision, not bookkeeping.
 
 ## Phase 6: Anti-cycling brakes
 
@@ -315,7 +315,7 @@ The interview is complete when every branch is in a terminal state (decided, def
 
 First, consolidate the lexicon. Merge entries that differ only in shading, and delete any whose definition turned out to be the ordinary meaning of the word. Drop terms this interview added that never got a second use.
 
-**Consolidation only prunes what this interview added.** An inherited term that this design didn't happen to use is not dead — it belongs to the codebase, and other work depends on it. Never drop one as unused. If an inherited term genuinely looks retired, say so and let the user decide; that's a change to shared vocabulary, not interview housekeeping.
+**Consolidation only prunes what this interview added.** An inherited term that this design didn't happen to use is not dead — it belongs to the codebase, and other work depends on it. Never drop one as unused. If an inherited term genuinely looks retired, say so and let the user decide, or offer the `lexicon` skill's consolidation; that's a change to shared vocabulary, not interview housekeeping.
 
 Then lay out the full tree in the conversation: every branch, its terminal state, and its rationale — the actual decision for anything marked decided, the reason for everything else. Include the assumption nodes and which branches hang off them, and the consolidated lexicon. Mark which decided branches are ADR-worthy — a real fork, consequences that outlive the change, and a future reader who would ask why — and flag any that supersede an ADR indexed in Phase 2. Flag them here; Phase 9 is where they get written. Then summarize: counts per terminal state, any unresolved tensions, any blocked items needing external action.
 
@@ -352,6 +352,7 @@ A confident document built on invented detail is worse than no document, because
 - Reciting carried-forward assumptions or tracker questions that don't touch this design. Relevance is the only trigger. A backlog read aloud at the start of every interview is a section the user learns to skip, and then the one item that mattered gets skipped with it.
 - Closing a branch as *deferred-later*, *blocked*, or *stable-open* without recording what would resolve it. That field is the entire reason the item is worth carrying.
 - Letting the lexicon grow with the conversation instead of with closures. That is the specific failure that makes a lexicon useless: it becomes a glossary of ordinary words, and nobody reads it.
+- Admitting a component's name, or growing an entry by a sentence because a decision touched its concept. The first puts the code into the lexicon, the second the decisions; either turns a lexicon of thirty terms into one of sixty.
 - Writing an artifact section on inference without saying so. Marked inference is fine and often necessary; unmarked inference is the thing Phase 9 exists to prevent.
 - Using constrained-option tools to ask questions. Always prose.
 

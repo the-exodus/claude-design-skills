@@ -42,7 +42,7 @@ Every artifact uses the lexicon, and only the lexicon, for anything the lexicon 
 
 A term the artifacts need that isn't in the lexicon is a gap like any other. Surface it; don't quietly coin one.
 
-**Write the lexicon back.** Whenever capture runs, the consolidated lexicon is written back to where it was ingested from, or to the destination established above if there wasn't one. This is unconditional and it is not optional: the artifacts are written in this vocabulary, so a reader without the lexicon has documents whose terms mean whatever they assume. It is also what the next interview ingests. Show which entries are new and which changed before writing.
+**Write the lexicon back.** Whenever capture runs, the consolidated lexicon is written back to where it was ingested from, or to the destination established above if there wasn't one. This is unconditional and it is not optional: the artifacts are written in this vocabulary, so a reader without the lexicon has documents whose terms mean whatever they assume. It is also what the next interview ingests. Show which entries are new and which changed before writing. An inherited entry changes only where this design changed what the word means.
 
 ## Assumptions and tracker candidates
 
