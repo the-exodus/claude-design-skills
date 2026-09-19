@@ -118,7 +118,11 @@ Both tuning runs disagreed with the key on four entries, in the same direction e
 | despatch note | rename to *packing slip*, flagged for sign-off | retired (test 2 fired before the rename rule) |
 | reconciliation sweep | reframe to the guarantee | retired |
 
-By the reasoning of the Shelfwise round-3 and round-4 amendments, retiring *reconciliation sweep* with the guarantee homed (ADR-0003:21) is likely acceptable. The other three need the owner's ruling.
+By the reasoning of the Shelfwise round-3 and round-4 amendments, retiring *reconciliation sweep* with the guarantee homed (ADR-0003:21) is likely acceptable.
+
+Owner's ruling (2026-09-19): *reservation TTL* is a keep, and graded (`user-facing-term-kept`). It has a config key, but operators set it and say it, the same plant as *grace period* in Shelfwise and *split ratio* in Tessera. Retiring it, or merging it into *reservation*, is a failure. Under the released 0.5.1 text, one run in four kept it.
+
+The other three stay ungraded beyond what is already checked. *return* no longer conflicts: all four 0.5.1 runs kept it, and keep or retire is defensible for a near-ordinary word. For *despatch note* and *reconciliation sweep* the graders check the part that is not debatable, that the unused headword and the routine's name are gone; whether *packing slip* earns an entry, and whether the guarantee lives in the glossary or in ADR-0003, is accepted either way.
 
 ## What the graders check
 
@@ -139,6 +143,7 @@ On the written glossary (`GLOSSARY.md`), by entry heading (`**term**` at the sta
 | `distinction-allocation-names-reservation`, `distinction-reservation-names-allocation` | *allocation* / *reservation* |
 | `distinction-stocktake-kept`, `cycle-count-distinction` | *cycle count* / *stocktake*, and the `CycleCount` DTO decoy |
 | `redirect-rewritten-backorder` | the "See *reservation*" stub becomes a real entry |
+| `user-facing-term-kept` | *reservation TTL* (owner's ruling, above) |
 | `exception-kept-available` | the quarantine exception survives the trim |
 | `overload-stated-pick-queue` | not FIFO, not the job queue |
 | `decoy-overload-not-stated` | no "not a return value" note (passes if *return* is retired) |
@@ -149,7 +154,7 @@ On the report (the last message): `drift-movement-cited` (`models.py` at 35–43
 
 One narrow `llm` grader, `cycle-count-distinction`, reads the written glossary: the clause that reads as behaviour but is the distinction from *stocktake* is still there. A pattern cannot pin its wording.
 
-Not graded: the four open conflicts above; putaway, receipt, shelf retire-vs-merge, available sentence 7, extra gaps; the docstring-only home `availability.py:15`; unplanned drift (credit, never required).
+Not graded: *return*, the *packing slip* entry and where the never-negative guarantee lands (above); putaway, receipt, shelf retire-vs-merge, available sentence 7, extra gaps; the docstring-only home `availability.py:15`; unplanned drift (credit, never required).
 
 Known limits: `homeless-sales-guidance` and `gap-wave-proposed` are proximity matches in the report, so an unusual heading can fail a correct run. Whether a run cites `stockroom/api.py:3` as the guidance's home (the decoy) is not checked directly, for the same reason as in Shelfwise.
 
