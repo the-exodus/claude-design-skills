@@ -22,6 +22,14 @@ claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --case <c
 
 `--tag smoke` runs only the smoke cases; `-j 4` runs four agent runs at once against the same rate limit.
 
+The lexicon fixture cases copy a project into the workspace and rewrite its lexicon, so they need two more flags, and without them they score 0:
+
+```sh
+claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none --tag fixture --scaffold --allow-tools Write Edit
+```
+
+`--scaffold` runs each case's `scaffold.sh` as you, outside the sandbox; it only copies the case's `fixture/` into the workspace. `--allow-tools` applies to every case in the run, so pass it with `--tag fixture` rather than on a smoke run. No case needs Bash, so the sandbox backend (`bubblewrap` and `socat`) is not required.
+
 ## Pinned settings
 
 | Setting | Value | Why |
@@ -32,7 +40,7 @@ claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --case <c
 | `--runs` | default, 3 | One run of a non-deterministic agent says little. |
 | `--max-cost-usd` | none | Runs are already bounded by each case's `max_turns` and `timeout_seconds`, and usage is felt as plan session limits rather than dollars; the reported cost is a list-price estimate only. |
 
-A run of the four smoke cases is 12 agent runs; it took about 2.5 minutes at `-j 4` and reported $2.56.
+A run of the four smoke cases is 12 agent runs; it took about 2.5 minutes at `-j 4` and reported $2.56. A run of the three lexicon fixture cases is 9 agent runs of about five minutes each; it took about 16 minutes at `-j 3` and reported $12.07.
 
 ## Cases
 
@@ -44,5 +52,26 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `smoke-design-philosophy` | `design-philosophy` fires on an implementation request whose structure is open |
 | `smoke-adr` | `adr` fires when asked to write a decision up for the record |
 | `smoke-lexicon` | `lexicon` fires when asked to review a glossary |
+| `lexicon-shelfwise` | `lexicon` consolidates a 31-entry lexicon with planted defects (library lending, TypeScript) |
+| `lexicon-stockroom` | the same on a 35-entry root `GLOSSARY.md` in another domain (warehouse, Python) |
+| `lexicon-tessera` | the same on a smaller 22-entry lexicon (tiling window manager, C#). Held out: see below |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired".
+
+## Lexicon fixtures
+
+`lexicon-shelfwise`, `lexicon-stockroom` and `lexicon-tessera` are invented projects whose lexicon is planted so the right answer is known by construction: each entry exercises one of the skill's rules, and the source code decides several verdicts in both directions, with things a correct run must find and decoys it must not fall for. They can be committed because nothing in them is real.
+
+Each case directory holds:
+
+- `fixture/`: the project, copied into the workspace by `scaffold.sh`. Nothing else is copied.
+- `expected.md`: the verdict for every entry, the drift at `file:line`, the homeless sentence, the outside edges, the gap and the decoys; then what the graders check, what they leave ungraded and why.
+- `graders/`: one deterministic `regex` grader per planted rule, on the written lexicon (entry headings kept or gone, a merge recorded, no entry over 80 words) and on the report (the drift and edge citations, the homeless sentence, the gap). One narrow `llm` grader per case, where a pattern can't decide.
+
+The prompt gives sign-off in advance, since the skill waits for it before writing and a run has nobody to ask.
+
+When writing a grader, keep three dashes in a row out of its frontmatter, comments and patterns included: the runner ends the frontmatter at the first one it meets, even mid-line, and the case then fails to load. In a pattern, write `-{3}`.
+
+Shelfwise and Stockroom are regression fixtures: both were used while the skill's 0.5.0 text was tuned, and each `expected.md` says how. Items that flipped between those tuning runs are graded only where the key and its amendments leave one right answer.
+
+Tessera is held out, so that there is always one input no iteration of the skill was tuned on. It was built by an agent that had seen neither the skill nor the other fixtures. It stays held out only under one rule: look at its score, but never edit the skill in response to a specific failure on it. Iterate on Shelfwise and Stockroom; read Tessera as the check that the iteration generalised. `--tag held-out` runs it alone. Once a Tessera failure has shaped the skill's wording, it is a regression fixture like the others and a new held-out one is needed.
