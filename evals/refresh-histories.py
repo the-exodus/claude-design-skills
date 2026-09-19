@@ -47,7 +47,11 @@ def refresh(path):
                 if not m or not (SKILLS / m.group(2) / "SKILL.md").exists():
                     continue
                 name = m.group(2)
+                # A skill called with arguments gets them appended after its body; keep them.
+                _, marker, arguments = block["text"].partition("\n\n\nARGUMENTS: ")
                 fresh = f"Base directory for this skill: plugins/design/skills/{name}\n\n{current_body(name)}"
+                if marker:
+                    fresh += "\n\nARGUMENTS: " + arguments
                 if block["text"] != fresh:
                     block["text"] = fresh
                     changed = True
