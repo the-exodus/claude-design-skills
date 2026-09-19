@@ -149,6 +149,7 @@ On the written lexicon (`docs/lexicon.md`), by entry heading (`**term**` at the 
 | `distinction-move-names-send`, `distinction-send-names-move` | *move* / *send*, made two-sided |
 | `redirect-rewritten-unmanaged-window` | the "See *floating window*" stub becomes a real entry |
 | `user-facing-term-kept` | *split ratio* |
+| `domain-term-kept-work-area` | *work area* (owner's ruling, below) |
 | `no-entry-over-80-words`, `history-cut-from-entry` | the bloated *layout* entry |
 | `disputed-universal-not-asserted` | "applied only once ... ever" no longer asserted |
 | `header-admission-replaced` | the header's admission rule |
@@ -158,7 +159,9 @@ On the report (the last message): `drift-rule-cited` (`Rule.cs` at 3-11 or `Rule
 
 One narrow `llm` grader, `single-window-sentence-home`, reads the report: it fails a run that calls the doc-comment-only sentence homeless, or that homes it to `Workspace.cs`, and passes anything else. The judge sees only the report, so a run that drops the sentence without accounting for it passes.
 
-Not graded: whether *zoom* is renamed to *promote* or only surfaced; where the no-stranded-windows guarantee lands; *floating window* naming *unmanaged window*; the label on light rewrites; extra gaps; `MainStackLayout.cs:9` wrongly listed as an edge; and *work area*, which this key marks keep but which is also the platform's word in the same sense. By the reasoning of the Shelfwise round-3 amendment a run could retire it under test 2. The owner has not ruled on it.
+Not graded: whether *zoom* is renamed to *promote* or only surfaced; where the no-stranded-windows guarantee lands; *floating window* naming *unmanaged window*; the label on light rewrites; extra gaps; `MainStackLayout.cs:9` wrongly listed as an edge.
+
+Owner's ruling (2026-09-19) on *work area*: keep, and graded. It is also the Windows platform's word in the same sense, but the domain is tiling window managers, not the platform Tessera happens to run on. The word is not everyday English, its boundary is fixed by the system (the monitor minus the taskbar and docked toolbars), and it marks the distinction from the full screen that tiling depends on. Retiring it under test 2 is a failure.
 
 Known limits: `homeless-history-sentence` is a proximity match between a word for "no home" and the sentence, so an unusual heading can fail a correct run. Whether a run cites `TesseraConfig.cs:24` as the sentence's home is not checked directly: a correct report may name that file while dismissing it.
 
