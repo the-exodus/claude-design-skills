@@ -50,7 +50,7 @@ pointing at a particular part of the code?** It is language if either holds:
   commands, the messages, the output.
 - **Developers need it to talk about the system's behaviour across more than one
   part of the code** — a concept the whole design is reasoned in, such as
-  "desired state" in a reconciling system.
+  *settlement* in a payments system.
 
 A word used only inside one part of the code, and in the decision records about
 that part, is code, however carefully a decision record defined it. The record
@@ -66,19 +66,19 @@ decomposition? A word that exists because the build is cut the way it is fails.
 
 Three cases need care:
 
-- **A concept and the component that realizes it.** "Desired state" is a concept
-  anyone reasoning about a reconciling system needs, however the code is cut;
-  the `Reconciler` class that holds it is code. Keep the concept, not the
+- **A concept and the component that realizes it.** An order's *fulfilment* is a
+  concept anyone talking about a shop needs, however the code is cut; the
+  `FulfilmentService` that performs it is code. Keep the concept, not the
   component.
-- **A mechanism and the guarantee it serves.** A user relies on "every window it
-  hid is shown again when it exits", not on the routine that shows them. If the
+- **A mechanism and the guarantee it serves.** A user relies on "a cancelled
+  order is never charged", not on the job that voids the charges. If the
   guarantee needs a word, the entry is the guarantee's, under the domain's word
   for it. The mechanism's name stays in the code.
 - **A mechanism's name the user documentation already uses.** Documentation
-  that tells users about "the emergency show" is still telling them about a
-  routine. The entry is for what the user observes — an end that was *rescued*
-  rather than *finished* — and the documentation's use of the mechanism's name is
-  drift to surface.
+  that tells users about "the retry worker" is still telling them about a
+  routine. The entry is for what the user observes — a delivery that was
+  *retried* — if that needs a word at all, and the documentation's use of the
+  mechanism's name is drift to surface.
 
 ### 2. It needs defining
 
@@ -91,7 +91,7 @@ At least one must hold:
   reviewed" — the domain fixed what the word covers.
 - **It names a distinction that must not be conflated.** Near-synonyms that
   must never be used for each other: archive vs. delete, user vs. member,
-  forced vs. chosen. These are the highest-value entries.
+  refund vs. reversal. These are the highest-value entries.
 
 Fails this test: a word used in its ordinary sense, however central it is. Also a
 word whose only specific content is a decision about how the thing behaves —
@@ -107,8 +107,12 @@ case test 2 already holds for both and each entry names the other.
 
 An entry that only redirects to another ("see *X*") is one of two things: a
 synonym, merged into *X* as a word not used, or a distinct term missing its
-entry, which is rewritten into one. One entry whose headword is not the word the
-code and the documentation use is drift, not a merge: surface it, don't pick.
+entry, which is rewritten into one.
+
+A headword that names a part of the code — a module, a class, a layer — fails
+test 1 and is reframed to the documentation's word for the concept. A headword
+that differs from the word the code and the documentation use, neither being a
+part of the code, is drift, not a merge: surface it, don't pick.
 
 ## An entry
 
@@ -121,9 +125,9 @@ which ... See [ADR-NNNN](...).
   developer already has.
 - **What it is distinct from**, naming the other term, when the distinction is
   why the entry exists.
-- **At most one pointer**, to the decision record that fixed the meaning, if one
-  did: the earliest record still in force that defines the term, not every
-  record that touched it.
+- **At most one pointer**, to the decision record whose decision defines what
+  the word means, if one does; where that part of it has been superseded, the
+  superseding record. Not every record that touched the concept.
 - Other lexicon terms are italicized where used. Only terms the lexicon defines.
 
 Not in an entry:
@@ -132,8 +136,8 @@ Not in an entry:
   component does what.
 - How it behaves, its edge cases, and what happens when: the decision records,
   the references and the tests carry that. The one exception is a behavioural
-  clause that *is* the distinction — a forced float is revisited, a chosen one
-  never is. Keep that clause; it is the meaning. Cut the rest.
+  clause that *is* the distinction — an archived item can be restored, a deleted
+  one cannot. Keep that clause; it is the meaning. Cut the rest.
 - Configuration keys, verbs and their arguments: the references.
 - Ticket numbers, and the history of how the meaning came about.
 
@@ -152,9 +156,8 @@ A domain's language usually comes to twenty or thirty terms. That is a symptom
 check, not a quota: past it, the lexicon is probably admitting code or
 decisions, and it needs consolidating. Don't cut an entry that passes the tests
 to reach a number, and don't keep one that fails them because there is room. A
-system that users meet through several surfaces — a protocol, a lifecycle, a
-configuration file — can honestly sit above thirty; say so rather than cutting
-further.
+system that users meet through several surfaces can honestly sit above thirty;
+say so rather than cutting further.
 
 ## Consolidating a lexicon
 
@@ -180,23 +183,33 @@ the procedure for bringing one back. It changes the lexicon and nothing else.
    - **rewrite** — passes, but is not in the shape above. Reduce it to meaning
      and distinction. Where the word is overloaded — against another sense in
      the system, or on the platform — and the entry doesn't say so, add that
-     distinction: it is the entry's reason to exist.
-   - **keep** — passes, and is already in shape.
+     distinction: it is the entry's reason to exist. Add it only when the other
+     sense is carried by the code, a reference or the platform, and cite where.
+     Where the sources disagree about which sense holds, that is drift for step
+     3, not a distinction to add.
+   - **keep** — passes, is already in shape, names no component, and has no
+     unstated overload.
 
    Judge the term, not its current definition. A word that belongs can have an
    entry that has turned into a description of code; that is a rewrite, not a
    retirement.
 
-3. **Correct.** Check each surviving entry's meaning against how the code and
-   the references use the word. Where the code or the references split the term
-   into cases — an enum, a reported value, a kind of rule — check every claim in
-   the entry against every case. A case the claim does not fit is drift, not a
-   finer grain.
+3. **Correct.** Check the meaning of every entry that survives — including
+   those a reframe created or fed — against how the code and the references use
+   the word.
+   - Where the code or the references split the term into cases — an enum, a
+     reported value, a kind of rule, a configuration option or backend, a class
+     of trigger — check every claim in the entry against every case. A case the
+     claim does not fit is drift, not a finer grain.
+   - Check every absolute in the entry — *only*, *never*, *every*, *entirely*,
+     *at all* — against each reference that mentions the word. Each is a claim.
 
-   Surface each disagreement with its evidence, `file:line`, and let the user
-   say which side is right. Don't settle it by rewriting either side: a
-   disputed sentence is carried into the entry unchanged, and the drift finding
-   names it, so the user's answer is what changes it.
+   Surface each disagreement with its evidence, `file:line` as a search of the
+   file reports it — a citation that does not open to the quoted text is not
+   evidence — and let the user say which side is right. Don't settle it by
+   rewriting either side. A disputed claim is never cut: carry it into the
+   entry, stated in the entry's shape and in surviving vocabulary, never in a
+   retired word, and quote the original sentence in the drift finding.
 
 4. **Account for everything cut**, entry by entry: where the removed content
    already lives — a decision record, a reference, a test, a doc comment. Search
@@ -229,7 +242,9 @@ the procedure for bringing one back. It changes the lexicon and nothing else.
    written. Then write it where it was:
    - Keep its ordering and link style.
    - Replace any statement in its header of what earns an entry with the three
-     tests.
+     tests. That includes any standing exclusion — a class of words said to
+     belong elsewhere: re-test the excluded words the surviving entries use, and
+     propose those that pass as gaps.
    - Put proposed gaps on the file's gaps line, if it has one, marked as not yet
      admitted; a gap becomes an entry only when the user admits it.
    - Update any provenance line to say it was consolidated, and when, and drop
