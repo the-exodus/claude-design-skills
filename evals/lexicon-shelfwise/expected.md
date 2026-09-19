@@ -141,7 +141,7 @@ On the written lexicon (`docs/design/lexicon.md`), by entry heading (`**term**` 
 
 On the report (the last message): `drift-overdue-cited` (`fines.ts` at 5–13, 26, 28 or 43), `drift-receipt-cited`, `edge-hold-manager-cited`, `edge-loan-reconciler-cited`, `edge-configuration-cited`, `homeless-pilot-sentence`. Citations match on the basename and the first line number, and tolerate backticks, `L9`, "lines 6–13" and comma lists.
 
-One narrow `llm` grader, `checkin-sentence-home`: the doc-comment-only sentence is kept in the entry or homed to `hold-manager.ts`, not called homeless and not homed to `notification-queue.ts`. A pattern cannot tell those apart.
+One narrow `llm` grader, `checkin-sentence-home`, reads the report: it fails a run that calls the doc-comment-only sentence homeless, or that homes it to `notification-queue.ts`, and passes anything else. A pattern cannot tell those apart. The judge sees only the report, so a run that drops the sentence without accounting for it passes; every run so far has kept it in the entry as meaning.
 
 Not graded, because the key or the amendments accept more than one answer: catalog, fine, waive, hold queue, library card, return, due date; whether *due slip* is renamed or only surfaced; where the charge-sweep guarantee lands; `docs/conventions.md:9` as an outside edge; unplanned drift (credit, never required).
 
