@@ -85,7 +85,7 @@ It lives in its own eval directory so that an ordinary run never sees it and the
 claude plugin eval . --eval-dir evals-tileand --model claude-opus-5 --judge-model claude-opus-5 --ablation none --scaffold --allow-tools Write Edit
 ```
 
-Results land in `evals-tileand/results/`, gitignored; `git status` is clean after a run.
+Results land in `evals-tileand/results/`, gitignored; `git status` is clean after a run. One run reads 199 files and takes about twelve minutes and 45 turns; three runs at `-j 3` took about 13 minutes and reported $13 to $14.
 
 Two things about the runner decided that shape, neither of them in its documentation, both established by probe on Claude Code 2.1.278:
 
