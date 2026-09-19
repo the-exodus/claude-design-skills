@@ -1,11 +1,22 @@
 ---
 name: design-philosophy
-description: The design principles that govern how software here gets structured — complexity as the thing to minimize, deep modules behind small interfaces, information hiding, no pass-through layers, pushing complexity down rather than out, considering alternatives before committing, and favoring long-term simplicity over short-term speed. Load this when designing new functionality, deciding how to decompose or structure a change, weighing two approaches against each other, reviewing structure rather than syntax, or implementing from a spec or prompt where the structural decisions are still open. The design-interview skill invokes this at tree seeding. Code-level style — formatting, naming conventions, comment mechanics — is not here.
+description: >
+  Load before any design or implementation work: before writing or changing code
+  that adds, extends or restructures behaviour; before designing or planning a
+  change; and at the start of a design interview, before any branch is seeded.
+  Carries the structural principles that govern how software here is built —
+  complexity as the thing to minimize, deep modules behind small interfaces,
+  information hiding, no pass-through layers, pushing complexity down, considering
+  alternatives before committing, long-term simplicity over short-term speed.
+  Trigger on implement, add, build, extend, refactor, restructure, design, plan.
+  NOT for mechanical edits whose decisions are already made (a typo, a rename,
+  formatting), and NOT for code-level style: formatting, naming conventions,
+  comment mechanics.
 ---
 
 # Design Philosophy
 
-These principles apply in two situations: when a design is being worked out, and when an agent is implementing from a spec or a prompt and still has structural decisions to make. They're the same principles both times; what differs is whether they generate questions or constrain code.
+These principles apply before any design or implementation work: when a design is being worked out, and whenever an agent writes or changes code that adds, extends or restructures behaviour — from a spec, a prompt or a bug report alike. Implementation always makes structural decisions, even when nobody named them. They're the same principles both times; what differs is whether they generate questions or constrain code. A mechanical edit whose decisions are already made — a typo, a rename, formatting — doesn't need them.
 
 They are not a review checklist to run at the end. A principle applied after the structure exists can only produce regret. Applied while the structure is being chosen, it produces a better structure.
 
