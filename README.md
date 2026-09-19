@@ -69,7 +69,7 @@ evals/                    # the plugin's eval suite; not shipped
 ## Releasing
 
 ```sh
-claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5   # see evals/README.md
+claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none   # see evals/README.md
 claude plugin validate .
 claude plugin validate ./plugins/design
 claude plugin tag ./plugins/design   # creates design--v<version>, checks manifests agree
