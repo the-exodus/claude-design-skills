@@ -161,3 +161,40 @@ This case is a regression input, like Shelfwise and Stockroom: iterate against i
 Tessera and Byre are held out, so that there are always inputs no iteration of the skill was tuned on. Each was built by an agent that had seen neither the skill nor the other fixtures, from a list of defect kinds only. They stay held out under one rule: look at their scores, but never edit the skill in response to a specific failure on one. Iterate on Shelfwise, Stockroom and the Tileand case; read Tessera and Byre as the check that the iteration generalised. `--tag held-out` runs the two alone. Once a failure on one of them has shaped the skill's wording, that one is a regression fixture like the others and a new held-out one is needed.
 
 There are two because they catch different things. Tessera is a tiling window manager, the same kind of system as Tileand, which the skill was first tuned on: it shares none of Tileand's text, so it catches fitting to Tileand's wording and structure, but it is weaker at catching fitting to that domain. Byre, dairy herd management, shares nothing with any other input here.
+
+## Judge calibration
+
+Every skill here produces judgement, so some grading is `llm`, and an uncalibrated judge gives a score that moves for reasons that have nothing to do with the skill. The suite keeps its `llm` graders narrow, one question each of one output, and `evals-calibration/` checks each of them against outputs whose right verdict is known.
+
+A calibration case is a fixed output in `fixture/output.md`, named `<grader>--<pass|fail>-<n>` for the verdict it should get, with the grader's own rubric pointed at that file and an agent that has nothing to do, so only the judge is exercised. The known passes are real run outputs, read and judged by hand; the known fails are the same outputs with one paragraph changed: a sentence called homeless, a decoy given as its home, a component admitted under a friendlier name, a word defined by stored flags and a file path. The rubrics are copies: after changing a grader's rubric in `evals/`, copy it into that grader's calibration cases and run them again.
+
+```sh
+claude plugin eval . --eval-dir evals-calibration --judge-model claude-opus-5 --ablation none --scaffold --runs 5 -j 8 --json calibration.json
+python3 evals-calibration/score.py calibration.json
+```
+
+The command exits 1 by design, since every known fail "fails"; `score.py` is what says whether the judge is sound, and it exits 1 if any grader is below the bar. It reports, per grader, **agreement** (gradings that matched the known verdict), **flips** (fixed outputs that did not get the same verdict on every re-grade) and **split** (gradings on which the judge's three votes disagreed, a quieter sign of noise).
+
+**The bar, provisional until the owner sets one:** agreement of at least 0.9 and no flips over five re-grades. A grader below it is reworded or replaced by a deterministic one.
+
+Agreement reached with `claude-opus-5` as the judge, five gradings of each output, on 2026-09-20:
+
+| Grader | Case | Outputs | Agreement | Flips | Split votes |
+|---|---|---|---|---|---|
+| `checkin-sentence-home` | `lexicon-shelfwise` | 5 | 25/25 | 0 | 0 |
+| `cycle-count-distinction` | `lexicon-stockroom` | 5 | 25/25 | 0 | 0 |
+| `single-window-sentence-home` | `lexicon-tessera` | 5 | 25/25 | 0 | 0 |
+| `forty-day-sentence-home` | `lexicon-byre` | 5 | 25/25, after rewording; 24/25 with one flip before | 0 | 0 |
+| `title-states-the-decision` | `adr-title-states-decision` | 5 | 25/25 | 0 | 0 |
+| `component-not-admitted` | `interview-component-not-admitted` | 4 | 20/20 | 0 | 0 |
+| `inherited-entry-unchanged` | `interview-inherited-entry-unchanged` | 4 | 20/20 | 0 | 0 |
+| `term-admitted` | `interview-narrower-meaning-admitted` | 4 | 20/20 | 0 | 0 |
+| `entry-states-meaning-not-mechanism` | `interview-narrower-meaning-admitted` | 5 | 25/25 | 0 | 0 |
+| `does-not-consolidate` | `interview-oversized-lexicon-noted` | 4 | 20/20 | 0 | 0 |
+| `says-what-is-new-and-what-changed` | `interview-lexicon-write-back` | 4 | 20/20 | 0 | 0 |
+
+What calibration found was in the rubrics, not the judge. Writing down known verdicts for the three sentence-home graders showed that their rubric said both PASS and FAIL of a report that names the true home and the decoy together, which a real Tessera run had done and the judge had passed; and that it named a whole file as the decoy where only one doc comment is, which would have failed a real Byre run for citing the code that implements the behaviour. Then the first full run showed one grader flipping on a real output, because "at or around lines 49-50" left the judge to decide whether line 54 was around line 49. The rubrics now identify the decoy by quoting the comment. A rubric that can be read two ways is where a judge's noise comes from.
+
+It is not cheap. A grading is three judge votes over the whole output, and judging a file reported about ten times the cost that judging a run's last message did in the ordinary suite: the full run of 250 gradings took three minutes and reported $70, and the two long-report graders alone $29. Calibrate one grader at a time with `--tag <grader>` after changing its rubric, and use `--runs 3` unless flips are what you are looking for.
+
+Not covered yet: the owner's Tileand labels. The Tileand case has no `llm` graders, so there is nothing of it to calibrate; if narrow `llm` graders are added there for rewrites and reframes, the owner's one-line reasons in the private label file are the known verdicts to build their calibration outputs from.
