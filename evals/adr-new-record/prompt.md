@@ -1,5 +1,5 @@
 ---
-description: A new ADR takes the next number after the highest, not the gap, in the house format, and the index gains its row in the same change.
+description: "A new ADR takes the next number after the highest, not the gap, in the house format, and the index gains its row in the same change."
 tags: [adr]
 plugins: ["../../plugins/design"]
 max_turns: 25

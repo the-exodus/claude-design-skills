@@ -1,5 +1,5 @@
 ---
-description: One of two decisions in an ADR changes: the ADR is split inside the supersede, as in the skill's worked example, and its status names both successors.
+description: "One of two decisions in an ADR changes: the ADR is split inside the supersede, as in the skill's worked example, and its status names both successors."
 tags: [adr]
 plugins: ["../../plugins/design"]
 max_turns: 30

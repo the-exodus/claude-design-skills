@@ -1,5 +1,5 @@
 ---
-description: Where the repo has no ADR directory, the skill asks where, with a concrete suggestion, and creates nothing.
+description: "Where the repo has no ADR directory, the skill asks where, with a concrete suggestion, and creates nothing."
 tags: [adr]
 plugins: ["../../plugins/design"]
 max_turns: 15

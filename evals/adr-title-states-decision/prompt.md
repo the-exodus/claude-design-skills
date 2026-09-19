@@ -1,5 +1,5 @@
 ---
-description: Asked by topic to record a decision, the ADR's title states what was decided, not the topic.
+description: "Asked by topic to record a decision, the ADR's title states what was decided, not the topic."
 tags: [adr]
 plugins: ["../../plugins/design"]
 max_turns: 25

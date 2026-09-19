@@ -1,5 +1,5 @@
 ---
-description: Superseding an ADR whose status is a ## Status section: the old one is marked in that field and otherwise untouched, the new one names it, the index follows.
+description: "Superseding an ADR whose status is a ## Status section: the old one is marked in that field and otherwise untouched, the new one names it, the index follows."
 tags: [adr]
 plugins: ["../../plugins/design"]
 max_turns: 25
