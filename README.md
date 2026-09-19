@@ -32,7 +32,7 @@ Three things persist across a project's lifetime and are read back at the start 
 | | in | out |
 |---|---|---|
 | **ADRs** | indexed, surfaced when relevant, rejected options included | written via the `adr` skill, with supersession |
-| **Lexicon** | loaded in full, binding, checked against the code | consolidated and written back |
+| **Lexicon** | loaded in full, binding, checked against the code | admitted by the `lexicon` skill's tests, consolidated and written back |
 | **Assumptions** | indexed, surfaced *only* on topical relevance; open design questions come from the tracker | standing assumptions with how you would know each stopped holding, plus measured facts; deferred, blocked and stable-open branches go to the tracker as candidates |
 
 ### `adr`
@@ -40,6 +40,12 @@ Three things persist across a project's lifetime and are read back at the start 
 House rules and format for Architecture Decision Records — Michael Nygard's Context / Decision / Consequences, with a Status. Owns numbering, the index table, and the rule that ADRs are **superseded rather than edited**, including partial supersedes and the split that falls out of one. `design-interview` hands ADR writing to this skill rather than carrying a competing format.
 
 Ships with a worked example set: one ADR holding two decisions, the two it split into when only one of them changed, and the index listing all three.
+
+### `lexicon`
+
+House rules for a project's lexicon — the domain's language, in the DDD sense — and the procedure for bringing a sprawling one back. Three tests, applied in order, decide what may be an entry: **it is language, not code** (it would survive a rewrite with a different decomposition), **it needs defining** (overloaded, narrower than ordinary use, or a distinction that must not be conflated), and **it is the one word for its concept**. An entry states what the word means and what it is distinct from; behaviour belongs to the decision records, and the names of components belong to the code, which takes its names from the lexicon rather than the other way round.
+
+Consolidation applies the same tests to every entry of an existing lexicon — retire, reframe, merge, rewrite or keep — checks the survivors against the code for drift, accounts for every sentence it cuts, and writes nothing until the user signs off. `design-interview` loads it for admission.
 
 ### `design-philosophy`
 
@@ -56,6 +62,7 @@ plugins/design/
   skills/design-interview/
   skills/design-philosophy/
   skills/adr/
+  skills/lexicon/
 ```
 
 ## Releasing
