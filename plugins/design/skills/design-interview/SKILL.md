@@ -193,7 +193,7 @@ The `design:lexicon` skill owns what may enter it and what an entry says. Load i
 
 **Terms are admitted only at branch closure, and only when closing that branch required the term to carry a specific meaning.** This is the whole convergence mechanism, so don't route around it. A lexicon whose growth is coupled to how much has been *said* never converges, because conversation doesn't. Coupled to branches closed, it does, because branches are finite and closing.
 
-A term that closure required is admitted only if it passes the `design:lexicon` skill's three tests, in order: it is language, not code; it needs defining; it is the one word for its concept.
+A term that closure required is admitted only if it passes the `design:lexicon` skill's admission tests. They are deliberately not repeated here: they live in that skill and change with it, and a copy here would go on being applied after it had gone stale. So a closure that might admit a word, or refuse one, is decided with the skill loaded. If `design:lexicon` has not been loaded in this conversation, load it before the recap names any term as admitted or refused.
 
 - **A branch deciding something is not a reason to admit a word.** The decision belongs to the tree and, when ADR-worthy, to an ADR. The word is admitted only if the closure fixed what it *means*.
 - **The names of components this design introduces are never admitted** — modules, types, mechanisms. They are the design's structure, recorded in the tree and then in the code, which is what anyone reads to talk about them.
