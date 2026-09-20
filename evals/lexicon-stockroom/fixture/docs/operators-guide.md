@@ -32,6 +32,9 @@ you never need to correct a negative count by hand.
 Check the picked goods against the order, pack them, print the packing
 slip and put it in the box.
 
+When the carrier collects, the driver signs the manifest. If the slip
+printer prints nothing, ask IT to reinstall the printer driver.
+
 ## Configuration
 
 `stockroom.toml` holds the settings operators may change:

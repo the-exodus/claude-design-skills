@@ -22,6 +22,8 @@ alphabetical order.
 
 **despatch note** — The document packed with a shipment, listing the SKUs, batches and quantities in it.
 
+**driver** — The person driving the carrier's vehicle. The driver signs for a shipment when it is collected.
+
 **event bus** — The in-process publisher that carries StockMoved and ReservationLapsed events between modules. Subscribers run synchronously.
 
 **item code** — The code that identifies a SKU. Same as SKU.
@@ -55,6 +57,8 @@ alphabetical order.
 **ReservationService** — The service class that creates and lapses reservations, and backorders a line when too little is available.
 
 **return** — Goods a customer sends back against an order. Returned units go into a quarantine bin until inspected.
+
+**scan** — Reading a barcode with a handheld scanner. Every carton is scanned at goods-in.
 
 **shelf** — A shelf in the racking. Operators sometimes say shelf when they mean a bin.
 
