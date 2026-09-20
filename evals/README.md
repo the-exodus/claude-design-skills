@@ -146,6 +146,14 @@ When writing a grader, keep three dashes in a row out of its frontmatter, commen
 
 Shelfwise and Stockroom are regression fixtures: both were used while the skill's 0.5.0 text was tuned, and each `expected.md` says how. Items that flipped between those tuning runs are graded only where the key and its amendments leave one right answer.
 
+Under design 0.6.0, on the released text and the graders as they stand: Shelfwise passed 55 of 63 runs, Stockroom 10 of 11, Tessera 17 of 19 and Byre 14 of 27. What fails is intermittent and mostly on the report rather than the written lexicon. On Shelfwise, `drift-receipt-cited` (5 of 63) and one each of `no-code-names`, `synonym-recorded-not-used` and `homeless-pilot-sentence`; on Stockroom, *stock* kept as an entry instead of merged into *on-hand* (`synonyms-merged`, about one run in eight on any version).
+
+Two things changed in 0.6.0 that these fixtures measure. A user-facing quantity is no longer retired for having a configuration key: Stockroom's *reservation TTL* was kept in 1 of 8 runs under 0.5.1 and in every run since. And a reframe's entry is now written rather than proposed: *batch* is written and *wave* and *branch* stay gaps in every run.
+
+Two planted words are accepted either way, by the owner's ruling (THE-212): *shortcut* on Tessera and *driver* on Stockroom, each an ordinary word whose documentation also uses it in another sense nearby. Runs keep such a word with its sense stated about half the time or more, four rewordings of the skill did not change that, and the owner's reading is that the ambiguity is the documentation's. Stockroom's *scan*, whose other sense only developers meet, is still graded and has never been kept.
+
+`no-code-names` is worth knowing about. It did not fail in 168 fixture runs before the reframe change and has failed in 4 of 120 since (Tessera 2 of 19, Byre 1 of 27, Shelfwise 1 of 63, Stockroom 0 of 11). Fixture by fixture that is not distinguishable from chance, and 54 further Shelfwise runs with traces kept did not reproduce it, so what the failing runs wrote is not known. If it shows again, keep the trace (`--keep-temp`): the fixtures where it has failed are the ones whose gap word has a component named to avoid it (`BranchSite`, `SecondaryArea`, `Insemination`), and a component named on the gaps line is the first thing to look for.
+
 ## The Tileand case
 
 `evals-tileand/lexicon-tileand` runs the consolidation on a real lexicon: Tileand's, as it stood at 63 entries before Tileand consolidated it. Tileand is where a weak skill shows first, so it is worth a case; it is not worth a copy. Tileand and this repository move at different paces, and a copy would go stale and invite fitting the skills to one project. So nothing of Tileand is kept here: the scaffold brings the lexicon, the decision records, the references and `src/` into the workspace at run time, from a pinned commit of your own checkout, with `git archive`, which only reads.
@@ -167,11 +175,17 @@ The graders are the owner's gold labels: `gone-*` and `kept-*` on the written le
 
 This case is a regression input, like Shelfwise and Stockroom: iterate against it, but word any change to a skill as a general rule that holds for the other cases too, and read the held-out cases afterwards.
 
+Under design 0.6.0, over eight runs, scores ran from 0.92 to 0.97, against 0.86 to 0.93 over four runs of 0.5.1 (both graded against the labels as they stood before three rows moved on 2026-09-20, so a little low). The defect 0.6.0 fixes here is a reframe that stops short: a run decided that a retired component's concept needed a word and then left the entry in its report, awaiting a sign-off the prompt had already given. *reconcile* is now written in 8 of 8 runs (2 of 4 before), *layout* in 4 of 8 (1 of 4) and *rescue* or *rescued end* in 4 of 8 (1 of 4), and no run holds a drafted entry back. What is left is judgement about the word rather than the procedure: the concept lands under *end* or `unhide`, or the run judges *layout* ordinary in this domain.
+
+Several rows of the first table of findings turned out to be the labels rather than the skill, and the owner moved them after reading what the runs did and why: *host window* is a plain retire (runs propose *window* as a gap, which is neither required nor penalised), *default rules* and *attempt schedule* are out of the gold set, *workspace* is accepted with or without its lifecycle clause, and `reframed-rescue` accepts *rescued end*.
+
 ## Held out
 
 Tessera and Byre are held out, so that there are always inputs no iteration of the skill was tuned on. Each was built by an agent that had seen neither the skill nor the other fixtures, from a list of defect kinds only. They stay held out under one rule: look at their scores, but never edit the skill in response to a specific failure on one. Iterate on Shelfwise, Stockroom and the Tileand case; read Tessera and Byre as the check that the iteration generalised. `--tag held-out` runs the two alone. Once a failure on one of them has shaped the skill's wording, that one is a regression fixture like the others and a new held-out one is needed.
 
 There are two because they catch different things. Tessera is a tiling window manager, the same kind of system as Tileand, which the skill was first tuned on: it shares none of Tileand's text, so it catches fitting to Tileand's wording and structure, but it is weaker at catching fitting to that domain. Byre, dairy herd management, shares nothing with any other input here.
+
+Read Byre over a dozen runs or more. It passes about six runs in ten on any version (11 of 18 on 0.5.1, 14 of 27 on 0.6.0), on the same few graders each time: `distinction-milking-names-session` and `forty-day-sentence-home` fail in about one run in four or five each, `drift-withdrawal-cited` in about one in nine. Three runs say nothing: 0.5.1 passed three of three when the fixture was built, and 0.6.0 passed none of three in one suite pass and nine of twelve in another. Tessera is steadier, and since *shortcut* became accepted either way it passes in most runs.
 
 ## Judge calibration
 
