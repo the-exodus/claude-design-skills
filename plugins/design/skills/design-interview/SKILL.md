@@ -25,7 +25,7 @@ The two pulls are real and opposed; the skill needs both sets of mechanisms simu
 2. Scan the codebase, index ADRs and the assumptions record, ingest any existing lexicon, ask which open design questions on the tracker touch this work.
 3. Recap scope and understanding; confirm with the user.
 4. Load `design:design-philosophy`, then seed the core branches, the branches implied by the properties of the work, and the branches its principles imply.
-5. Walk the tree adaptively, closing each branch in a terminal state.
+5. Walk the tree adaptively, closing each branch in a terminal state. No branch is worked or closed without the principles: if `design:design-philosophy` turns out not to be loaded, load it first (Phase 5).
 6. Surface contradictions; handle assumption invalidation via prune-and-regrow.
 7. When all branches are terminal, wrap up and lay out the tree, the assumptions, and the lexicon.
 8. On request only, capture the tree as output artifacts.
@@ -225,6 +225,10 @@ At each step, pick the highest-priority open branch. Priority order:
 
 Don't go in fixed order; reassess after each closure. Resolving a foundational branch often reframes others.
 
+### Before any branch: the principles are loaded
+
+Before working or closing a branch, check that `design:design-philosophy` is loaded in this conversation. It normally is, from the top of Phase 4. Where it is not — the step was skipped, or the session was picked up after a tree already existed — load it now, before saying anything else about the tree, a closure the user has just asked for included. Then do what loading it at seeding would have done: seed the branches its principles imply, and read each branch already closed against them. A branch that would have closed differently is reopened, naming the principle; the rest stand. Tell the user in a line that this happened, then carry on with the branch at hand.
+
 ### Per-branch interview
 
 For each branch:
@@ -233,10 +237,12 @@ For each branch:
 
    Where the branch is a genuine fork — more than one workable approach exists — one probe is always "what else could this be?", asked here rather than at closure. The point is to generate the alternative while the answer is still open and it can still win. Asked after the fact it produces retroactive justification, which is worse than nothing: it makes a defaulted decision look deliberated. Don't ask it on branches that aren't forks.
 3. Ask probe questions adaptively. Track answers. Track new assumptions surfaced by the user; record them as assumption nodes upstream of this branch.
-4. When you think the branch is done, run the four locks (see below). Only after all four pass does the branch close.
+4. When you think the branch is done, or the user says it is, confirm the principles are loaded (above) and then run the four locks (see below). Only after all four pass does the branch close.
 5. Once it closes, check what closing it changed about the tree. Did the resolution imply a branch that doesn't exist yet? Did it reveal a condition of the work that wasn't visible at seeding (Phase 4)? Did it contradict a closed branch or invalidate an assumption (Phase 7)? Seeding is deliberately light, so growth during the walk is what makes the tree complete. This step is not optional.
 
 ### The four locks before closure
+
+The locks are run with the principles loaded. If `design:design-philosophy` has not been loaded in this conversation, load it before the first lock, and before writing the recap: a recap written without the principles locks in a resolution they never examined.
 
 A branch closes only when all four pass:
 
@@ -353,7 +359,7 @@ A confident document built on invented detail is worse than no document, because
 - Treating the seeded branches as the whole tree. Seeding is a floor, not a ceiling. A tree that ends up as the core branches plus whatever the pitch happened to mention is a tree that missed things.
 - Reciting carried-forward assumptions or tracker questions that don't touch this design. Relevance is the only trigger. A backlog read aloud at the start of every interview is a section the user learns to skip, and then the one item that mattered gets skipped with it.
 - Closing a branch as *deferred-later*, *blocked*, or *stable-open* without recording what would resolve it. That field is the entire reason the item is worth carrying.
-- Seeding, or closing any branch, before `design:design-philosophy` is loaded. Its principles are seed material, not a review pass; a tree grown without them has to be reopened.
+- Seeding, or closing any branch, before `design:design-philosophy` is loaded. Its principles are seed material, not a review pass; a tree grown without them has to be reopened. Finding the interview already past that point is not a reason to carry on without them: load it before the next branch (Phase 5).
 - Letting the lexicon grow with the conversation instead of with closures. That is the specific failure that makes a lexicon useless: it becomes a glossary of ordinary words, and nobody reads it.
 - Admitting a component's name, or growing an entry by a sentence because a decision touched its concept. The first puts the code into the lexicon, the second the decisions; either turns a lexicon of thirty terms into one of sixty.
 - Writing an artifact section on inference without saying so. Marked inference is fine and often necessary; unmarked inference is the thing Phase 9 exists to prevent.
