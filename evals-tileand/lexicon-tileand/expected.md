@@ -50,10 +50,10 @@ default for the entries no tuning run or judge ever disputed.
 | Input | retire | agreed by default |
 | interop layer | retire | agreed by default |
 | Windowing | retire | agreed by default |
-| attempt schedule | rewrite | agreed by default |
+| attempt schedule | rewrite | owner agrees with Tileand's own consolidation |
 | compat library | rewrite | agreed by default |
 | decoration | rewrite | agreed by default |
-| follow | rewrite | agreed by default |
+| follow | rewrite | owner agrees with Tileand's own consolidation |
 | forced float | keep | agreed by default |
 | involuntary end | rewrite | agreed by default |
 | membership | rewrite | agreed by default |
