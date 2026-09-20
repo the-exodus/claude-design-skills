@@ -29,18 +29,18 @@ default for the entries no tuning run or judge ever disputed.
 | floor | keep | owner agrees with Tileand's own consolidation |
 | layout tree | retire | owner agrees with Tileand's own consolidation |
 | ownership tree | retire | owner agrees with Tileand's own consolidation |
-| host window | keep, rewritten shorter | owner DISAGREES with Tileand's own consolidation |
+| host window | reframe -> window | owner agrees with Tileand's own consolidation |
 | ghost | keep the term | owner agrees with Tileand's own consolidation |
 | veil | keep the term | owner agrees with Tileand's own consolidation |
 | restack | retire | owner agrees with Tileand's own consolidation |
 | role | rewrite | owner DISAGREES with Tileand's own consolidation |
-| default rules | rewrite | owner agrees with Tileand's own consolidation |
+| default rules | rename -> shipped defaults | owner DISAGREES with Tileand's own consolidation |
 | layout module | reframe -> layout | owner agrees with Tileand's own consolidation |
 | LayoutReconciler | reframe -> reconcile | owner agrees with Tileand's own consolidation |
 | registry | retire | owner agrees with Tileand's own consolidation |
 | curve | rewrite | owner agrees with Tileand's own consolidation |
 | border surface | retire | owner agrees with Tileand's own consolidation |
-| workspace | keep the old claims: 'created on demand, evaporates when empty' is part of what a workspace is | owner DISAGREES with Tileand's own consolidation |
+| workspace | rewrite | owner agrees with Tileand's own consolidation |
 | animator | retire | agreed by default |
 | border look | retire | agreed by default |
 | end request | retire | agreed by default |
@@ -82,15 +82,15 @@ that does not is not penalised, since gap proposals varied a lot between tuning 
 
 `gone-*` and `kept-*`: one per row above, on the written lexicon's entry headings. A
 reframe, merge or rename counts as gone for the old headword. Beyond those:
-`reframed-rescue`, `reframed-layout`, `reframed-reconcile` (the concept's entry exists),
-`redirect-rewritten-default-rules`, `role-rewritten` (fails while the old text stands
-word for word), `workspace-keeps-its-claims`, `stack-keeps-not-lifo`,
+`reframed-rescue`, `reframed-layout`, `reframed-reconcile`, `reframed-shipped-defaults`, `reframed-window` (the word a reframe
+or rename lands on is an entry), `redirect-rewritten-default-rules`, `role-rewritten` (fails while the old text stands
+word for word), `workspace-behaviour-cut`, `stack-keeps-not-lifo`,
 `curve-records-easing`, `no-entry-over-80-words`, `header-admission-replaced`,
 `header-exclusion-dropped`, and `skill-fired`.
 
-Tileand's own consolidated lexicon fails exactly four of these, the owner's four
-disagreements: `gone-hold`, `kept-host-window`, `role-rewritten`,
-`workspace-keeps-its-claims`.
+Tileand's own consolidated lexicon fails only the graders of the rows marked DISAGREES
+above, since those are where the owner's label parts from it. `test-graders.py`, beside the
+labels, checks exactly that after every regeneration.
 
 Not graded: the report (drift, homeless content, outside edges). Nobody has established
 ground truth for those on Tileand.
