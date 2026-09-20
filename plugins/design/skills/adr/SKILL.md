@@ -78,8 +78,13 @@ one:
 - Old ADR: record `Superseded by [ADR-NNNN](NNNN-slug.md) (YYYY-MM-DD)` in the
   status field it already has, naming the specific items when only part of it
   changed.
-- New ADR: `**Supersedes:** [ADR-NNNN](NNNN-slug.md)`, or `part of
-  [ADR-NNNN](NNNN-slug.md)` for a partial supersede.
+- New ADR: a `**Supersedes:**` field on its status line, after a ` · `, not on
+  a line of its own. For a partial supersede the field reads `part of
+  [ADR-NNNN](NNNN-slug.md)`.
+
+  ```markdown
+  **Status:** Accepted (YYYY-MM-DD) · **Supersedes:** [ADR-NNNN](NNNN-slug.md)
+  ```
 
 A dated `Update YYYY-MM-DD` section appended to a standing ADR is wrong for a
 decision change. An ADR is also not updated when its decision gets implemented —
