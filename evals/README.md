@@ -2,6 +2,14 @@
 
 The design plugin's eval suite, run with Claude Code's own runner, [`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals). It lives at the repo root rather than inside `plugins/design/`, so it never ships with the plugin: the marketplace installs `./plugins/design` and nothing outside it.
 
+## Before you change a skill because of a result here
+
+**Two cases are held out: `lexicon-tessera` and `lexicon-byre`. Look at their scores. Never edit a skill in response to a specific failure on either.** They exist so that there is always an input no iteration of the skills was tuned on, and they are the only evidence that a change generalised rather than fitted the cases it was tuned against. The first skill edit made to fix a Tessera or Byre failure spends that, for good: the case becomes a regression fixture like the others, and a new held-out one has to be built by an agent that has seen neither the skill nor the other fixtures.
+
+What to do instead, when a held-out case shows a real defect: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom`), iterate the skill against that, word the change as a general rule, and read Tessera and Byre again afterwards.
+
+Every other case is a regression case and fair to iterate against, the Tileand case included. Fixing a grader, a rubric or an answer key because it was wrong is always allowed, on held-out cases too: the rule is about the skills' text. The reasoning, and why there are two, is under [Held out](#held-out).
+
 ## Run
 
 From the repo root:
