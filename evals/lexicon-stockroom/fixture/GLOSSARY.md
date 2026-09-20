@@ -22,6 +22,8 @@ alphabetical order.
 
 **despatch note** — The document packed with a shipment, listing the SKUs, batches and quantities in it.
 
+**driver** — The person driving the carrier's vehicle. The driver signs for a shipment when it is collected.
+
 **event bus** — The in-process publisher that carries StockMoved and ReservationLapsed events between modules. Subscribers run synchronously.
 
 **item code** — The code that identifies a SKU. Same as SKU.
