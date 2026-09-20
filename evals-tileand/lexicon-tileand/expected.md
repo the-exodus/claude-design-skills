@@ -29,12 +29,11 @@ default for the entries no tuning run or judge ever disputed.
 | floor | keep | owner agrees with Tileand's own consolidation |
 | layout tree | retire | owner agrees with Tileand's own consolidation |
 | ownership tree | retire | owner agrees with Tileand's own consolidation |
-| host window | reframe -> window | owner agrees with Tileand's own consolidation |
+| host window | retire | owner agrees with Tileand's own consolidation |
 | ghost | keep the term | owner agrees with Tileand's own consolidation |
 | veil | keep the term | owner agrees with Tileand's own consolidation |
 | restack | retire | owner agrees with Tileand's own consolidation |
 | role | rewrite | owner DISAGREES with Tileand's own consolidation |
-| default rules | rename -> shipped defaults | owner DISAGREES with Tileand's own consolidation |
 | layout module | reframe -> layout | owner agrees with Tileand's own consolidation |
 | LayoutReconciler | reframe -> reconcile | owner agrees with Tileand's own consolidation |
 | registry | retire | owner agrees with Tileand's own consolidation |
@@ -72,7 +71,7 @@ default for the entries no tuning run or judge ever disputed.
 | voluntary end | rewrite | agreed by default |
 | warp | rewrite | agreed by default |
 
-Left out of the gold set, never graded: probe, focused member, has the keyboard, user override, attempt schedule.
+Left out of the gold set, never graded: probe, focused member, has the keyboard, default rules, user override, attempt schedule.
 
 Gaps the owner admitted himself: window, master, successor. A run that proposes them is right; a run
 that does not is not penalised, since gap proposals varied a lot between tuning runs.
@@ -81,9 +80,9 @@ that does not is not penalised, since gap proposals varied a lot between tuning 
 
 `gone-*` and `kept-*`: one per row above, on the written lexicon's entry headings. A
 reframe, merge or rename counts as gone for the old headword. Beyond those:
-`reframed-rescue`, `reframed-layout`, `reframed-reconcile`, `reframed-shipped-defaults`, `reframed-window` (the word a reframe
+`reframed-rescue`, `reframed-layout`, `reframed-reconcile` (the word a reframe
 or rename lands on is an entry), `redirect-rewritten-default-rules`, `role-rewritten` (fails while the old text stands
-word for word), `workspace-behaviour-cut`, `stack-keeps-not-lifo`,
+word for word), `stack-keeps-not-lifo`,
 `curve-records-easing`, `no-entry-over-80-words`, `header-admission-replaced`,
 `header-exclusion-dropped`, and `skill-fired`.
 
