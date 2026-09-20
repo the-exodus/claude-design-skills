@@ -32,7 +32,7 @@
 | 33 | rule | rewrite (drift) | passes; claim is false | Term is sound. The claim "applied only once ... nothing ... ever triggers a rule again" is contradicted by the `RuleTrigger` enum (`src/Tessera/Rules/Rule.cs:4-11`, `TitleChange` at `:10`) and `src/Tessera/Rules/RuleEngine.cs:37`. ADR 0003 corroborates the code (`docs/adr/0003-rules-reapplied-on-title-change.md:13`). Fix the lexicon, not the code. See section 4. |
 | 35 | RuleEngine | retire | 1 (component) | Class name (`src/Tessera/Rules/RuleEngine.cs:13`). |
 | 37 | send | keep | 3 (distinction must survive) | Already names *move*. See *move*. |
-| 39 | shortcut | retire | 2 (ordinary word) | Ordinary word in its ordinary sense. Only other lexicon reference is from *HotkeyListener* (`docs/lexicon.md:19`), itself retired. |
+| 39 | shortcut | retire, or keep with the sense stated | 2 | Accepted either way, by the owner's ruling of 2026-09-20 (THE-212, won't fix). The entry is an ordinary word in its ordinary sense, and the builder's key retires it. Every run keeps it and adds "Not a Windows shortcut file". The owner's reading: the documentation uses a bare word that can be read another way (`[shortcuts]`, "## Shortcuts and commands"), so a run that keeps the entry and says which sense is meant is doing its job, and the ambiguity is the documentation's. Not graded. Only other lexicon reference is from *HotkeyListener* (`docs/lexicon.md:19`), itself retired. |
 | 41 | split ratio | keep | passes 1, 2, 3 | Looks technical because it has a key (`split_ratio`, `docs/configuration.md:50`) and a property (`src/Tessera/Config/TesseraConfig.cs:28`), but users say it and set it (`README.md:9`, `docs/configuration.md:56`, `:69`). The entry itself carries no key. The citation at `src/Tessera/Layouts/MainStackLayout.cs:9` is valid. |
 | 43 | tile | keep (merge target) | 3 | The word in use. Absorbs *pane*; add "pane: not used". |
 | 45 | unmanaged window | rewrite into a real entry — NOT merge | 3 (distinct concept) | The stub redirects to *floating window*, but the two are distinct: a floating window is managed and belongs to a workspace; an unmanaged window belongs to none and no command touches it. Docs: `docs/configuration.md:93-99`, `docs/adr/0003-rules-reapplied-on-title-change.md:19`. Code: `RuleAction.Float` vs `RuleAction.Ignore` (`src/Tessera/Rules/Rule.cs:19-23`), `src/Tessera/WmContext.cs:73-77`, `src/Tessera/Workspaces/WorkspaceManager.cs:41-43` vs `:48-49`. Each entry should name the other. |
@@ -45,7 +45,7 @@
 
 | Verdict | Count | Entries |
 | --- | --- | --- |
-| retire | 8 | click-to-focus policy, config file, context, HotkeyListener, LayoutEngine, RuleEngine, shortcut, WorkspaceManager |
+| retire | 7, or 8 with *shortcut* (accepted either way) | click-to-focus policy, config file, context, HotkeyListener, LayoutEngine, RuleEngine, WorkspaceManager |
 | reframe | 1 | orphan sweep (retire-with-guarantee-kept also acceptable: then retire 9, reframe 0) |
 | merge | 1 | pane → tile |
 | rename | 1 | zoom → promote |
@@ -140,7 +140,7 @@ On the written lexicon (`docs/lexicon.md`), by entry heading (`**term**` at the 
 |---|---|
 | `components-retired`, `no-code-names` | component names; `WorkspaceManager` beside *workspace*; `SecondaryArea`, `WmContext`, `ctx` never admitted |
 | `pervasive-identifier-retired` | *context* |
-| `ordinary-words-retired` | *config file*, *shortcut* |
+| `ordinary-words-retired` | *config file*. *shortcut* is no longer graded: see its row |
 | `decision-only-retired` | *click-to-focus policy* |
 | `mechanism-name-retired` | *orphan sweep* (true under reframe and under retire) |
 | `synonym-merged`, `synonym-recorded-not-used` | *pane* into *tile*, recorded as not used |

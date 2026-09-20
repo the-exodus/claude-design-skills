@@ -20,7 +20,7 @@ Tests: 1 = language, not code (component names belong in the code). 2 = needs de
 | 21 | CollectionDesk | retire | 1 | Class name (despatch.py:6). The concept behind it is a collection by the carrier's *driver*, which is an ordinary word (line 27). |
 | 23 | cycle count | keep | – | "done without stopping picking" reads as behaviour but IS the distinction from stocktake. Must be kept (counting.py:3-5, operators-guide.md:22-24). |
 | 25 | despatch note | rewrite under **packing slip** ("despatch note" not used), flag for sign-off | 3 + drift | Code and every reference say packing slip: packing.py:1,3,11; README.md:5; ADR-0004:15; operators-guide.md:32-33. "despatch note" appears only in GLOSSARY.md:25. Also "batches" in this entry follows the batch reframe. |
-| 27 | driver | retire | 2 | Decoy: an ordinary word with a platform sense its users meet, built to tempt. Planted for THE-209 after a held-out fixture showed runs keeping such a word. The word is central and user-facing (the Despatch section, operators-guide.md:46-53) and is the concept behind a retired component (*CollectionDesk*, line 21), so a run has a reason to want it kept; the printer driver is two lines further on (operators-guide.md:55-56). It is still the ordinary word in its ordinary sense: nothing here fixes what a driver is, and nobody applies the software sense to a person. Keeping it, with or without a "not a printer driver" note, is wrong. What the driver's signature does (a shipment is despatched once signed) is behaviour and lives in despatch.py:16 and the guide. |
+| 27 | driver | retire, or keep with the sense stated | 2 | Accepted either way, by the owner's ruling of 2026-09-20 (THE-212, won't fix). Planted for THE-209 to model a held-out failure: an ordinary word, central and user-facing (the Despatch section, operators-guide.md:46-53), the concept behind a retired component (*CollectionDesk*, line 21), with the printer driver two lines further on (operators-guide.md:55-56). The unchanged skill keeps it in about half of all runs, adding "Not the printer driver", and four rewordings of the overload case did not move that. The owner's reading: where the documentation uses a bare word that can be read another way, a run that keeps the entry and says which sense is meant is doing its job. Not graded. What the driver's signature does is behaviour and lives in despatch.py:16 and the guide. |
 | 29 | event bus | retire | 1 | Component (events.py:1). |
 | 31 | item code | merge → SKU ("item code" not used) | 3 | Synonym. "item code" appears nowhere outside GLOSSARY.md:31. |
 | 33 | movement | rewrite + drift | – | The universal "from one bin to another bin" is false: models.py:39 RECEIPT (no source bin), :42 PICK (no destination bin), :43 ADJUSTMENT (nothing moves). Enum at models.py:38-43. Surface it with file:line; do not silently settle. |
@@ -49,7 +49,7 @@ Tests: 1 = language, not code (component names belong in the code). 2 = needs de
 | 79 | unit of work | retire | 1 (and 2) | Decoy: identifier used everywhere (`uow()` in db.py:21, api.py:13/19/24, reservations.py:23/32, sku_cache.py:25; the phrase in events.py:4, movements.py:3, ADR-0003:14). It is a code pattern name, and pervasiveness does not make it domain language. The rule lives in CONTRIBUTING.md:5. *Debatable* only weakly. |
 | 81 | zone | keep | – | Domain term. |
 
-Tally (38): retire 14 (AllocationEngine, CollectionDesk, driver, event bus, ORM session, PickListBuilder, ReservationService, SkuCache, unit of work, box, quantity, scan, shelf, two-phase pick); reframe 2 (reconciliation sweep → guarantee, StockLot → batch); merge 2 (item code → SKU, stock → on-hand); rewrite 5 (available, backorder, despatch note → packing slip, movement, pick queue); keep 15.
+Tally (38; *driver* is accepted either way and counted here as retired): retire 14 (AllocationEngine, CollectionDesk, driver, event bus, ORM session, PickListBuilder, ReservationService, SkuCache, unit of work, box, quantity, scan, shelf, two-phase pick); reframe 2 (reconciliation sweep → guarantee, StockLot → batch); merge 2 (item code → SKU, stock → on-hand); rewrite 5 (available, backorder, despatch note → packing slip, movement, pick queue); keep 15.
 
 ## Bloated entry: available (GLOSSARY.md:13, 130 words)
 
@@ -97,7 +97,7 @@ Sentences, in order:
 | An identifier used everywhere, with an entry | `uow()` / "unit of work" (see line 79 above) | Keep because it is pervasive | Retire (test 1) |
 | A user-facing term that looks technical | reservation TTL / `reservation_ttl` (operators-guide.md:36-44) | Retire as a config key or code name | Keep |
 | An overload that doesn't count | return (customer) vs function `return` | Add a "not a return value" distinction | Keep as is |
-| An ordinary word with a platform sense its users meet (planted for THE-209) | driver: central in the Despatch section (operators-guide.md:46-53), behind the retired *CollectionDesk*; the printer driver at operators-guide.md:55-56 | Keep it as the concept the component serves, on the platform overload, with a "not a printer driver" note | Retire (test 2): nobody applies the software sense to a person |
+| An ordinary word with a platform sense its users meet (planted for THE-209; no longer a decoy) | driver: central in the Despatch section (operators-guide.md:46-53), behind the retired *CollectionDesk*; the printer driver at operators-guide.md:55-56 | none: accepted either way | Retire, or keep with "not the printer driver" stated (THE-212, won't fix) |
 | An ordinary word with a platform sense developers meet (planted for THE-209) | scan (a barcode, operators-guide.md:5) vs Postgres' sequential scan (availability.py:17) | Keep it as overloaded, with a "not a database scan" note | Retire (test 2): nobody applies the database sense to a carton |
 | A clause that reads as behaviour but is the distinction | cycle count "without stopping picking" | Strip it as behaviour | Keep |
 | A redirect stub | backorder "See *reservation*." | Merge into reservation | Rewrite with its own definition |
@@ -152,7 +152,7 @@ On the written glossary (`GLOSSARY.md`), by entry heading (`**term**` at the sta
 | `exception-kept-available` | the quarantine exception survives the trim |
 | `overload-stated-pick-queue` | not FIFO, not the job queue |
 | `decoy-overload-not-stated` | no "not a return value" note (passes if *return* is retired) |
-| `user-platform-sense-word-retired`, `dev-platform-sense-word-retired` | *driver* and *scan* have no entry: a platform sense nobody would apply does not make an ordinary word need defining (THE-209) |
+| `dev-platform-sense-word-retired` | *scan* has no entry: a sense only developers meet (Postgres' sequential scan) does not make an ordinary word need defining. No run has kept it. *driver* is not graded: see its row |
 | `no-entry-over-80-words`, `guidance-cut-from-entry` | the bloated *available* entry |
 | `header-admission-replaced` | the header's admission rule |
 
