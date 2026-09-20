@@ -67,7 +67,10 @@ Three cases need care:
 - **A concept and the component that realizes it.** An order's *fulfilment* is a
   concept anyone talking about a shop needs, however the code is cut; the
   `FulfilmentService` that performs it is code. Keep the concept, not the
-  component.
+  component. A type, table or function that bears the word itself is no
+  evidence that the word is code: where the code reflects the domain, it took
+  its name from the language, not the other way round. Judge the word as if
+  that type did not exist.
 - **A mechanism and the guarantee it serves.** A user relies on "a cancelled
   order is never charged", not on the job that voids the charges. If the
   guarantee needs a word, the entry is the guarantee's, under the domain's word
