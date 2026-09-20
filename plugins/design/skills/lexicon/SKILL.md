@@ -85,16 +85,28 @@ At least one must hold:
 
 - **It is overloaded**: someone using or developing the system would plausibly
   apply another sense of the word to the same things — another sense in the
-  system, a platform class or message name a user meets, a data structure a
-  developer would expect behind the word (a *queue* that is not FIFO). A
+  system, the platform's own name for the kind of thing the system handles (a
+  backup tool's *snapshot* beside the filesystem's snapshots), a data structure
+  a developer would expect behind the word (a *queue* that is not FIFO). A
   collision the project itself records also counts: a decision record, a
-  convention, or a component named to dodge the word. An incidental
-  programming-language sense does not: a function's return value is no
-  overload of returning a parcel.
+  convention, or a component named to dodge the word. What counts is that the
+  two senses could be taken for each other in talk about the system. Another
+  sense that merely exists does not count, however near to hand — in the
+  programming language, on the platform, even elsewhere in the project's own
+  documents: a function's return value is no overload of returning a parcel,
+  and a courier's *signature* is none of a signed download's. Nobody applies
+  the one to the other's things, so the word is in its ordinary sense and fails
+  this test.
 - **It is narrower than ordinary use.** "Pending means submitted and not yet
   reviewed" — the domain fixed what the word covers. A word whose boundary the
   system fixes is narrower even when the word is everyday: *business day* in a
-  payments system, where the system decides which days count.
+  payments system, where the system decides which days count. A quantity the
+  system applies and its users set — a duration, a limit, a threshold, such as
+  a *cooling-off period* or a *retention window* — is narrower in the same
+  way: the phrase names that one quantity here. It is language, not a
+  configuration key, even where the documentation shows only the key: users
+  set it and say it. The entry says what the quantity is; its key, its default
+  and where it is set stay in the reference.
 - **It names a distinction that must not be conflated.** Near-synonyms that
   must never be used for each other: archive vs. delete, user vs. member,
   refund vs. reversal. These are the highest-value entries.
