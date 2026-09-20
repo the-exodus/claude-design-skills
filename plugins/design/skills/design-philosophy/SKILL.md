@@ -1,9 +1,12 @@
 ---
 name: design-philosophy
 description: >
-  Load before any design or implementation work: before writing or changing code
-  that adds, extends or restructures behaviour; before designing or planning a
-  change; and at the start of a design interview, before any branch is seeded.
+  Load first, before the first Edit or Write, whenever a request will have you
+  write or change code that adds or changes behaviour — a feature, a bug fix,
+  error handling, a new option, a refactor — however small it looks. Where the
+  new logic lives and what its callers see are structural decisions, and these
+  principles govern them here. Also load before designing or planning a change,
+  and at the start of a design interview, before any branch is seeded.
   Carries the structural principles that govern how software here is built —
   complexity as the thing to minimize, deep modules behind small interfaces,
   information hiding, no pass-through layers, pushing complexity down, considering
