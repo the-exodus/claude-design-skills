@@ -1,2 +1,0 @@
-http://gauge-01.example/reading
-http://gauge-02.example/reading

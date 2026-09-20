@@ -50,7 +50,6 @@ default for the entries no tuning run or judge ever disputed.
 | Input | retire | agreed by default |
 | interop layer | retire | agreed by default |
 | Windowing | retire | agreed by default |
-| attempt schedule | rewrite | owner agrees with Tileand's own consolidation |
 | compat library | rewrite | agreed by default |
 | decoration | rewrite | agreed by default |
 | follow | rewrite | owner agrees with Tileand's own consolidation |
@@ -73,7 +72,7 @@ default for the entries no tuning run or judge ever disputed.
 | voluntary end | rewrite | agreed by default |
 | warp | rewrite | agreed by default |
 
-Left out of the gold set, never graded: probe, focused member, has the keyboard, user override.
+Left out of the gold set, never graded: probe, focused member, has the keyboard, user override, attempt schedule.
 
 Gaps the owner admitted himself: window, master, successor. A run that proposes them is right; a run
 that does not is not penalised, since gap proposals varied a lot between tuning runs.
