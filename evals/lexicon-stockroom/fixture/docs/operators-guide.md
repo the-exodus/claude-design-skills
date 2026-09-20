@@ -32,9 +32,6 @@ you never need to correct a negative count by hand.
 Check the picked goods against the order, pack them, print the packing
 slip and put it in the box.
 
-When the carrier collects, the driver signs the manifest. If the slip
-printer prints nothing, ask IT to reinstall the printer driver.
-
 ## Configuration
 
 `stockroom.toml` holds the settings operators may change:
@@ -45,3 +42,15 @@ reservation_ttl = "48h"
 
 `reservation_ttl` is how long a reservation holds before it lapses. Raise
 it over holiday weekends, when orders sit longer before their wave.
+
+## Despatch
+
+Book the carrier's collection for the end of the shift. When the driver
+arrives, check the driver's collection reference against the manifest
+before anything leaves the dock. The driver signs the manifest and keeps the
+top copy; a shipment counts as despatched once the driver has signed. If
+the driver has not arrived by the cutoff, the shipment rolls to the next
+collection.
+
+If the manifest will not print, ask IT to reinstall the printer driver on
+the despatch PC.
