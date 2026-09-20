@@ -18,11 +18,13 @@ alphabetical order.
 
 **box** — A cardboard box an order is shipped in.
 
+**CollectionDesk** — The class that records a carrier collection: which driver signed for which shipments, and when. Lives in `stockroom/despatch.py`.
+
 **cycle count** — A count of one bin at a time, done without stopping picking. Distinct from a *stocktake*.
 
 **despatch note** — The document packed with a shipment, listing the SKUs, batches and quantities in it.
 
-**driver** — The person driving the carrier's vehicle. The driver signs for a shipment when it is collected.
+**driver** — The person driving the carrier's vehicle. The driver presents a collection reference and signs the manifest; a shipment is despatched once the driver has signed.
 
 **event bus** — The in-process publisher that carries StockMoved and ReservationLapsed events between modules. Subscribers run synchronously.
 
