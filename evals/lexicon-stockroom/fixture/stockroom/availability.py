@@ -13,6 +13,7 @@ def available_qty(db, sku):
     """Return the available quantity of ``sku`` across the warehouse.
 
     Sums the bin rows and subtracts open reservations in a single query.
-    Quarantine bins are left out of the sum.
+    Quarantine bins are left out of the sum. The index on ledger (sku, bin)
+    keeps Postgres off a sequential scan of the ledger.
     """
     return db.scalar(AVAILABLE_SQL, {"sku": sku})

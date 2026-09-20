@@ -97,7 +97,9 @@ At least one must hold:
 - **It is narrower than ordinary use.** "Pending means submitted and not yet
   reviewed" — the domain fixed what the word covers. A word whose boundary the
   system fixes is narrower even when the word is everyday: *business day* in a
-  payments system, where the system decides which days count.
+  payments system, where the system decides which days count. So is the name
+  of a quantity its users set and say, such as a *cooling-off period* or a
+  *retention window*: having a configuration key does not make it one.
 - **It names a distinction that must not be conflated.** Near-synonyms that
   must never be used for each other: archive vs. delete, user vs. member,
   refund vs. reversal. These are the highest-value entries.
