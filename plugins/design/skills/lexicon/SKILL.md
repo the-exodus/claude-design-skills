@@ -200,9 +200,10 @@ the procedure for bringing one back. It changes the lexicon and nothing else.
      word the lexicon doesn't yet give it. If an existing entry is that word,
      name it and carry over only meaning and distinction. Otherwise write a new
      entry under the word the user documentation or the code already uses, and
-     list it in step 7 as a new entry awaiting sign-off — not also as a gap. An
-     entry for a component that exists, or was named, to avoid a domain word is
-     a reframe to that word.
+     list it in step 7 as a new entry awaiting sign-off — not also as a gap. It
+     is written into the lexicon with the rest; listing it is what lets the user
+     strike it. An entry for a component that exists, or was named, to avoid a
+     domain word is a reframe to that word.
    - **merge** — fails test 3. Name the entry it merges into.
    - **rename** — passes, but under a headword the sources don't use (test 3).
      Name the new headword; it awaits sign-off.
@@ -259,7 +260,9 @@ the procedure for bringing one back. It changes the lexicon and nothing else.
      edit them.
    - **Gaps:** a word the surviving entries or the references use in a
      narrower sense than ordinary without defining it, which the audit turned
-     up — and a domain word some component was named to avoid. Propose these;
+     up — and a domain word some component was named to avoid, where that
+     component has no entry here (where it has one, step 2 reframes the entry
+     to the word). Propose these;
      don't brainstorm. Where the file has no gaps line, present them only.
 
 6. **Hold a conversation in it.** Write a handful of sentences someone would
@@ -286,6 +289,8 @@ the procedure for bringing one back. It changes the lexicon and nothing else.
    - A standing exclusion in the header (a class of words said to belong
      elsewhere) goes too. Re-test the excluded words the surviving entries use,
      and propose those that pass as gaps.
+   - New entries from reframes, and renames, are part of what was signed off:
+     write them. Only gaps wait.
    - Put proposed gaps on the file's gaps line, if it has one, marked as not yet
      admitted; a gap becomes an entry only when the user admits it.
    - Update any provenance line to say it was consolidated, and when, and drop
