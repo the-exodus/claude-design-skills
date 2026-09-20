@@ -85,18 +85,12 @@ At least one must hold:
 
 - **It is overloaded**: someone using or developing the system would plausibly
   apply another sense of the word to the same things — another sense in the
-  system, the platform's own name for the kind of thing the system handles (a
-  backup tool's *snapshot* beside the filesystem's snapshots), a data structure
-  a developer would expect behind the word (a *queue* that is not FIFO). A
+  system, a platform class or message name a user meets, a data structure a
+  developer would expect behind the word (a *queue* that is not FIFO). A
   collision the project itself records also counts: a decision record, a
-  convention, or a component named to dodge the word. What counts is that the
-  two senses could be taken for each other in talk about the system. Another
-  sense that merely exists does not count, however near to hand — in the
-  programming language, on the platform, even elsewhere in the project's own
-  documents: a function's return value is no overload of returning a parcel,
-  and a courier's *signature* is none of a signed download's. Nobody applies
-  the one to the other's things, so the word is in its ordinary sense and fails
-  this test.
+  convention, or a component named to dodge the word. An incidental
+  programming-language sense does not: a function's return value is no
+  overload of returning a parcel.
 - **It is narrower than ordinary use.** "Pending means submitted and not yet
   reviewed" — the domain fixed what the word covers. A word whose boundary the
   system fixes is narrower even when the word is everyday: *business day* in a
