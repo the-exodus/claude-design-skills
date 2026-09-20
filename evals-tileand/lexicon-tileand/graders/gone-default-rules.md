@@ -1,7 +1,8 @@
 ---
-# default rules: still an entry. Label: rewrite (the redirect becomes a real entry); the owner's label.
+# default rules: no entry of its own. Label: rename -> shipped defaults; the owner's label.
 type: regex
 target: { source: file, path: docs/design/lexicon.md }
 pattern: '^\*\*default\ rules\*\*'
 flags: mi
+match: not_contains
 ---
