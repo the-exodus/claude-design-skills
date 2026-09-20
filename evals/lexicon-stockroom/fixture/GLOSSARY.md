@@ -56,6 +56,8 @@ alphabetical order.
 
 **return** — Goods a customer sends back against an order. Returned units go into a quarantine bin until inspected.
 
+**scan** — Reading a barcode with a handheld scanner. Every carton is scanned at goods-in.
+
 **shelf** — A shelf in the racking. Operators sometimes say shelf when they mean a bin.
 
 **SKU** — Stock-keeping unit: one sellable product variant, such as one size and colour of a product, tracked as its own line of stock.
