@@ -47,7 +47,7 @@ A regression fixture: iterate the skill against it. `code-style-heldout-cinder` 
 | `StatusCodes.HELD_FOR_INSPECTION` | the re-listing "0 (empty) … 5 (fault)" | distinct from the others, so the courier app can tell an inspection from a fault | "distinct" must keep something to be distinct from |
 | `LockerBank.onCodeScanned` | "A collection code was scanned at the bank" | constant time, and why | **trap**: "it is compared…" loses its antecedent unless repaired |
 | `FanOutListener` | "Forwards each event to several listeners" | "used to mirror … to the support console while an engineer is attached" | **trap**: as a *what* ("Mirrors … to the support console") it is false; the class knows no console |
-| `LockerBankTest` trailing | "(ADR-0004)" | "The clock starts at the latch, not the scan: here the scan is two minutes earlier" | the claim stays; only the citation goes, by `tests/`' convention |
+| `LockerBankTest` trailing | "(ADR-0004)", and "The clock starts at the latch, not the scan" if the run sees that it restates the test's name | that here the scan is two minutes earlier than the latch | the citation goes by `tests/`' convention; the opening clause restates `dwell_clock_starts_at_the_latch`, so cutting it is also right |
 
 ## Naming
 
