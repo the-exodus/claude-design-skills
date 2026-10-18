@@ -44,7 +44,7 @@ Judge a comment **clause by clause**, not whole. For each clause, ask: could a r
 
 - **The common case is keep.** A codebase built from deep modules hides context on purpose, and an interface comment that carries what the hidden implementation does not show is the module working as designed, not a sign the code is unclear.
 - **Keeping is not encouraging.** Write a comment only when it carries something from elsewhere. A summary on every member, or a comment added because a principle seems to want one, is the same failure as a missing one.
-- **While writing code**, the test turns round: if writing a line made you look something up outside the code in view (a protocol, a platform quirk, another module's invariant, a reason the user gave you, a decision too small for a record), say it where the line is, in a comment or in a name. If you only chose a name, say nothing.
+- **While writing code**, the test turns round: if writing a line made you look something up outside the code in view (a protocol, a platform quirk, another module's invariant, a reason the user gave you, a decision too small for a record), say it where the line is, in a comment or in a name. If you only chose a name, say nothing. For a new public member, ask what its callers must know that its signature cannot tell them (a precondition, that it blocks, what it does to state others share, what an outside system does to it) and say that on the member; if there is nothing, say nothing.
 
 ### A shrink is more dangerous than a delete
 

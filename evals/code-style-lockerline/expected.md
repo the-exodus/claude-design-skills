@@ -43,11 +43,11 @@ A regression fixture: iterate the skill against it. `code-style-heldout-cinder` 
 
 | File | Cut | Keep | Watch for |
 |---|---|---|---|
-| `BankListener.onDoorLatched` | "The door has latched and" | after the debounce; dwell clock from now, not the scan; lock-board thread | the contract's three parts all survive |
+| `BankListener.onDoorLatched` | "The door has latched and", ideally; leaving it is no fault (owner, 2026-10-19: in proportion), so it is not graded | after the debounce; dwell clock from now, not the scan; lock-board thread | the contract's three parts all survive |
 | `StatusCodes.HELD_FOR_INSPECTION` | the re-listing "0 (empty) … 5 (fault)" | distinct from the others, so the courier app can tell an inspection from a fault | "distinct" must keep something to be distinct from |
 | `LockerBank.onCodeScanned` | "A collection code was scanned at the bank" | constant time, and why | **trap**: "it is compared…" loses its antecedent unless repaired |
 | `FanOutListener` | "Forwards each event to several listeners" | "used to mirror … to the support console while an engineer is attached" | **trap**: as a *what* ("Mirrors … to the support console") it is false; the class knows no console |
-| `LockerBankTest` trailing | "(ADR-0004)", and "The clock starts at the latch, not the scan" if the run sees that it restates the test's name | that here the scan is two minutes earlier than the latch | the citation goes by `tests/`' convention; the opening clause restates `dwell_clock_starts_at_the_latch`, so cutting it is also right |
+| `LockerBankTest` trailing | "(ADR-0004)", and "The clock starts at the latch, not the scan" if the run sees that it restates the test's name | nothing need stay: the two instants in view show the scan two minutes before the latch, so deleting the whole comment is also right | the citation goes by `tests/`' convention; only that is graded |
 
 ## Naming
 

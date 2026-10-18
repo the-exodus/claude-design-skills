@@ -1,4 +1,4 @@
 schema_version: "1.1"
-name: cinder-trap-fault-count-reference--fail-3
+name: authoring-plain-no-restating-comment--fail-2
 context:
   scaffold_script: scaffold.sh
