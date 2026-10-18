@@ -1,6 +1,8 @@
 # ADR-0001 — Store readings in SQLite per station; back up nightly to object storage
 
-**Status:** Accepted (2025-01-14)
+## Status
+
+Accepted
 
 ## Context
 

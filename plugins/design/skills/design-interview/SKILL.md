@@ -22,7 +22,7 @@ The two pulls are real and opposed; the skill needs both sets of mechanisms simu
 ## Core flow
 
 1. Intake the pitch.
-2. Scan the codebase, index ADRs and the assumptions record, ingest any existing lexicon, ask which open design questions on the tracker touch this work.
+2. Scan the codebase, load `design:adr` and index ADRs and the assumptions record, ingest any existing lexicon, ask which open design questions on the tracker touch this work.
 3. Recap scope and understanding; confirm with the user.
 4. Load `design:design-philosophy`, then seed the core branches, the branches implied by the properties of the work, and the branches its principles imply.
 5. Walk the tree adaptively, closing each branch in a terminal state.
@@ -74,20 +74,17 @@ Carry these into the interview as open questions, not as findings. They are the 
 
 ### ADR indexing
 
-Scan conventional ADR locations:
-- `docs/adr/`, `docs/adrs/`
-- `docs/architecture/decisions/`, `docs/decisions/`
-- `architecture/decisions/`, `architecture/adr/`
-- `adr/`, `adrs/`
-- Any file matching `*.adr.md` or `*.decision.md`
+**Before scanning, load the `design:adr` skill.** It owns where ADRs live, what each status means, and how a supersede, a partial supersede, and an addendum are recorded. None of that is repeated here: read the index through it.
 
-For each ADR found, extract: id, title, status, date, one-line summary, file path. Build an in-memory index. **Do NOT read full bodies yet.**
+Scan the locations it lists, and any file matching `*.adr.md` or `*.decision.md`.
+
+For each ADR found, extract: id, title, status as its status field states it, date, one-line summary, file path. Build an in-memory index. **Do NOT read full bodies yet.**
 
 Briefly tell the user: "Indexed N ADRs. I'll surface them when relevant."
 
 When a branch's topic later intersects with an ADR's title or summary, load that ADR's full body and surface it: "This touches ADR-XXXX [title], decided [date]. It says [summary]. Treating as binding constraint, but flag it if you've moved past it."
 
-**Surface what the ADR rejected, not only what it decided.** If it records options that were considered and ruled out, name them and the reason. This is often the more valuable half: without it the interview will cheerfully re-propose an option that was already evaluated and dismissed, and the user spends the time ruling it out a second time. An ADR that says "we rejected X because Y" is doing its job precisely when it stops X from coming back. If the ADR is more than 12 months old, or its status is not "Accepted" (e.g., "Proposed", "Superseded", "Deprecated"), explicitly flag staleness when surfacing it.
+**Surface what the ADR rejected, not only what it decided.** If it records options that were considered and ruled out, name them and the reason. This is often the more valuable half: without it the interview will cheerfully re-propose an option that was already evaluated and dismissed, and the user spends the time ruling it out a second time. An ADR that says "we rejected X because Y" is doing its job precisely when it stops X from coming back. If the ADR is more than 12 months old, or its status is anything but Accepted without qualification, explicitly flag staleness when surfacing it. When you load its body, read its addenda with it: they record what has been learned since the decision.
 
 Every branch that gets constrained by one or more ADRs records this in its state, by ID, so the final tree shows the audit trail.
 

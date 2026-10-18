@@ -79,17 +79,13 @@ There is deliberately no state-machine artifact. State and lifecycle content is 
 
 **Every ADR-worthy decision gets an ADR, always.** Not conditional, not on request, not deferred to the user's judgment at write-up time. Invoke the `design:adr` skill and let it write them — it owns format, house rules, numbering, indexing, and supersession, and none of that is reimplemented here.
 
-A branch that closed *decided* is ADR-worthy when it meets all three:
-
-- **A real fork existed.** The closure recorded it as a fork, with the alternatives and why each was rejected. Read that line; don't reconstruct it from the rationale. A closure recorded as *no fork* is not an ADR no matter how consequential it feels — nothing was chosen.
-- **The consequences outlive the change.** It constrains later work, or reversing it later would be expensive.
-- **A future reader would ask why.** The choice is not self-evident from the code that results.
+A branch that closed *decided* is ADR-worthy when a real fork existed and the decision passes the `design:adr` skill's tests for what gets an ADR. A real fork means the closure recorded it as one, with the alternatives and why each was rejected. Read that line; don't reconstruct it from the rationale. A closure recorded as *no fork* is not an ADR no matter how consequential it feels — nothing was chosen.
 
 Not ADR-worthy: decisions with only one option ever available, choices forced by an existing constraint, anything the design-vs-implementation gate would have deferred, and anything an indexed ADR already covers.
 
 Two cases need care:
 
-- **A decision that contradicts an ADR indexed in Phase 2** is a supersession, not a new record. Say so and hand the `design:adr` skill both — it owns what happens next. ADRs are superseded, never edited.
+- **A decision that contradicts an ADR indexed in Phase 2** is a supersession, not a new record. Say so and hand the `design:adr` skill both — it owns what happens next.
 - **A branch that closed *stable-open* or *blocked*** is not a decision and gets no ADR. Leave it in the tree where its openness is visible.
 
 Give the `design:adr` skill, per decision: the question, the options considered **and why each was rejected**, the chosen path, the rationale from the closure, and any ADR it supersedes. The rejection reasons are not optional padding — they are what makes the record load-bearing later, when someone is weighing the same option again and needs to know it was already ruled out and on what grounds. Then let it work.
