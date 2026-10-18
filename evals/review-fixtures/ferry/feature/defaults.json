@@ -1,0 +1,6 @@
+{
+  "reserved_car_spaces": 2,
+  "surge_threshold": 5,
+  "surge_percent": 20,
+  "hold_minutes": 15
+}
