@@ -54,6 +54,9 @@ assumptions record, references). Do not run the build or the tests. Check:
 - **The brief against itself:** names, section references and criteria
   numbers agree across its behaviour, criteria and edge cases.
 - **Records against today's code:** what the records say the code does, it does.
+- **Records against the platform:** a fact a record states about a platform,
+  runtime or library is checked against its official documentation and
+  marked documented, probed or recalled.
 - **The lexicon's admission test** for any entry added or changed. Load
   `design:lexicon` for it.
 - **Each assumption** states how you would know it stopped holding.

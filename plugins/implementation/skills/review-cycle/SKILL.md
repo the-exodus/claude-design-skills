@@ -58,8 +58,10 @@ several runs the union.
 | The change adds interface surface (a public type, method, parameter or command), or review fixes have grown one method across rounds | Add simplification |
 | The change touches something the repository's assumptions record covers | Add platform reality |
 
-The lens argument overrides the table in both directions; step 8 reports a lens
-the table would have chosen and the argument left out.
+The table is the whole selection: no lens is added or dropped on judgement,
+however relevant it looks. Only the lens argument and matching repository
+lenses change it. The lens argument overrides the table in both directions;
+step 8 reports a lens the table would have chosen and the argument left out.
 
 ### Repository lenses
 
@@ -148,8 +150,8 @@ and lens bodies, nothing else.
    each finding the disposition you would act on.
 
 7. **Re-run once** after large fixes: one fresh reviewer, the lens whose
-   findings drove the fixes, with the same context block. Small fixes need no
-   second round.
+   findings drove the fixes, with the same context block and the same mode
+   line. Small fixes need no second round.
 
 8. **Record and report.** Record on the brief, where the brief lives in a
    tracker, as one comment: what was fixed, what was rejected and why, what was
