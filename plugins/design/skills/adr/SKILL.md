@@ -4,26 +4,61 @@ description: >
   House rules and format for Architecture Decision Records. Load
   before writing, reviewing, superseding, or indexing an ADR in any repo, and
   when asked to record a decision, write something up as an ADR, add to or
-  reindex a directory of ADRs, or change an ADR's Status. Also load when a
-  decision already recorded in an ADR has changed, since ADRs are superseded
-  rather than edited. NOT for architecture pages on the wiki, RFCs, or design
-  docs that record no decision.
+  reindex a directory of ADRs, or change an ADR's Status. Also load when
+  deciding whether a decision warrants an ADR at all, and when something about
+  a decision already recorded in an ADR has changed, to decide between a
+  superseding ADR and an addendum. NOT for architecture pages on the wiki,
+  RFCs, or design docs that record no decision.
 ---
 
 # Architecture Decision Records
 
-One format, applied in every repo — including ones whose existing ADRs have
-drifted from it. Those stand as valid historical records; they are not converted
-in bulk, and they are not reference material. Write new ADRs to this format.
+One format, applied in every repo. Every new ADR follows it, including in repos
+whose existing ADRs follow another format.
 
-Superseding an old ADR does mean editing it — that is the one edit an old ADR
-gets. Record the new status in the field that ADR already uses, whether that is
-a `**Status:**` line, a bare `Status:` line, or a `## Status` section. Where it
+Existing ADRs in another format stand as valid historical records. They are not
+converted, split, or re-judged against the rules below, and they are not
+reference material. When a new ADR supersedes a decision recorded in one, the
+one edit it gets is to its status, in the field it already uses: a
+`**Status:**` line, a bare `Status:` line, or a `## Status` section. Where it
 carries no status at all, add the `**Status:**` line from this format. Leave the
 body alone either way.
 
-`references/format.md` carries the template, the header grammar, and a worked
-supersede.
+Where the existing ADR records other decisions that still stand, it keeps its
+status, and the supersede names the decision on both sides:
+
+- Existing ADR: add `partly superseded by [ADR-NNNN](NNNN-slug.md)
+  (<decision>, YYYY-MM-DD)` to its status field. Its index row reads
+  `<its status>; partly superseded by ADR-NNNN`.
+- New ADR: `**Supersedes:** the <decision> decision in
+  [ADR-NNNN](NNNN-slug.md)` on its status line.
+
+`references/format.md` carries the template, the header grammar, and worked
+examples of a supersede, an addendum, and a rejection.
+
+## What gets an ADR
+
+A decision gets an ADR when it passes both tests:
+
+- **Architecturally significant.** It affects the system's structure, its
+  non-functional characteristics, its dependencies, its interfaces, or its
+  construction techniques.
+- **Hard to change later.** Reversing it means migrating data, breaking a
+  contract that other services, teams, or customers depend on, or rewriting
+  code across services.
+
+Judge both at the time of the decision.
+
+When asked to record a decision that fails either test, say which test it fails
+and suggest where its reasoning belongs instead: the commit message, the PR
+description, or a comment beside the code it explains. Write the ADR only if the
+person still wants one.
+
+## One decision per ADR
+
+Each ADR records one decision. Two decisions are separate when either could be
+overturned while the other stands; they get one ADR each, even when they are
+taken together. The rejected alternatives to a decision belong in its ADR.
 
 ## Location and index
 
@@ -65,45 +100,54 @@ Status.
 ## Consequences
 ```
 
-Status is one of: `Proposed`, `Accepted`, `Deprecated`, `Superseded`.
+The title states the decision: "Reconcile with Terraform on a timer", not
+"Reconciliation approach".
 
-The title states the decision, not the topic: "Reconcile with Terraform on a
-timer", not "Reconciliation approach".
+Status is one of:
 
-## Supersede, never update
+- `Proposed` — under review. The body is edited freely until the decision is
+  taken.
+- `Accepted` — the decision is taken. The body is fixed from here; later changes
+  follow [Supersede or addendum](#supersede-or-addendum).
+- `Rejected` — the proposal was turned down. The body stays as proposed, and an
+  appended `## Rejection` section states why.
+- `Deprecated` — the decision no longer applies and nothing replaces it.
+- `Superseded` — a later ADR replaced the decision.
 
-An ADR is not edited when its decision changes. Write a new ADR and mark the old
+## Supersede or addendum
+
+Once an ADR is Accepted, its body is never rewritten. What changed decides how
+the change is recorded.
+
+**Supersede** when the decision is overturned or changes in substance: the
+Decision section would have to be reworded to stay true. Narrowing or widening
+the decision's scope is a change in substance. Write a new ADR and mark the old
 one:
 
-- Old ADR: record `Superseded by [ADR-NNNN](NNNN-slug.md) (YYYY-MM-DD)` in the
-  status field it already has, naming the specific items when only part of it
-  changed.
+- Old ADR: `Superseded by [ADR-NNNN](NNNN-slug.md) (YYYY-MM-DD)` in the status
+  field it already has.
 - New ADR: a `**Supersedes:**` field on its status line, after a ` · `, not on
-  a line of its own. For a partial supersede the field reads `part of
-  [ADR-NNNN](NNNN-slug.md)`.
+  a line of its own. Its Context states what the old ADR decided and what
+  changed.
 
   ```markdown
   **Status:** Accepted (YYYY-MM-DD) · **Supersedes:** [ADR-NNNN](NNNN-slug.md)
   ```
 
-A dated `Update YYYY-MM-DD` section appended to a standing ADR is wrong for a
-decision change. An ADR is also not updated when its decision gets implemented —
-implementation is tracked wherever the project tracks work.
+**Append an addendum** when the Decision section still reads true: new context,
+a consequence that has materialised, a measurement, a related ADR. Add a dated
+`## Addendum YYYY-MM-DD` section at the end of the ADR. The existing text, the
+status, and the index row stay as they are.
 
-## Splitting
+Only Accepted ADRs in this format take addenda. ADRs in another format get no
+edit beyond their status. New information about a superseded decision goes in
+the ADR that superseded it. Rejected and Deprecated ADRs are closed records.
 
-Split an ADR when something actually pushes on it: one of its decisions is being
-superseded, or the decisions have diverged in ownership or lifecycle. Do the
-splitting inside the supersede that prompted it.
+A consequence serious enough to call the decision into question goes in an
+addendum until a new decision is taken; that decision then supersedes.
 
-Do not decompose an ADR because a future split is imaginable. A hypothetical
-("if the provider ever ships X, this half reverses") is not a case.
-
-`references/examples/` is the model. ADR-0001 there held two separable
-decisions — when images are published, and the identity that publishes them —
-and was correctly written as one. It split into ADR-0002 and ADR-0003 at the
-moment the identity decision actually changed, as part of writing that
-supersede.
+An ADR is not updated when its decision gets implemented — implementation is
+tracked wherever the project tracks work.
 
 ## Writing
 
@@ -123,3 +167,9 @@ the framing around them:
 
 State a thing once, then move to the next or stop. Do not close a section by
 restating it.
+
+## Constraint
+
+The ADR set is the history of how the architecture came to be, and the record
+a reviewer or auditor checks decisions against. A decision edited in place
+loses that history.

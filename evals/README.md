@@ -68,7 +68,7 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `adr-new-record` | `adr` numbers a new record after the highest, not into the gap; house format; the index gains its row |
 | `adr-title-states-decision` | asked by topic, the title states what was decided |
 | `adr-supersede-bold-status`, `-bare-status`, `-status-section` | the old record is marked in the status field it already has and is otherwise untouched; the new one names it; the index follows |
-| `adr-partial-supersede-split` | one of two decisions changes: two successors, and the old record's status names both |
+| `adr-partly-superseded-other-format` | one of two decisions in an old-format record changes: one new record names the decision it takes over, the old one stays Accepted and is marked partly superseded in its own field, nothing is split |
 | `adr-no-directory` | with no ADR directory, it asks where, suggests a concrete place and creates nothing |
 | `philosophy-before-implementation` | `design-philosophy` loads, by its qualified name, before the first edit of a request that adds behaviour |
 | `philosophy-not-for-mechanical-edit`, `philosophy-not-for-rename` | it does not load for a typo fix or a rename |
@@ -85,9 +85,9 @@ The smoke cases grade only `tool_used: Skill`, which can't pass without the plug
 
 The `adr-*` cases run on Tidewatch, an invented project with a small ADR directory: records 0001, 0002 and 0004, so the gap at 0003 is there to be filled by mistake. Like the lexicon fixtures they copy a `fixture/` into the workspace and write files, so they need `--scaffold --allow-tools Write Edit`; `--tag adr` runs them alone. They are cheap: a run takes under a minute, and all seven at three runs each took about four minutes at `-j 4` and reported $5.86.
 
-Nearly everything is graded from the files the run leaves behind. Where a case needs a known file name to read a new record back, the prompt gives the title to use; `adr-title-states-decision` leaves the title to the skill, and one narrow `llm` grader reads the created file's name. In the split case the successors' names are the run's to choose, so "supersedes part of" is matched in the session trace instead, on the old record's file name, which appears in none of the skill's references.
+Nearly everything is graded from the files the run leaves behind. Where a case needs a known file name to read a new record back, the prompt gives the title to use; `adr-title-states-decision` leaves the title to the skill, and one narrow `llm` grader reads the created file's name.
 
-The supersede cases carry two graders on the new record: `new-names-what-it-supersedes`, that it has a `**Supersedes:**` link at all, and `supersedes-on-the-status-line`, that it sits on the status line after a middle dot, as `references/format.md` lays the header out. Under design 0.5.1, seven of eighteen runs put it on a line of its own: only the reference file said where the field goes, and a run that did not open it had nothing to go on. 0.6.0 says it in `SKILL.md` and shows the whole line, and the three cases passed in all 27 runs made on it; `adr-partial-supersede-split` in all seven. Nothing else in the ADR cases failed once the graders were right.
+The supersede cases carry two graders on the new record: `new-names-what-it-supersedes`, that it has a `**Supersedes:**` link at all, and `supersedes-on-the-status-line`, that it sits on the status line after a middle dot, as `references/format.md` lays the header out. Under design 0.5.1, seven of eighteen runs put it on a line of its own: only the reference file said where the field goes, and a run that did not open it had nothing to go on. 0.6.0 says it in `SKILL.md` and shows the whole line, and the three cases passed in all 27 runs made on it. The split case run beside them, `adr-partial-supersede-split`, passed in all seven; it tested a split rule the skill has since dropped, and became `adr-partly-superseded-other-format`. Nothing else in the ADR cases failed once the graders were right.
 
 The files are generated; the generator is not kept here. Edit them by hand.
 
