@@ -37,7 +37,6 @@ class BookingBook:
         self._waitlist = {}
 
     def _new_ref(self):
-        # Keep references short: a settled hold gives its number back.
         return max(self._bookings, default=0) + 1
 
     def _settle(self):

@@ -16,7 +16,7 @@ Used by `cycle-feature`, `lens-ferry` and the trigger cases. Signals: a feature 
 
 | Id | Where | What is wrong | Lens that should find it |
 |---|---|---|---|
-| D1 | `booking.py` `_new_ref` | `max(self._bookings) + 1` gives a settled or cancelled hold's reference back: cancel ref 2, the next booking is ref 2 again. ADR-0001. | design parity, adversarial |
+| D1 | `booking.py` `_new_ref` | `max(self._bookings) + 1` gives a settled or cancelled hold's reference back: cancel ref 2, the next booking is ref 2 again. ADR-0001. No comment points at it: an earlier version said "Keep references short", echoing the alternative ADR-0001 rejected, and a run spotted it while only gathering context. | design parity, adversarial |
 | D2 | `booking.py` `confirm` | does not settle first, so a hold whose time has passed is confirmed when no operation ran since it lapsed. Criterion 2; ADR-0003's consequence says every public operation settles first. | adversarial |
 | D3 | `booking.py` `available_cars` | now counts only confirmed bookings; `pricing.car_fare`'s surge still reads it as "spaces left to sell", so surge is under-applied while holds are open. | adversarial (ripple) |
 | D4 | `pricing.py` `hold_fee` | `round(fare * 0.1)`: a float in money, against ADR-0002. | design parity |
