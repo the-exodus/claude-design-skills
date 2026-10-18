@@ -4,12 +4,12 @@
 
 ## Held-out cases: never fix a skill against them
 
-`lexicon-tessera` and `lexicon-byre` are held out. **Look at their scores; never edit anything under `plugins/design/` in response to a specific failure on either.** They are the only evidence that a skill change generalised, and one edit made to fix a failure on them spends that for good.
+`lexicon-tessera` and `lexicon-byre` are held out for `plugins/design/`, and `review-heldout-quarry` for `plugins/implementation/`. **Look at their scores; never edit anything under the plugin a held-out case guards in response to a specific failure on it.** They are the only evidence that a skill change generalised, and one edit made to fix a failure on them spends that for good.
 
-- A defect that shows on a held-out case is worked on somewhere else: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom`), iterate there, word the change as a general rule, then read the held-out scores again.
+- A defect that shows on a held-out case is worked on somewhere else: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom` for the lexicon; the ferry fixture in `review-fixtures/ferry/` for the review cycle), iterate there, word the change as a general rule, then read the held-out scores again.
 - Fixing a grader, a rubric or an `expected.md` because it was wrong is allowed, on held-out cases too. The rule is about the skills' text.
 - A new held-out fixture is built by a fresh agent that has seen neither the skill nor the other fixtures and keys, from a list of defect kinds only. Do not build one yourself after reading the skill.
-- If asked to fix a skill and the evidence offered is a Tessera or Byre failure, say so before doing anything.
+- If asked to fix a skill and the evidence offered is a failure on a held-out case, say so before doing anything.
 
 Every other case is a regression case and fair to iterate against.
 
@@ -34,4 +34,4 @@ Every other case is a regression case and fair to iterate against.
 
 ## Running the suite from an agent session
 
-Cases that write files need `--scaffold --allow-tools Write Edit`. In a worktree-isolated session the worktree guard refuses a shell command that contains the runner's subcommand name, reading it as shell `eval`: put the literal command in a small script file and run that. Do not disguise the command to get past a guard.
+Cases that write files need `--scaffold --allow-tools Write Edit`. The review-cycle cases (`--tag review-cycle`) run git and the fixture's tests, so they need `Bash` granted too, except the `trigger` ones, which are cheaper without it. A Bash-granting run is refused outright, scoring 0 at no cost, while `~/.docker` holds a symlink (Docker Desktop's WSL integration makes them); replace the links with plain copies, since `DOCKER_CONFIG` does not get round it. A full cycle run costs dollars, not cents: run the cases a change touches, not the tag. In a worktree-isolated session the worktree guard refuses a shell command that contains the runner's subcommand name, reading it as shell `eval`: put the literal command in a small script file and run that. Do not disguise the command to get past a guard.

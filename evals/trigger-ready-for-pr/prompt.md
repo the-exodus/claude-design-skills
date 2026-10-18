@@ -2,9 +2,9 @@
 description: "review-cycle loads when a branch is ready for its pull request, without being named."
 tags: [review-cycle, trigger]
 plugins: ["../../plugins/design", "../../plugins/implementation"]
-max_turns: 12
+max_turns: 6
 timeout_seconds: 600
-allowed_tools: [Read, Glob, Grep, Skill, Agent]
+allowed_tools: [Read, Glob, Grep, Skill]
 ---
 
 I've finished the seat-holds work on this branch. Get it ready for its pull request.
