@@ -1,0 +1,12 @@
+---
+description: "Calibration of cycle-feature/report-gives-dispositions: the judge should say PASS. A real cycle-feature report (run Qijxrz): fixed, rejected with reasons, follow-ups."
+tags: [calibration, report-gives-dispositions, expect-pass]
+plugins: ["../../plugins/design"]
+model: claude-haiku-4-5-20251001
+max_turns: 2
+timeout_seconds: 120
+allowed_tools: [Read]
+expected_outcome: PASS
+---
+
+Reply with the single word OK. Do nothing else.

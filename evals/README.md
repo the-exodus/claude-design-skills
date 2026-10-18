@@ -1,12 +1,12 @@
 # Evals
 
-The design plugin's eval suite, run with Claude Code's own runner, [`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals). It lives at the repo root rather than inside `plugins/design/`, so it never ships with the plugin: the marketplace installs `./plugins/design` and nothing outside it.
+The eval suite of the marketplace's two plugins, `design` and `implementation`, run with Claude Code's own runner, [`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals). It lives at the repo root rather than inside a plugin, so it never ships with one: the marketplace installs `./plugins/design` and `./plugins/implementation` and nothing outside them.
 
 ## Before you change a skill because of a result here
 
-**Two cases are held out: `lexicon-tessera` and `lexicon-byre`. Look at their scores. Never edit a skill in response to a specific failure on either.** They exist so that there is always an input no iteration of the skills was tuned on, and they are the only evidence that a change generalised rather than fitted the cases it was tuned against. The first skill edit made to fix a Tessera or Byre failure spends that, for good: the case becomes a regression fixture like the others, and a new held-out one has to be built by an agent that has seen neither the skill nor the other fixtures.
+**Three cases are held out: `lexicon-tessera` and `lexicon-byre` for `design`, and `review-heldout-quarry` for `implementation`. Look at their scores. Never edit a skill in response to a specific failure on one.** They exist so that there is always an input no iteration of the skills was tuned on, and they are the only evidence that a change generalised rather than fitted the cases it was tuned against. The first skill edit made to fix a Tessera or Byre failure spends that, for good: the case becomes a regression fixture like the others, and a new held-out one has to be built by an agent that has seen neither the skill nor the other fixtures.
 
-What to do instead, when a held-out case shows a real defect: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom`), iterate the skill against that, word the change as a general rule, and read Tessera and Byre again afterwards.
+What to do instead, when a held-out case shows a real defect: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom` for the lexicon; the ferry fixture for the review cycle), iterate the skill against that, word the change as a general rule, and read the held-out case again afterwards.
 
 Every other case is a regression case and fair to iterate against, the Tileand case included. Fixing a grader, a rubric or an answer key because it was wrong is always allowed, on held-out cases too: the rule is about the skills' text. The reasoning, and why there are two, is under [Held out](#held-out).
 
@@ -18,7 +18,7 @@ From the repo root:
 claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none
 ```
 
-The repo root has no `plugin.json`; each case names the plugin under test itself, with `plugins: ["../../plugins/design"]` in its frontmatter. `--eval-dir` can't do this, since it only accepts a directory below the plugin.
+The repo root has no `plugin.json`; each case names the plugin under test itself, with `plugins: ["../../plugins/design"]` in its frontmatter. An `implementation` case lists both plugins: the runner enforces `dependencies`, and a plugin whose dependency is not loaded does not load (established by probe on Claude Code 2.1.302). `--eval-dir` can't do this, since it only accepts a directory below the plugin.
 
 Results land in `evals/results/<timestamp>/` (`aggregate-result.json`, `report.html`), which is gitignored. The command exits 0 when every case meets `--threshold` (default 1.0), 1 when one doesn't, 2 on a partial run.
 
@@ -36,7 +36,7 @@ The lexicon fixture cases copy a project into the workspace and rewrite its lexi
 claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none --tag fixture --scaffold --allow-tools Write Edit
 ```
 
-`--scaffold` runs each case's `scaffold.sh` as you, outside the sandbox; it only copies the case's `fixture/` into the workspace. `--allow-tools` applies to every case in the run, so pass it with `--tag fixture` rather than on a smoke run. No case needs Bash, so the sandbox backend (`bubblewrap` and `socat`) is not required.
+`--scaffold` runs each case's `scaffold.sh` as you, outside the sandbox; it only copies the case's `fixture/` into the workspace. `--allow-tools` applies to every case in the run, so pass it with `--tag fixture` rather than on a smoke run. Of the `design` cases none needs Bash; the review-cycle cases do, and need the sandbox backend (`bubblewrap` and `socat`): see [Review-cycle cases](#review-cycle-cases).
 
 ## Pinned settings
 
@@ -78,6 +78,14 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `interview-narrower-meaning-admitted` | a branch fixes what a word means: it is admitted, by meaning not mechanism, after `design:lexicon` is loaded |
 | `interview-oversized-lexicon-noted` | a 34-entry lexicon is noted at ingestion and consolidation offered as separate work, not done |
 | `interview-lexicon-write-back` | after the wrap-up, the lexicon is written back: inherited entries byte-identical, new terms as entries, and the reply says what is new and what changed |
+| `trigger-ready-for-pr` | `implementation:review-cycle` loads when a branch is ready for its pull request, without being named |
+| `trigger-not-for-open-pr` | it does not load for reviewing a pull request a colleague opened |
+| `cycle-asks-for-brief` | with no brief and no tracker, it asks for the brief and launches no reviewer |
+| `cycle-feature` | a feature: lenses chosen by signal (platform reality through the assumptions record), repo lenses that extend, stand alone or do not match, general-purpose reviewers on the session's model, the base read from `origin/HEAD`, test-first fixes, the class sweep under the default out-of-scope policy |
+| `cycle-fix-defers` | a small fix: adversarial and design parity only; the repo's own out-of-scope policy overrides the default |
+| `cycle-records-only` | a change of records only: design parity in records-only mode, no suite, the brief checked against itself |
+| `lens-ferry` | the lenses on the seat-holds branch, stopping after triage: nine planted defects caught, two traps not flagged |
+| `review-heldout-quarry` | the same on a fixture built by an agent that never saw the skill: ten defects, three traps. Held out: see below |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired".
 
@@ -179,11 +187,57 @@ Under design 0.6.0, over eight runs, scores ran from 0.92 to 0.97, against 0.86 
 
 Several rows of the first table of findings turned out to be the labels rather than the skill, and the owner moved them after reading what the runs did and why: *host window* is a plain retire (runs propose *window* as a gap, which is neither required nor penalised), *default rules* and *attempt schedule* are out of the gold set, *workspace* is accepted with or without its lifecycle clause, and `reframed-rescue` accepts *rescued end*.
 
+## Review-cycle cases
+
+The cases tagged `review-cycle` check `implementation:review-cycle` (THE-251). They were written before the skill was ported, as its specification, and the skill was changed to meet them; a case or grader changes only when it was badly written.
+
+All but the held-out one run on the ferry fixture in `review-fixtures/ferry/`: Ferrybook, an invented car-ferry booking service in Python with stdlib `unittest`. `build.sh` commits a base on `trunk` with a fake `origin/HEAD` naming `trunk` as the remote's default (a cycle that assumes `main` fails visibly), then the case's branch on top: `feature` (seat holds, nine planted defects and two traps), `fix` (a midnight-boundary fix that is itself off by one, with the same bug outside the change for the class sweep), `records` (an ADR that contradicts an accepted one), and a `policy` overlay whose `AGENTS.md` says out-of-scope defects are listed, never fixed. The base carries three repo lenses under `.claude/skills/`, each with a phrase found nowhere else, so a grader can see whose prompt a lens's body reached. `expected.md` beside the fixture has the answer key.
+
+`review-heldout-quarry` is a quarry blasting scheduler built by an agent that saw neither the skill nor the ferry fixture, from a list of defect kinds only. It has no remote, so it also covers the base branch when there is no `origin/HEAD`.
+
+Run them with Bash granted, and with the Python documentation reachable, since the platform lens checks claims against it:
+
+```sh
+claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none --scaffold \
+  --tag review-cycle --allow-tools Bash Write Edit "WebFetch(domain:docs.python.org)"
+```
+
+Leave Bash out for `--tag trigger`: the trigger cases list no `Agent` and stop at six turns, since all they need to see is the Skill call. A Bash-granting run is refused outright, scoring 0 at no cost, while `~/.docker` holds a symlink, which Docker Desktop's WSL integration creates; `DOCKER_CONFIG` does not get round the check, and the links have to become plain copies.
+
+They are the suite's dear cases. A `lens-*` run takes about ten minutes and reports about $6; `cycle-feature` takes up to half an hour and about $12, since it reviews with five reviewers, fixes test-first and re-reviews. One run of every review-cycle case is about $35 to $40. Run the cases a change touches, not the tag; `--tag full` is the three cycle cases that fix, `--tag lens` the two that stop after triage.
+
+What the graders read: lens selection and repo lenses from the `Agent` calls' prompts (`tool_used` with `input_match` on each lens brief's heading); the base and the suite from `Bash` calls; fixes and the sweep from the files; defects caught from the final report, by regex where a finding has a distinctive identifier and by a narrow, calibrated `llm` grader where it is a judgement. A subagent's own tool calls are in the trace and counted by `tool_used`, and each of its trace lines carries its parent's `"parent_tool_use_id":"toolu_…"` (the main session's carry `null`), which is how `cycle-records-only` tells a reviewer's suite run from the session's.
+
+Results, with `claude-opus-5`, by the skill text each run used:
+
+| Case | First port (`2619725`) | Table and mode fixes (`e39d99a`) | Waits for its reviewers (`3841fba`) |
+|---|---|---|---|
+| `trigger-ready-for-pr` | 1/1 | 2/2 | |
+| `trigger-not-for-open-pr` | 1/1 | 2/2 | |
+| `cycle-asks-for-brief` | 1/1 | 2/2 | |
+| `cycle-feature` | 1/1 | 1/2 | 2/2 |
+| `cycle-fix-defers` | 1/1 | 2/2 | |
+| `cycle-records-only` | 0/1 | 3/3 | |
+| `lens-ferry` | 1/1 | 2/2 | 3/3, on the subtler D1 |
+| `review-heldout-quarry` | 1/1 | 2/2 | |
+
+What the runs taught, in the order it happened:
+
+- **The table is the whole selection.** The first records-only run added platform reality on its own judgement, because the new ADR stated a fact about rounding; and its design-parity re-run lost the records-only mode. `e39d99a` says the table is the whole selection, a re-run keeps its mode line, and records-only design parity checks a record's platform facts against the documentation itself.
+- **A change can stop being records-only.** The default out-of-scope policy lets the class sweep fix a float in `child_fare`, after which a second round rightly runs the suite. `cycle-records-only`'s no-suite and not-selected graders judge the first round only: every reviewer launched before the session's first edit.
+- **Reviewers may run in the background.** One `cycle-feature` run launched its re-review, which ran in the background, wrote its report as an interim message and ended its turn; the headless run ended there. `3841fba` says to wait for every reviewer, the re-run included, and not to end the turn while one is running.
+- **D1 was given away.** `_new_ref` carried the comment "Keep references short", echoing the alternative ADR-0001 rejected, and a `cycle-asks-for-brief` run spotted it while only gathering context, before any reviewer ran. The comment is gone; `lens-ferry` finds D1 from the code against the ADR in three runs of three.
+- **Graders that were wrong:** `review-heldout-quarry`'s D7 wanted the identifier `notified_receptors` where a correct run described the decision ("the outbox says who was told"); `asks-for-the-brief` failed a run that asked and offered one observation provisionally, which the case never meant to fail; `report-gives-dispositions` did not say an interim report fails. All three were corrected, the two rubrics recalibrated.
+
+What the runs found that no grader asks about, and worth knowing: the sessions found real defects in the ferry fixture that were not planted (waitlist promotion bypasses the capacity check; a refused second hold destroys the first), which `expected.md` does not list and nothing penalises; they try to push and open the PR, which the sandbox refuses; and they write `.claude/skills/` only where the sandbox lets them, so a stale repo lens's globs are reported rather than fixed.
+
 ## Held out
 
 Tessera and Byre are held out, so that there are always inputs no iteration of the skill was tuned on. Each was built by an agent that had seen neither the skill nor the other fixtures, from a list of defect kinds only. They stay held out under one rule: look at their scores, but never edit the skill in response to a specific failure on one. Iterate on Shelfwise, Stockroom and the Tileand case; read Tessera and Byre as the check that the iteration generalised. `--tag held-out` runs the two alone. Once a failure on one of them has shaped the skill's wording, that one is a regression fixture like the others and a new held-out one is needed.
 
-There are two because they catch different things. Tessera is a tiling window manager, the same kind of system as Tileand, which the skill was first tuned on: it shares none of Tileand's text, so it catches fitting to Tileand's wording and structure, but it is weaker at catching fitting to that domain. Byre, dairy herd management, shares nothing with any other input here.
+`review-heldout-quarry` is held out for `implementation` under the same rule, with the ferry cases as its regression fixtures. `--tag held-out` runs all three.
+
+There are two lexicon ones because they catch different things. Tessera is a tiling window manager, the same kind of system as Tileand, which the skill was first tuned on: it shares none of Tileand's text, so it catches fitting to Tileand's wording and structure, but it is weaker at catching fitting to that domain. Byre, dairy herd management, shares nothing with any other input here.
 
 Read Byre over a dozen runs or more. It passes about six runs in ten on any version (11 of 18 on 0.5.1, 14 of 27 on 0.6.0), on the same few graders each time: `distinction-milking-names-session` and `forty-day-sentence-home` fail in about one run in four or five each, `drift-withdrawal-cited` in about one in nine. Three runs say nothing: 0.5.1 passed three of three when the fixture was built, and 0.6.0 passed none of three in one suite pass and nine of twelve in another. Tessera is steadier, and since *shortcut* became accepted either way it passes in most runs.
 
@@ -217,6 +271,22 @@ Agreement reached with `claude-opus-5` as the judge, five gradings of each outpu
 | `entry-states-meaning-not-mechanism` | `interview-narrower-meaning-admitted` | 5 | 25/25 | 0 | 0 |
 | `does-not-consolidate` | `interview-oversized-lexicon-noted` | 4 | 20/20 | 0 | 0 |
 | `says-what-is-new-and-what-changed` | `interview-lexicon-write-back` | 4 | 20/20 | 0 | 0 |
+
+The review-cycle graders, calibrated on 2026-10-18 with three gradings each. Their known passes are real final reports judged by hand; their known fails are the same reports with one finding removed or one added that the rubric fails:
+
+| Grader | Case | Outputs | Agreement | Flips | Split votes |
+|---|---|---|---|---|---|
+| `asks-for-the-brief` | `cycle-asks-for-brief` | 5 | 15/15 | 0 | 0 |
+| `report-gives-dispositions` | `cycle-feature` | 6 | 18/18, after one known fail was rebuilt; 15/18 before | 0 | 0 |
+| `d2-confirm-without-settling` | `lens-ferry` | 5 | 15/15 | 0 | 0 |
+| `t1-lazy-expiry-not-flagged` | `lens-ferry` | 5 | 15/15 | 0 | 0 |
+| `t2-replacement-not-flagged` | `lens-ferry` | 5 | 15/15 | 0 | 0 |
+| `d1-refused-postpone-leaves-state` | `review-heldout-quarry` | 5 | 15/15 | 0 | 0 |
+| `t1-inclusive-window-end-not-flagged` | `review-heldout-quarry` | 5 | 15/15 | 0 | 0 |
+| `t2-no-vibration-recheck-not-flagged` | `review-heldout-quarry` | 5 | 15/15 | 0 | 0 |
+| `t3-revised-notice-recipients-not-flagged` | `review-heldout-quarry` | 5 | 15/15 | 0 | 0 |
+
+`report-gives-dispositions`' first calibration was the judge being right: a known fail with its headings stripped still said, finding by finding, what had been done.
 
 What calibration found was in the rubrics, not the judge. Writing down known verdicts for the three sentence-home graders showed that their rubric said both PASS and FAIL of a report that names the true home and the decoy together, which a real Tessera run had done and the judge had passed; and that it named a whole file as the decoy where only one doc comment is, which would have failed a real Byre run for citing the code that implements the behaviour. Then the first full run showed one grader flipping on a real output, because "at or around lines 49-50" left the judge to decide whether line 54 was around line 49. The rubrics now identify the decoy by quoting the comment. A rubric that can be read two ways is where a judge's noise comes from.
 

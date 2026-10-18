@@ -1,0 +1,16 @@
+{
+  "site_timezone": "Europe/London",
+  "window": {"days": ["mon", "tue", "wed", "thu", "fri"], "start": "10:00", "end": "16:00"},
+  "min_interval_minutes": 90,
+  "notice_hours": 24,
+  "max_postponements": 2,
+  "ppv_limit_mm_s": 6.0,
+  "site_constants": {"k": 1140, "b": 1.6},
+  "receptors": [
+    {"id": "R1", "name": "Hill Farm"},
+    {"id": "R2", "name": "Cold Ash Cottages"},
+    {"id": "R3", "name": "Brook Lane Primary School"}
+  ],
+  "outbox": "outbox",
+  "schedule_file": "schedule.json"
+}
