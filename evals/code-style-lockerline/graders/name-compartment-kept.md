@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/Compartment.java }
 pattern: 'final class Compartment \{'
+flags: i
 ---

@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/LockBoard.java }
 pattern: 'ACK\s+(?:(?:\*|//)\s*)?before\s+(?:(?:\*|//)\s*)?the\s+(?:(?:\*|//)\s*)?solenoid'
+flags: i
 ---

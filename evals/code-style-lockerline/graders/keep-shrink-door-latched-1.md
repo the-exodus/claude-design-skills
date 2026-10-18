@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/BankListener.java }
 pattern: 'debounce\s+(?:(?:\*|//)\s*)?has\s+(?:(?:\*|//)\s*)?run'
+flags: i
 ---

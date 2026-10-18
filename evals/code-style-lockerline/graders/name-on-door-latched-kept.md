@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/BankListener.java }
 pattern: 'void onDoorLatched\('
+flags: i
 ---

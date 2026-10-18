@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/CompartmentController.java }
 pattern: 'within\s+(?:(?:\*|//)\s*)?30\s+(?:(?:\*|//)\s*)?ms'
+flags: i
 ---

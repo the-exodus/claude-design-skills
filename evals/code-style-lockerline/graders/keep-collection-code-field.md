@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/Compartment.java }
 pattern: 'reprinted\s+(?:(?:\*|//)\s*)?receipt'
+flags: i
 ---

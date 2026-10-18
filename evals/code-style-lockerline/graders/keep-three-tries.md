@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/LockerBank.java }
 pattern: 'as\s+(?:(?:\*|//)\s*)?the\s+(?:(?:\*|//)\s*)?printed\s+(?:(?:\*|//)\s*)?receipt\s+(?:(?:\*|//)\s*)?promises'
+flags: i
 ---

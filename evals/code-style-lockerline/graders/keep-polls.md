@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/CompartmentController.java }
 pattern: 'raises\s+(?:(?:\*|//)\s*)?no\s+(?:(?:\*|//)\s*)?interrupt'
+flags: i
 ---

@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/StatusCodes.java }
 pattern: 'tell\s+(?:(?:\*|//)\s*)?an\s+(?:(?:\*|//)\s*)?inspection'
+flags: i
 ---

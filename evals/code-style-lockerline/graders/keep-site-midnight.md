@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: tests/lockerline/DwellPolicyTest.java }
 pattern: '23:59:59\s+(?:(?:\*|//)\s*)?at\s+(?:(?:\*|//)\s*)?the\s+(?:(?:\*|//)\s*)?site'
+flags: i
 ---

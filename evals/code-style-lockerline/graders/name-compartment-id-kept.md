@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/CompartmentId.java }
 pattern: 'record CompartmentId\('
+flags: i
 ---

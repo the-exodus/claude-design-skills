@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/CompartmentController.java }
 pattern: 'ADR\-0001'
+flags: i
 ---

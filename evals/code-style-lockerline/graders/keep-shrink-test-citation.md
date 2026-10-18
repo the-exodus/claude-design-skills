@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: tests/lockerline/LockerBankTest.java }
 pattern: 'two\s+(?:(?:\*|//)\s*)?minutes'
+flags: i
 ---

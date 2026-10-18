@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/DwellPolicy.java }
 pattern: 'boolean returnToSender\('
+flags: i
 ---

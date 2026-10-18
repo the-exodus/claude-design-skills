@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/StatusCodes.java }
 pattern: 'ADR\-0002'
+flags: i
 ---

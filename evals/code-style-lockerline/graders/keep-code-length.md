@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/CollectionCodes.java }
 pattern: 'gives\s+(?:(?:\*|//)\s*)?up\s+(?:(?:\*|//)\s*)?after\s+(?:(?:\*|//)\s*)?eight\s+(?:(?:\*|//)\s*)?seconds'
+flags: i
 ---

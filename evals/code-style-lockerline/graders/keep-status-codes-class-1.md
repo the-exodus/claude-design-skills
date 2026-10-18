@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/StatusCodes.java }
 pattern: 'never\s+(?:(?:\*|//)\s*)?renumber\s+(?:(?:\*|//)\s*)?one'
+flags: i
 ---

@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/LockerBank.java }
 pattern: '(?:drop-offs?\s+(?:(?:\*|//)\s*)?(?:that\s+(?:(?:\*|//)\s*)?)?the\s+(?:(?:\*|//)\s*)?bank\s+(?:(?:\*|//)\s*)?accepts|accepted\s+(?:(?:\*|//)\s*)?drop-offs?)'
+flags: i
 ---

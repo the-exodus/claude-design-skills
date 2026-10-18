@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: tests/architecture/ControllerIsolationTest.java }
 pattern: 'through\s+(?:(?:\*|//)\s*)?reflection\s+(?:(?:\*|//)\s*)?is\s+(?:(?:\*|//)\s*)?not\s+(?:(?:\*|//)\s*)?seen'
+flags: i
 ---

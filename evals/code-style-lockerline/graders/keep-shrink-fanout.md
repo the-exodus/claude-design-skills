@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/FanOutListener.java }
 pattern: 'support\s+(?:(?:\*|//)\s*)?console'
+flags: i
 ---

@@ -3,4 +3,5 @@
 type: regex
 target: { source: file, path: src/lockerline/DwellPolicy.java }
 pattern: '06:00'
+flags: i
 ---

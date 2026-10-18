@@ -3,5 +3,6 @@
 type: regex
 target: { source: file, path: src/lockerline/StatusCodes.java }
 pattern: '5\s+(?:(?:\*|//)\s*)?\(fault\)'
+flags: i
 match: not_contains
 ---
