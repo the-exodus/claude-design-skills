@@ -113,7 +113,9 @@ and lens bodies, nothing else.
    what to run, to report findings only, ranked, each marked `[defect]` or
    `[nit]`, with `file:line`, what is wrong and a concrete fix, to say what it
    checked and found sound, and not to edit files (the adversarial reviewer may
-   add throwaway tests, nothing else).
+   add throwaway tests, nothing else). Wait for every reviewer's report before
+   triage. Reviewers may run in the background: do not end your turn while one
+   is still running, here or at step 7.
 
 3. **Triage.** For each finding, decide: holds, or rejected with a reason. A
    finding holds when it names a defect, a missed criterion, a broken contract,
@@ -151,7 +153,8 @@ and lens bodies, nothing else.
 
 7. **Re-run once** after large fixes: one fresh reviewer, the lens whose
    findings drove the fixes, with the same context block and the same mode
-   line. Small fixes need no second round.
+   line. Its findings go through steps 3 to 6 before the report. Small fixes
+   need no second round.
 
 8. **Record and report.** Record on the brief, where the brief lives in a
    tracker, as one comment: what was fixed, what was rejected and why, what was
