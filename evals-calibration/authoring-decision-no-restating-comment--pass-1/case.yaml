@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: authoring-decision-no-restating-comment--pass-1
+context:
+  scaffold_script: scaffold.sh
