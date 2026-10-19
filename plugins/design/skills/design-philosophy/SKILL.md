@@ -97,8 +97,4 @@ Both halves have a failure mode, and the second one's is worse. Modest generaliz
 
 ## Boundary: what isn't here
 
-**Comments justify, code describes.** Code says what it does; comments should say why, what isn't obvious, and what invariants matter. If a comment just restates the code, delete it.
-
-This one is in the set philosophically but is really coding style — it governs how code reads, not what gets decided. It's recorded here so it isn't lost, and it should move to the coding-style skill when that exists.
-
 The line: **a principle that changes what gets decided is design; a principle that changes how code reads is style.** Formatting, naming conventions, comment mechanics, import ordering, and test structure are all style. Everything above is design.

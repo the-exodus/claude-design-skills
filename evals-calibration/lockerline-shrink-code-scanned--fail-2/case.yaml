@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: lockerline-shrink-code-scanned--fail-2
+context:
+  scaffold_script: scaffold.sh

@@ -3,15 +3,16 @@
 Skills for [Claude Code](https://claude.ai/code) for designing software and for making the code, packaged as a plugin marketplace with two plugins:
 
 - **`design`**: what design work needs, whenever it comes up — design interviews, decision records, a project lexicon, and the structural principles behind them.
-- **`implementation`**: how the code gets made — the review cycle a change goes through before its pull request. It depends on `design` and uses its skills; `design` never depends on it.
+- **`implementation`**: how the code gets made — how names and comments read, and the review cycle a change goes through before its pull request. It depends on `design` and uses its skills; `design` never depends on it.
 
 ## Install
 
 ```sh
 claude plugin marketplace add the-exodus/claude-design-skills
-claude plugin install design@claude-design-skills
-claude plugin install implementation@claude-design-skills   # optional; needs design
+claude plugin install implementation@claude-design-skills
 ```
+
+Installing `implementation` installs `design` with it, since `implementation` declares it as a dependency (`>=0.7.0`): Claude Code installs and enables a plugin's dependencies at the same scope, from the same marketplace, and the success message lists them. To have only the design skills, install `design@claude-design-skills` on its own instead.
 
 Restart Claude Code to load. To pick up changes pushed since:
 
@@ -85,6 +86,12 @@ metadata:
 
 A lens that extends a built-in one is appended to that reviewer's brief; one of its own gets a reviewer of its own. Either way its body reaches the reviewer word for word.
 
+#### `code-style`
+
+How names and comments read, loaded before any code, name or comment is written or changed — renames and comment passes included. Two principles: *name it what it is, call it what it does*, with domain words taken from the project's lexicon; and *comments express what the code can't, and only that*.
+
+Comments are judged clause by clause, and locality is the test. A clause the name, the signature or the code in view already says goes; a clause that carries context from elsewhere — a platform behaviour, a recorded decision, an invariant another type holds, a caller's contract, a reason — stays; a comment with both is shrunk. Keeping is the common case, and keeping is not encouraging: a comment is written only when it carries something from elsewhere. Because a cut clause can quietly break the sentence left behind, every shrink is re-read on its own. A citation never stands in for a claim, cites by number, and follows the project's convention for where citations may appear.
+
 ## Layout
 
 ```
@@ -98,6 +105,7 @@ plugins/design/
 plugins/implementation/
   .claude-plugin/plugin.json      # depends on design >=0.7.0
   skills/review-cycle/
+  skills/code-style/
 evals/                            # the plugins' eval suite; not shipped
 ```
 

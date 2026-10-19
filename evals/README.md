@@ -4,11 +4,11 @@ The eval suite of the marketplace's two plugins, `design` and `implementation`, 
 
 ## Before you change a skill because of a result here
 
-**Three cases are held out: `lexicon-tessera` and `lexicon-byre` for `design`, and `review-heldout-quarry` for `implementation`. Look at their scores. Never edit a skill in response to a specific failure on one.** They exist so that there is always an input no iteration of the skills was tuned on, and they are the only evidence that a change generalised rather than fitted the cases it was tuned against. The first skill edit made to fix a Tessera or Byre failure spends that, for good: the case becomes a regression fixture like the others, and a new held-out one has to be built by an agent that has seen neither the skill nor the other fixtures.
+**Four cases are held out: `lexicon-tessera` and `lexicon-byre` for `design`, and `review-heldout-quarry` and `code-style-heldout-cinder` for `implementation`. Look at their scores. Never edit a skill in response to a specific failure on one.** They exist so that there is always an input no iteration of the skills was tuned on, and they are the only evidence that a change generalised rather than fitted the cases it was tuned against. The first skill edit made to fix a Tessera or Byre failure spends that, for good: the case becomes a regression fixture like the others, and a new held-out one has to be built by an agent that has seen neither the skill nor the other fixtures.
 
-What to do instead, when a held-out case shows a real defect: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom` for the lexicon; the ferry fixture for the review cycle), iterate the skill against that, word the change as a general rule, and read the held-out case again afterwards.
+What to do instead, when a held-out case shows a real defect: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom` for the lexicon; the ferry fixture for the review cycle; `code-style-lockerline` or an authoring case for code-style), iterate the skill against that, word the change as a general rule, and read the held-out case again afterwards.
 
-Every other case is a regression case and fair to iterate against, the Tileand case included. Fixing a grader, a rubric or an answer key because it was wrong is always allowed, on held-out cases too: the rule is about the skills' text. The reasoning, and why there are two, is under [Held out](#held-out).
+Every other case is a regression case and fair to iterate against, the lexicon's Tileand case included. `code-style-tileand` is the exception the other way: a read-only check of what the skill makes of real code, never iterated against (see [Code-style cases](#code-style-cases)). Fixing a grader, a rubric or an answer key because it was wrong is always allowed, on held-out cases too: the rule is about the skills' text. The reasoning, and why there are two, is under [Held out](#held-out).
 
 ## Run
 
@@ -86,6 +86,16 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `cycle-records-only` | a change of records only: design parity in records-only mode, no suite, the brief checked against itself |
 | `lens-ferry` | the lenses on the seat-holds branch, stopping after triage: nine planted defects caught, two traps not flagged |
 | `review-heldout-quarry` | the same on a fixture built by an agent that never saw the skill: ten defects, three traps. Held out: see below |
+| `code-style-before-implementation` | `implementation:code-style` loads before the first edit of a feature, beside `design-philosophy` |
+| `code-style-for-rename`, `code-style-for-comment-pass` | it loads for a rename and for a pass over docstrings, where `design-philosophy` does not |
+| `code-style-not-for-typo` | it does not load for a typo in prose |
+| `code-style-authoring-scale` | writing code over a device: its one non-local protocol fact is said; nothing restates; domain words from the lexicon; names say what things are |
+| `code-style-authoring-contract` | a new public function whose callers must honour a precondition from outside the code: it is on the function |
+| `code-style-authoring-stale` | a change that makes an existing comment false: the false claim does not survive |
+| `code-style-authoring-decision`, `-test`, `-plain` | guards: a reason kept out of an ADR is said beside the code; tests cite no record where the project bars it; a helper with nothing to say gets no comment |
+| `code-style-lockerline` | a comment pass over an invented Java project with 30 planted comments: deletes, shrinks, keeps and three citation regimes |
+| `code-style-heldout-cinder` | the same on a Rust project built by an agent that never saw the skill. Held out: see below |
+| `code-style-tileand`, in `evals-tileand/` | the same on Tileand's `Hosting/` at `0e71d66`, graded against labels kept outside this repository. A read-only check: see [Code-style cases](#code-style-cases) |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired".
 
@@ -106,6 +116,8 @@ The `philosophy-*` cases check that `design-philosophy` loads when it should and
 The failure these guard against is intermittent, so read them over several runs rather than one. Under design 0.5.1, over eight runs each: `philosophy-before-seeding` passed eight times and `philosophy-before-implementation` twice; the two "not for" cases never failed in three. Against the plugin as released at 0.5.0 `philosophy-before-implementation` passed in none of five runs. Where it fails, the skill is never called at all: the request is carried out without it.
 
 Under design 0.6.0, whose description names the moment and the size of the work the skill loads for, `philosophy-before-implementation` passed in all eleven runs, `philosophy-before-seeding` in all seven, and the two "not for" cases in all seven each.
+
+THE-222 moved the comment rule ("Comments justify, code describes") out of `design-philosophy` into `implementation:code-style`, keeping the boundary heading and the sorting test. On the edited text the four cases passed in all eight runs each, and the `interview-*` cases, whose histories embed the skill's text and were refreshed, in 14 of 15.
 
 A fifth case, `philosophy-before-next-closure`, was removed (THE-206). It resumed an interview whose tree had been seeded without the principles, a state 0.5.0 could produce and later versions do not: `philosophy-before-seeding` has not failed since 0.5.1. It passed about half the time, and four rewordings of `design-interview` did not move it.
 
@@ -231,11 +243,53 @@ What the runs taught, in the order it happened:
 
 What the runs found that no grader asks about, and worth knowing: the sessions found real defects in the ferry fixture that were not planted (waitlist promotion bypasses the capacity check; a refused second hold destroys the first), which `expected.md` does not list and nothing penalises; they try to push and open the PR, which the sandbox refuses; and they write `.claude/skills/` only where the sandbox lets them, so a stale repo lens's globs are reported rather than fixed.
 
+## Code-style cases
+
+The cases tagged `code-style` check `implementation:code-style` (THE-222). Like the review-cycle cases they were written before the skill, as its specification, and list both plugins, since `implementation` depends on `design`. They need `--scaffold --allow-tools Write Edit` and no Bash.
+
+```sh
+claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none --tag code-style --scaffold --allow-tools Write Edit
+```
+
+**Authoring first.** The skill is loaded while code is written, not run over it afterwards, so the cases that matter most give the agent a task and grade the comments and names that come out. They run on `roastlog`, an invented coffee-roastery log in Python, and **with the baseline arm** (omit `--ablation none`): a skill that made agents comment more would show as a negative Δ on the restatement graders, which a count of comments would reward. Each case grades both directions: the one fact from elsewhere that the task makes the agent discover is said, by a regex on its meaning; nothing added only restates the name, signature or code in view, by a narrow llm grader. `decision`, `test` and `plain` pass without the skill too and stand as guards.
+
+**Audit second.** `code-style-lockerline` (Java) and `code-style-heldout-cinder` (Rust) plant comments whose right answer is known by construction: deletes, shrinks, and mostly keeps, as real code is. Graders score over-deletion and under-deletion apart: a regex per keep and per delete, the local half of each shrink gone and its non-local half kept, and one llm grader per shrink whose surviving sentence can break (a stranded pronoun, a scope qualifier cut, a why turned into a false what), plus "nothing added". `AGENTS.md` sets three citation regimes, as Tileand has: `src/` cites by number, `tests/` cites nothing, a structural-tests folder cites beside its own words.
+
+**Graded in proportion** (owner, 2026-10-19: "we're not building a banking agent, we're building a code-style skill"). Where a result has more than one reasonable form, every reasonable form passes: a light restatement left in because it gives the next clause its subject, a comment deleted whose content is plainly in the code beside it, a shrink that capitalises its new first word (every phrase grader is case-insensitive). What is always failed: pure restatement kept, context from elsewhere lost, a claim added, a reference stranded, a citation where the project bars one.
+
+**`code-style-tileand` is a check, not a target.** It runs the audit on Tileand's `src/Tileand.Core/Hosting/` and `tests/Tileand.Tests/Hosting/` at `0e71d66`, the commit before THE-221's comment pass, brought in at run time like the lexicon case (`evals-tileand/tileand-repo.path`). It shows what the skill makes of real code; it does not define proper code style, and the skill is never reworded because of a result on it. Its labels live outside this repository: THE-221's changes, and 25 verdicts Claude made from runs' unlabelled deletions and the owner agreed. A comment THE-221 left alone is unlabelled, not a keep, since the owner ruled that pass triage. Its graders and `expected.md` quote Tileand's comments, so they are generated locally (`~/lexicon-eval-fixtures/tileand-comments/gen-graders.py`) and gitignored; without them the scaffold fails at once, for free, saying so. It has no llm graders: its files run to 24 kB, where the judge is noisy.
+
+```sh
+claude plugin eval . --eval-dir evals-tileand --case code-style-tileand --model claude-opus-5 --judge-model claude-opus-5 --ablation none --scaffold --allow-tools Write Edit --runs 3
+```
+
+Under the skill as merged, over eight runs (authoring with the baseline arm beside it):
+
+| Case | With the skill | Without |
+|---|---|---|
+| `code-style-before-implementation`, `-for-comment-pass`, `-not-for-typo` | 8/8 each | |
+| `code-style-for-rename` | 7/8 | |
+| `code-style-authoring-contract` | 8/8 | 0/8 |
+| `code-style-authoring-scale` | 7/8 | 3/8 |
+| `code-style-authoring-stale` | 8/8 | 7/8 |
+| `code-style-authoring-decision` | 7/8 | 7/8 |
+| `code-style-authoring-plain`, `-test` | 8/8 each | 8/8 each |
+| `code-style-lockerline` | 8/8 | |
+| `code-style-heldout-cinder` | 2/8 and 3/8 in two confirmations, scores 0.94 to 1.00 | |
+| `code-style-tileand` (three runs) | scores 0.78 to 0.80 | |
+
+What it took to get there, worth knowing before changing the skill:
+
+- **The rename trigger.** A rename first failed to load the skill in all three runs: a rename looks mechanical, and the description led with feature work. Leading with names and comments fixed most of it (4/4, then 7/8); the last step was saying that a rename counts even when the new name is given, since the comments naming the old thing go stale (6/8 before, 7/8 after).
+- **The interface comment.** The skill's first authoring rule fired only after a lookup ("if writing a line made you look something up, say it"), and `authoring-contract` found the other half missing: a new public member whose callers need a precondition the signature cannot carry. One sentence asking what a caller must know took it from 2/3 to 8/8; without the skill it is 0/8.
+- **What did not work.** Four rewordings aimed at Tileand's `ExitRequested`-shaped openings ("An end was requested and…") moved nothing: runs did not judge those clauses non-local, they never looked at them in a 500-line, well-commented file. Two of those rewordings are gone again; the openings are now accepted whole, in proportion. A sentence telling runs that a test file's summary of its tests goes took reasons and fixture descriptions with it, and was taken out.
+- **Graders that were wrong:** a keep that required a clause restating its test's name; a stale-claim pattern that also matched the correct rewrite's "until it is weighed"; case-sensitive phrases that failed a correct shrink's new capital; cinder's "nothing added" rubric, which did not say a cut or a near-synonym is not an addition.
+
 ## Held out
 
 Tessera and Byre are held out, so that there are always inputs no iteration of the skill was tuned on. Each was built by an agent that had seen neither the skill nor the other fixtures, from a list of defect kinds only. They stay held out under one rule: look at their scores, but never edit the skill in response to a specific failure on one. Iterate on Shelfwise, Stockroom and the Tileand case; read Tessera and Byre as the check that the iteration generalised. `--tag held-out` runs the two alone. Once a failure on one of them has shaped the skill's wording, that one is a regression fixture like the others and a new held-out one is needed.
 
-`review-heldout-quarry` is held out for `implementation` under the same rule, with the ferry cases as its regression fixtures. `--tag held-out` runs all three.
+`review-heldout-quarry` is held out for `implementation` under the same rule, with the ferry cases as its regression fixtures. So is `code-style-heldout-cinder`, with `code-style-lockerline` and the authoring cases as its regression inputs; it was built before any of the code-style skill's text existed, and its graders were checked and calibrated by a second fresh agent, so that nobody who has read its answers has worded the skill. `--tag held-out` runs all four.
 
 There are two lexicon ones because they catch different things. Tessera is a tiling window manager, the same kind of system as Tileand, which the skill was first tuned on: it shares none of Tileand's text, so it catches fitting to Tileand's wording and structure, but it is weaker at catching fitting to that domain. Byre, dairy herd management, shares nothing with any other input here.
 
@@ -286,13 +340,31 @@ The review-cycle graders, calibrated on 2026-10-18 with three gradings each. The
 | `t2-no-vibration-recheck-not-flagged` | `review-heldout-quarry` | 5 | 15/15 | 0 | 0 |
 | `t3-revised-notice-recipients-not-flagged` | `review-heldout-quarry` | 5 | 15/15 | 0 | 0 |
 
+The code-style graders, calibrated on 2026-10-18 and 19 with three gradings each. Known passes are real runs' files, judged by hand (cinder's by an agent that never saw the skill); known fails are the same files with one change: a restating comment added, a function renamed to a vague verb, a stranded "It", a lost reason, a purpose turned into a false behaviour, an added claim:
+
+| Grader | Case | Outputs | Agreement | Flips | Split votes |
+|---|---|---|---|---|---|
+| `authoring-scale-no-restating-comment` | `code-style-authoring-scale` | 4 | 12/12 | 0 | 0 |
+| `authoring-scale-names-say-what` | `code-style-authoring-scale` | 4 | 12/12 | 0 | 0 |
+| `authoring-decision-no-restating-comment` | `code-style-authoring-decision` | 4 | 12/12 | 0 | 0 |
+| `authoring-test-no-restating-comment` | `code-style-authoring-test` | 4 | 12/12 | 0 | 0 |
+| `authoring-plain-no-restating-comment` | `code-style-authoring-plain` | 4 | 12/12 | 0 | 0 |
+| `lockerline-shrink-door-latched`, `-held-for-inspection`, `-code-scanned`, `-fan-out`, `lockerline-nothing-added` | `code-style-lockerline` | 4 each | 12/12 each | 0 | 0 |
+| `cinder-nothing-added-controller` | `code-style-heldout-cinder` | 6 | 18/18, after one rubric revision (cuts and near-synonyms are not additions); 16/18 before | 0 | 0 |
+| `cinder-nothing-added-schedule`, `-shrink-cone-judged`, `-trap-cooling-reason-judged` | `code-style-heldout-cinder` | 5 each | 15/15 each | 0 | 0 |
+| `cinder-shrink-run-window-judged` | `code-style-heldout-cinder` | 8 | 24/24, after one revision | 0 | 0 |
+| `cinder-trap-heating-scope-judged` | `code-style-heldout-cinder` | 4 | 12/12 | 0 | 0 |
+| `cinder-trap-fault-count-reference` | `code-style-heldout-cinder` | 6 | 17/18 | 1 | |
+
+`cinder-trap-fault-count-reference` is below the bar, on purpose: its one flip is a known fail whose kept clause strands a pronoun, a borderline form no run has produced. A stranded reference is one of the few things the code-style graders always fail, so the known fail stays and the grader is read with that in mind, rather than revised a third time or relieved of its hardest case. `code-style-tileand` has no `llm` graders: its files run to 15–24 kB, where the judge is noisy, and shrink quality is covered here.
+
 `report-gives-dispositions`' first calibration was the judge being right: a known fail with its headings stripped still said, finding by finding, what had been done.
 
 What calibration found was in the rubrics, not the judge. Writing down known verdicts for the three sentence-home graders showed that their rubric said both PASS and FAIL of a report that names the true home and the decoy together, which a real Tessera run had done and the judge had passed; and that it named a whole file as the decoy where only one doc comment is, which would have failed a real Byre run for citing the code that implements the behaviour. Then the first full run showed one grader flipping on a real output, because "at or around lines 49-50" left the judge to decide whether line 54 was around line 49. The rubrics now identify the decoy by quoting the comment. A rubric that can be read two ways is where a judge's noise comes from.
 
 It is not cheap. A grading is three judge votes over the whole output, and judging a file reported about ten times the cost that judging a run's last message did in the ordinary suite: the full run of 250 gradings took three minutes and reported $70, and the two long-report graders alone $29. Calibrate one grader at a time with `--tag <grader>` after changing its rubric, and use `--runs 3` unless flips are what you are looking for.
 
-Not covered yet: the owner's Tileand labels. The Tileand case has no `llm` graders, so there is nothing of it to calibrate; if narrow `llm` graders are added there for rewrites and reframes, the owner's one-line reasons in the private label file are the known verdicts to build their calibration outputs from.
+Not covered yet: the owner's Tileand labels. The lexicon's Tileand case has no `llm` graders, so there is nothing of it to calibrate; if narrow `llm` graders are added there for rewrites and reframes, the owner's one-line reasons in the private label file are the known verdicts to build their calibration outputs from.
 
 ## Tools
 

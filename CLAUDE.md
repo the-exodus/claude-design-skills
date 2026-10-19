@@ -4,12 +4,13 @@ Two plugins, each a directory the marketplace installs as it is: `design` (`plug
 
 ## Before editing a skill because of an eval result
 
-Three eval cases are held out:
+Four eval cases are held out:
 
 | Held out | Guards | Regression fixtures to iterate on instead |
 |---|---|---|
 | `lexicon-tessera`, `lexicon-byre` | `plugins/design/` | `lexicon-shelfwise`, `lexicon-stockroom` |
 | `review-heldout-quarry` | `plugins/implementation/` | the ferry cases: `lens-ferry`, `cycle-*` (fixture in `evals/review-fixtures/ferry/`) |
+| `code-style-heldout-cinder` | `plugins/implementation/` | `code-style-lockerline` and the `code-style-authoring-*` cases; `code-style-tileand` is a read-only check, never iterated against |
 
 **Never edit anything under the plugin a held-out case guards in response to a specific failure on it.** They are the only evidence that a skill change generalised rather than fitted the cases it was tuned against, and one edit made to fix a failure on them spends that for good.
 

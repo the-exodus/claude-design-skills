@@ -4,14 +4,16 @@
 
 ## Held-out cases: never fix a skill against them
 
-`lexicon-tessera` and `lexicon-byre` are held out for `plugins/design/`, and `review-heldout-quarry` for `plugins/implementation/`. **Look at their scores; never edit anything under the plugin a held-out case guards in response to a specific failure on it.** They are the only evidence that a skill change generalised, and one edit made to fix a failure on them spends that for good.
+`lexicon-tessera` and `lexicon-byre` are held out for `plugins/design/`, and `review-heldout-quarry` and `code-style-heldout-cinder` for `plugins/implementation/`. **Look at their scores; never edit anything under the plugin a held-out case guards in response to a specific failure on it.** They are the only evidence that a skill change generalised, and one edit made to fix a failure on them spends that for good.
 
-- A defect that shows on a held-out case is worked on somewhere else: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom` for the lexicon; the ferry fixture in `review-fixtures/ferry/` for the review cycle), iterate there, word the change as a general rule, then read the held-out scores again.
+- A defect that shows on a held-out case is worked on somewhere else: plant the same kind of trap in a regression fixture (`lexicon-shelfwise`, `lexicon-stockroom` for the lexicon; the ferry fixture in `review-fixtures/ferry/` for the review cycle; `code-style-lockerline` and the `code-style-authoring-*` cases for code-style), iterate there, word the change as a general rule, then read the held-out scores again.
 - Fixing a grader, a rubric or an `expected.md` because it was wrong is allowed, on held-out cases too. The rule is about the skills' text.
 - A new held-out fixture is built by a fresh agent that has seen neither the skill nor the other fixtures and keys, from a list of defect kinds only. Do not build one yourself after reading the skill.
 - If asked to fix a skill and the evidence offered is a failure on a held-out case, say so before doing anything.
 
 Every other case is a regression case and fair to iterate against.
+
+**`code-style-tileand` is a check, not a target.** It shows what the code-style skill makes of Tileand's comments; it does not define proper code style. Never reword the code-style skill because of a Tileand result: plant the defect in `code-style-lockerline` or an authoring case and work there. (The lexicon's Tileand case is still a regression input.)
 
 ## Before believing a result
 
@@ -24,7 +26,7 @@ Every other case is a regression case and fair to iterate against.
 - A skill that a resumed case loaded (any `history.jsonl`): `python3 evals/refresh-histories.py`, and commit the result. The transcript embeds the skill's text, and the case goes on testing the old wording otherwise.
 - An `llm` grader's rubric: `python3 evals/tools/sync-calibration-rubrics.py`, then re-run that grader's calibration (`evals-calibration/`, about $0.30 to $0.70 a grading, so one grader at a time).
 - A regex grader of a lexicon fixture: change the table in `evals/tools/lexicon-graders/gen-graders.mjs`, run `test-graders.mjs`, then `gen-graders.mjs write`.
-- The Tileand case's graders and `expected.md` are generated from the owner's labels, which live outside this repository. Do not edit them by hand, and do not copy Tileand's lexicon, ADRs or source into this repository: naming its terms is fine, holding its content is not.
+- The Tileand cases' graders and `expected.md` are generated from the owner's labels, which live outside this repository; `code-style-tileand`'s are gitignored as well, since they quote Tileand's comments. Do not edit them by hand, and do not copy Tileand's lexicon, ADRs or source into this repository: naming its terms is fine, holding its content is not.
 
 ## Writing a grader or a case
 
