@@ -9,9 +9,10 @@ Skills for [Claude Code](https://claude.ai/code) for designing software and for 
 
 ```sh
 claude plugin marketplace add the-exodus/claude-design-skills
-claude plugin install design@claude-design-skills
-claude plugin install implementation@claude-design-skills   # optional; needs design
+claude plugin install implementation@claude-design-skills
 ```
+
+Installing `implementation` installs `design` with it, since `implementation` declares it as a dependency (`>=0.7.0`): Claude Code installs and enables a plugin's dependencies at the same scope, from the same marketplace, and the success message lists them. To have only the design skills, install `design@claude-design-skills` on its own instead.
 
 Restart Claude Code to load. To pick up changes pushed since:
 
