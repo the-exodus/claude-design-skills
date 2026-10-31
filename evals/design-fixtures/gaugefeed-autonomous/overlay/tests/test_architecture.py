@@ -50,6 +50,9 @@ def module_name(path):
 
 MODULES = {module_name(path): path for package in PACKAGES for path in package.rglob("*.py")}
 
+# The modules of the cycle, which ADR-0002 and ADR-0003 are about; the archive is not one.
+CYCLE = {name for name in MODULES if name.split(".")[0] == "gaugefeed"}
+
 
 def tree(name):
     return ast.parse(MODULES[name].read_text(encoding="utf-8"))
@@ -126,7 +129,7 @@ class ArchitectureTest(unittest.TestCase):
                                               f"may (see {NETWORK_ADR})")
 
     def test_only_the_file_readers_open_files(self):
-        for name in sorted(MODULES.keys() - FILE_READERS):
+        for name in sorted(CYCLE - FILE_READERS):
             with self.subTest(module=name):
                 opens = open_calls(name)
                 self.assertEqual(opens, [], f"{name} opens a file (see {REPORT_ADR} and {NO_STATE_ADR})")
@@ -138,7 +141,7 @@ class ArchitectureTest(unittest.TestCase):
                     self.assertTrue(reads_only(call), f"{name} opens a file to write (see {NO_STATE_ADR})")
 
     def test_only_main_reads_the_clock(self):
-        for name in sorted(MODULES.keys() - CLOCK_READERS):
+        for name in sorted(CYCLE - CLOCK_READERS):
             with self.subTest(module=name):
                 clock = [f.attr for f in calls(name) if isinstance(f, ast.Attribute) and f.attr in CLOCK_CALLS]
                 self.assertEqual(clock, [], f"{name} reads the clock (see {REPORT_ADR})")
