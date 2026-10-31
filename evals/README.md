@@ -81,6 +81,9 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `interview-lexicon-write-back` | after the wrap-up, the lexicon is written back: inherited entries byte-identical, new terms as entries, and the reply says what is new and what changed |
 | `interview-boundary-closure-names-test` | a branch closes by placing a module and saying who may import it: the closure decides the architecture test that protects that boundary, and the threshold branch closed beside it gets none |
 | `interview-brief-carries-boundary-test` | after the wrap-up, capture carries that test into the brief's acceptance criteria and the boundary's ADR carries the enforcement sentence |
+| `auto-objects-unprotected-boundary` | autonomous mode: the violation probe finds a boundary whose record claims enforcement unprotected, the archive is left as it was, and the run objects first and stops before seeding |
+| `auto-batch` | autonomous mode, a run that reaches its batch: an unprotected area outside the blast radius does not stop it; the open fork provisional; an ADR-forced branch in the appendix; a supersede and an architecture-test change provisional and marked *forced*; the host question run, not asked; scope recap first; at most five items; two reviewers |
+| `auto-over-threshold-stops` | autonomous mode: more than five provisional items stops the run, recommends a live interview, hands over the tree and writes no brief |
 | `trigger-ready-for-pr` | `implementation:review-cycle` loads when a branch is ready for its pull request, without being named |
 | `trigger-not-for-open-pr` | it does not load for reviewing a pull request a colleague opened |
 | `cycle-asks-for-brief` | with no brief and no tracker, it asks for the brief and launches no reviewer |
@@ -171,6 +174,36 @@ It took three rounds of wording. The first said it in `design:adr`, in `design-i
 Two older cases were lower than their recorded rates in the same pass, and an A/B against `master` (design 0.9.0) at eight runs each showed it was not this change: `adr-supersede-status-section` 5 of 8 on 0.9.0 and 6 of 8 on 0.10.0, `interview-narrower-meaning-admitted` 4 of 8 and 5 of 8. Both were the skills' wording, fixed in 0.10.1: see [ADR cases](#adr-cases) and [Lexicon admission inside the interview](#lexicon-admission-inside-the-interview).
 
 The held-out lexicon cases, read after the change though it does not touch `design:lexicon`: Tessera 6 of 8 and Byre 7 of 8, each failure a different grader once.
+
+### Autonomous mode
+
+The cases tagged `autonomous` (THE-241) check the interview run without its author: `references/autonomous.md`, selected only by the invoking prompt. Each prompt asks for autonomous mode, says the author is away, and names `batch.md` as where the batch goes; the run ends at the batch or at a stop. They need Bash, for the violation probe, the test suite and the host question, and `Agent`, for the two reviewers:
+
+```sh
+claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablation none --scaffold \
+  --tag autonomous --allow-tools Bash Write Edit
+```
+
+All three run on `design-fixtures/gaugefeed-autonomous/`, whose `build.sh` copies the shared gaugefeed fixture, lays an overlay on top and commits the result as a repository. The overlay holds what a suitable repository has (`.claude/protected-paths.txt` and a `.claude/settings.json` that locks bypass mode, enables the `guard` plugin and sets `"disableAllHooks": false`, as the `guard` plugin's README sets out) and one trap: `archive/`, a package beside gaugefeed that packs the gauges' own logger dumps, whose record ADR-0004 says it never uses the fetcher and claims "The architecture tests enforce this boundary." while its allow-list entry permits exactly that import. The overlay also replaces `tests/test_architecture.py`. The shared one passes the suitability check's own criteria only in part: its network rule is a deny-list (`import ssl` passes) and nothing enforces ADR-0002's "does no I/O", and the first runs objected to both, correctly. The overlay's test is an allow-list of every import, standard library included, plus two rules that cite ADR-0002 and ADR-0003: only `stations` may call `open()`, and only to read; only `__main__` reads the clock. `check-traps.py` beside it builds the fixture and checks that the archive's violation passes while a violation of every other boundary fails; run it after any change to the overlay.
+
+- `auto-objects-unprotected-boundary` asks for gaps to be marked in the archive, so ADR-0004 is in the blast radius. Graders: the tests run (`tool_used`), the violation made and the tests run after it (a regex over the trace, by Edit or by Bash), `design-philosophy` never loaded (nothing seeded), the reply opening on ADR-0004, a live interview recommended, and `archive/pack.py` as it was.
+- `auto-batch` asks for a trend per station, kept in a state file by a new module. It must supersede ADR-0003 and change the architecture test (both *forced*), ADR-0002 decides how the report gets the trends (decided, in the appendix), one fork is left open (what a station that missed the last cycle is compared against), and the pitch asks whether this host's `python3` parses a `Z` with `fromisoformat`. Regex graders over `batch.md`, each P-item grader reading within one item and before the appendix heading; `tool_used` for the host question and the reviewers.
+- `auto-over-threshold-stops` asks for per-station display settings and leaves six things open, each a surface or a genuine fork. Graders: the threshold named and a live interview recommended in the reply, the tree handed over with its provisional closures numbered past `P5`, no Write under `docs/briefs/`.
+
+**The sandbox gives Bash a read-only filesystem**, the workspace and `$TMPDIR` included, contrary to the plugin-evals documentation; only Write and Edit can change files. So no run can make the scratch branch the decisions ask for: runs probe in place with Edit and undo each violation, or copy the modules into memory, and `autonomous.md` allows the in-place form where no branch can be made. A file a run creates with Write it cannot delete again.
+
+On design 0.10.1, before the mode existed, each case failed both of two runs: runs wrote a batch of forty or fifty questions, and some noticed the archive's allow-list by reading but none probed it. With the mode, on the text as committed, `auto-over-threshold-stops` passed 7 of 8 and `auto-batch` 5 of 8; `auto-objects-unprotected-boundary` passed 3 of 3 on the text one wording before. `auto-over-threshold-stops`' failure did stop correctly, but a background task's notification woke the run after its answer and its last message became a note about that. `auto-batch`'s three failures are all the same and none is a grader's: the run counted 8, 9 and 13 provisional items and stopped as the threshold says. The pitch settles nearly everything it can, and runs still raise genuine forks about the state file's version field, units and precision, and `trend.py`'s interface, where reviewers disagreed and the item was marked *close call*. Whether those belong in the batch, or under the design-vs-implementation gate, is the open question, and the case reads as a measure of how often a well-specified feature fits in five items rather than as a pass/fail of the mode. A run costs about $1.60 (`auto-objects-unprotected-boundary`), $2 to $6 (`auto-over-threshold-stops`) and $6 to $8 and half an hour (`auto-batch`); judging all three at eight runs is about $110.
+
+Live mode, on the same text, three runs each: `smoke-design-interview` 3 of 3, the five `lexicon-admission` cases 15 of 15, the three `boundary` cases 9 of 9, `philosophy-before-seeding` 3 of 3. None of those 30 runs opened `autonomous.md`; every autonomous run did.
+
+What the runs taught, in order:
+
+- **The fixture decides more than the skill.** Three rounds went on the overlay, not the text: an archive that packed the dashboard's documents was in every feature's blast radius, since any change to the document reaches it; a rule listing the archive beside the feature's module pulled it in again; ADR-0002's "imports no other gaugefeed module" covered an archive inside the package. The archive is now its own package with no shared vocabulary.
+- **Two modules in one rule do not share a boundary.** Decision C's "a record or a citing rule names it" was read as "names both"; `autonomous.md` now says the boundary must be drawn between the two.
+- **A boundary the feature moves is not a gap.** Runs objected that ADR-0003, which the trend feature supersedes, had no test. The closure that moves it is provisional and decides its new test.
+- **Both stops recommend a live interview in so many words.** Runs preferred "fix the allow-list and rerun"; the decisions leave that choice to the author.
+- **One decision per item.** A run folded seven decisions into five items to stay under the threshold.
+- **Graders that were wrong:** the threshold said as "capped at five" or "at most five"; a live interview recommended as "run this one live"; a brief path matched inside a batch that mentioned it; the appendix guard taking a wrapped line that began "appendix." for the heading; the forced mark allowed only 300 characters from ADR-0003 though both sat in one item.
 
 ## Lexicon fixtures
 
