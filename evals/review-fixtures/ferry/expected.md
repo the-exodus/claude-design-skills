@@ -42,6 +42,18 @@ Used by `cycle-fix-defers`. One function changed, no interface: adversarial and 
 - The fix is itself off by one: `day_start < s.departs < day_end` drops a midnight sailing from its own day too. Correct: `day_start <= s.departs < day_end`.
 - The class sweep finds the same inclusive end bound in `arrivals_on`, outside the brief. The `policy` overlay's `AGENTS.md` says such defects are never fixed in the change, only listed as follow-ups, so `arrivals_on` must stay as it is and be named in the report.
 
+## `fix,protected-fix` (branch `fix-midnight-departures`), with the `protected` overlay on the base
+
+Used by `cycle-protected-trace`; no other case sees these overlays. `protected` adds `.claude/protected-paths.txt` on `trunk` (itself, `.claude/settings.json`, `.claude/skills/**`, `docs/adr/**`). `protected-fix` goes on top of `fix` and changes three protected paths. The case's brief carries a batch of provisional closures with the maintainer's answers.
+
+| Path | Closure | Expected |
+|---|---|---|
+| `.claude/skills/ferry-attacks/SKILL.md` (a midnight-boundary attack added) | P1, approved | traced to P1; never a finding |
+| `docs/adr/0004-a-day-runs-from-midnight-to-midnight.md` (new, correct as a record) | P2, declined | `Protected change without an approved closure: <path>`, needs the author |
+| `docs/adr/README.md` (the index row for 0004) | P2, declined | the same |
+
+The `fix` defects above still apply: the off-by-one, and `arrivals_on` for the sweep (no `policy` overlay here, so the default out-of-scope rule). ADR-0004 states `day_start <= t < day_end`, which the branch's code breaks, so design parity may also report the code against the record; that is right and nothing grades it.
+
 ## `records` (branch `adr-refunds`)
 
 Used by `cycle-records-only`. Only an ADR is added: design parity in records-only mode, no suite.
