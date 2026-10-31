@@ -115,8 +115,9 @@ and lens bodies, nothing else.
    one pathspec per entry. A protected change is traced when a closure in the
    brief that the author **approved** names its path or a glob covering it; a
    closure that was declined or never answered traces nothing. Each untraced
-   change is a finding, worded `Protected change without an approved closure:
-   <path>`. It holds without triage, and its disposition is **needs the
+   change is a finding, written exactly `Protected change without an approved
+   closure: <path>`, the path after the colon, wherever it appears, so that a
+   search finds it. It holds without triage, and its disposition is **needs the
    author**: revert the change, or record a closure that names it and stop for
    the author's answer. Never record the approval yourself.
 
@@ -176,8 +177,9 @@ and lens bodies, nothing else.
 8. **Record and report.** Record on the brief, where the brief lives in a
    tracker, as one comment: what was fixed, what was rejected and why, what was
    left as a follow-up, one line each. When step 1b ran, the comment has a
-   "Protected changes" section: one line per protected change, with the
-   closure id it traces to or the approval quoted, or its finding. Then report
+   "Protected changes" section: one line per protected change, its path then
+   the closure id it traces to or the approval quoted, or else its finding's
+   exact words. Then report
    in the conversation: the findings, ranked, each with its disposition (fixed,
    rejected with the reason, follow-up, or needs the author), the "Protected
    changes" section too where there is no tracker, and, when the lens argument
