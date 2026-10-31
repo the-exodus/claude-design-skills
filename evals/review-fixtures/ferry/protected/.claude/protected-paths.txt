@@ -1,0 +1,5 @@
+# A change to any of these needs a provisional closure the maintainers approved.
+.claude/protected-paths.txt
+.claude/settings.json
+.claude/skills/**
+docs/adr/**
