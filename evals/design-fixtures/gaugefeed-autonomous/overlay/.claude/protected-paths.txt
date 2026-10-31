@@ -1,0 +1,6 @@
+# Paths an agent may change only under a provisional closure the author has
+# approved. What an entry matches is defined in the guard plugin's README.
+.claude/protected-paths.txt
+.claude/settings.json
+.claude/settings.local.json
+tests/test_architecture.py

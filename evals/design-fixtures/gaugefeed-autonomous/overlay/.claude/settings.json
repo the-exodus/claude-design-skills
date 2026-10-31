@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "disableBypassPermissionsMode": "disable"
+  },
+  "enabledPlugins": {
+    "guard@claude-design-skills": true
+  },
+  "disableAllHooks": false
+}
