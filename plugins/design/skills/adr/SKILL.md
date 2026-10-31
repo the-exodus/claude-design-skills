@@ -60,6 +60,26 @@ Each ADR records one decision. Two decisions are separate when either could be
 overturned while the other stands; they get one ADR each, even when they are
 taken together. The rejected alternatives to a decision belong in its ADR.
 
+## Boundaries
+
+A decision draws a boundary when a structural rule could see what it decided:
+one module's use of another, a surface and the consumers allowed to use it, or
+a prohibition. Most dependencies were never decided by anyone and are not
+boundaries; a boundary is one a decision drew. How fine-grained a boundary is
+(a package, a namespace, a project) is for the project's architecture tests to
+say.
+
+When an architecture test protects the boundary a record decides, the
+Decision ends with this sentence, exactly:
+
+> The architecture tests enforce this boundary.
+
+Write it when the test exists, and when the test was decided together with
+the boundary, as a design records it, even though the build has not written it
+yet: the record and the test then ship together. A boundary nobody decided a
+test for gets no sentence; if one is added later, the sentence goes in an
+addendum then.
+
 ## Location and index
 
 ADRs live wherever the project already keeps them. Scan for the directory:

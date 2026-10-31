@@ -70,6 +70,7 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `adr-supersede-bold-status`, `-bare-status`, `-status-section` | the old record is marked in the status field it already has and is otherwise untouched; the new one names it; the index follows |
 | `adr-partly-superseded-other-format` | one of two decisions in an old-format record changes: one new record names the decision it takes over, the old one stays Accepted and is marked partly superseded in its own field, nothing is split |
 | `adr-no-directory` | with no ADR directory, it asks where, suggests a concrete place and creates nothing |
+| `adr-boundary-says-enforced` | a decision that draws a boundary, with an architecture test beside it, ends its Decision with the fixed sentence that says so; `adr-new-record` and `adr-title-states-decision` check that a record drawing no boundary does not |
 | `philosophy-before-implementation` | `design-philosophy` loads, by its qualified name, before the first edit of a request that adds behaviour |
 | `philosophy-not-for-mechanical-edit`, `philosophy-not-for-rename` | it does not load for a typo fix or a rename |
 | `philosophy-before-seeding` | in a design interview resumed at the scope confirmation, it loads before the tree is seeded |
@@ -78,6 +79,8 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `interview-narrower-meaning-admitted` | a branch fixes what a word means: it is admitted, by meaning not mechanism, after `design:lexicon` is loaded |
 | `interview-oversized-lexicon-noted` | a 34-entry lexicon is noted at ingestion and consolidation offered as separate work, not done |
 | `interview-lexicon-write-back` | after the wrap-up, the lexicon is written back: inherited entries byte-identical, new terms as entries, and the reply says what is new and what changed |
+| `interview-boundary-closure-names-test` | a branch closes by placing a module and saying who may import it: the closure decides the architecture test that protects that boundary, and the threshold branch closed beside it gets none |
+| `interview-brief-carries-boundary-test` | after the wrap-up, capture carries that test into the brief's acceptance criteria and the boundary's ADR carries the enforcement sentence |
 | `trigger-ready-for-pr` | `implementation:review-cycle` loads when a branch is ready for its pull request, without being named |
 | `trigger-not-for-open-pr` | it does not load for reviewing a pull request a colleague opened |
 | `cycle-asks-for-brief` | with no brief and no tracker, it asks for the brief and launches no reviewer |
@@ -101,7 +104,7 @@ The smoke cases grade only `tool_used: Skill`, which can't pass without the plug
 
 ## ADR cases
 
-The `adr-*` cases run on Tidewatch, an invented project with a small ADR directory: records 0001, 0002 and 0004, so the gap at 0003 is there to be filled by mistake. Like the lexicon fixtures they copy a `fixture/` into the workspace and write files, so they need `--scaffold --allow-tools Write Edit`; `--tag adr` runs them alone. They are cheap: a run takes under a minute, and all seven at three runs each took about four minutes at `-j 4` and reported $5.86.
+The `adr-*` cases run on Tidewatch, an invented project with a small ADR directory: records 0001, 0002 and 0004, so the gap at 0003 is there to be filled by mistake. Like the lexicon fixtures they copy a `fixture/` into the workspace and write files, so they need `--scaffold --allow-tools Write Edit`; `--tag adr` runs them alone. They are cheap: a run takes under a minute, and the first seven at three runs each took about four minutes at `-j 4` and reported $5.86.
 
 Nearly everything is graded from the files the run leaves behind. Where a case needs a known file name to read a new record back, the prompt gives the title to use; `adr-title-states-decision` leaves the title to the skill, and one narrow `llm` grader reads the created file's name.
 
@@ -149,6 +152,21 @@ What a word's admission means is a judgement, so these cases use narrow `llm` gr
 Under design 0.5.1, over eight runs each unless said: the component was never admitted (three of three), the inherited entry never touched (eight of eight), the write-back correct (three of three). `interview-narrower-meaning-admitted` passed four times in eight, and failed the same way each time: the word was admitted, by meaning, but `design:lexicon` was never loaded, though the interview skill says to load it before the first admission. The interview carried its own one-sentence summary of the three tests, which was enough to admit a word correctly without the skill. 0.6.0 takes that summary out, so the tests live only in `design:lexicon`: the case passed thirteen times in fifteen on the released text, the two failures being the same one, and the other four cases in all three runs each. `interview-oversized-lexicon-noted` passed seven times in eight after one grader fix: a correct run had called the 34 entries "40-odd", which the pattern did not accept. Its one remaining failure, on the offer of consolidation, came from a run whose trace was not kept. Eight more runs with traces kept all made the offer, and all in the word "consolidation", which the first pattern accepted; so that failure was most likely a run that did not make the offer, about one in sixteen, not a wording the pattern missed. The pattern had been widened meanwhile to the other natural ways of making the offer, and stays so.
 
 Two things about the runner found on the way: `--case` is not repeatable (the last one wins) and takes plain `*` wildcards only; and a `plugins:` entry may not point at a directory beside the cases, so a case that ships its own plugin copy keeps it in its own subdirectory.
+
+### Boundaries and their tests
+
+The cases tagged `boundary` (THE-253) check that a boundary is decided together with the architecture test that protects it. A boundary is what `design:adr` says it is: one module's use of another, a surface and the consumers allowed to use it, or a prohibition, where a decision drew it. `--tag boundary` runs the three; they need `--scaffold --allow-tools Write Edit`.
+
+- `adr-boundary-says-enforced` runs on Tidewatch: a decision that the flood page reads levels only through one module, with an architecture test landing beside it. The record's Decision must end with `design:adr`'s fixed sentence, "The architecture tests enforce this boundary.", by regex. `no-enforcement-claim` on `adr-new-record` and `adr-title-states-decision` checks the other direction: a record that draws no boundary never carries it.
+- The two interview cases run on `design-fixtures/gaugefeed/` (see the README there): gaugefeed grown into a project whose stdlib architecture test is an allow-list of imports, shared so that THE-241's cases can use it too. Both resume one interview about a station that stops answering for days, chained on design 0.9.0 with the user's replies written by hand. `interview-boundary-closure-names-test` stops where the assistant has asked its probes on where the silence state lives (U1) and on the silence threshold (U2); the prompt closes both and never mentions the architecture test. Two narrow `llm` graders: U1's closure decides what the rule permits or forbids, inside the closure and not as a blast-radius to-do; U2's closure, which no import rule can see, gets no architecture test. `interview-brief-carries-boundary-test` goes on to the wrap-up, the user having stated the test while closing U1, and asks for capture: the brief's acceptance criteria name the test, and the record written for U1 carries the sentence (a regex over the record's `Write` in the trace, since the file name is the skill's to choose).
+
+On design 0.9.0 all three failed every run: no record carried the sentence (3 of 3), no U1 closure decided the test (3 of 3; one named the allow-list entry only under "what closing these changed"), and capture wrote the test into the brief's acceptance criteria in 2 of 3 runs but never into the record. The chained transcript showed the same thing: told the test outright while closing U1, the assistant left it out of U1's recap and filed it under testing strategy.
+
+It took three rounds of wording. The first said it in `design:adr`, in `design-interview`'s closure states and in the acceptance-criteria template; the interview closure passed from then on. The record still failed 3 of 3: capture did not hand the boundary line to `design:adr`, and one run withheld the sentence because the test "lands with the implementation", which the first wording's "lands in the same change" allowed. The second round has capture pass the line on and says a test decided with the boundary counts. Then the acceptance criteria missed the test in 2 of 3: no run had opened the template, so the third round puts the rule in `SKILL.md`'s closure paragraph and keeps in the template only why this one criterion may name structure. On design 0.10.0, over eight runs: `adr-boundary-says-enforced` 8 of 8, `interview-boundary-closure-names-test` 8 of 8, `interview-brief-carries-boundary-test` 7 of 8 (one brief without the test in its criteria).
+
+Two older cases were lower than their recorded rates in the same pass, and an A/B against `master` (design 0.9.0) at eight runs each showed it was not this change: `adr-supersede-status-section` 5 of 8 on 0.9.0 and 6 of 8 on 0.10.0, each time the old record left Accepted; `interview-narrower-meaning-admitted` 4 of 8 and 5 of 8, each failure `design:lexicon` never loaded.
+
+The held-out lexicon cases, read after the change though it does not touch `design:lexicon`: Tessera 6 of 8 and Byre 7 of 8, each failure a different grader once.
 
 ## Lexicon fixtures
 
@@ -325,6 +343,8 @@ Agreement reached with `claude-opus-5` as the judge, five gradings of each outpu
 | `entry-states-meaning-not-mechanism` | `interview-narrower-meaning-admitted` | 5 | 25/25 | 0 | 0 |
 | `does-not-consolidate` | `interview-oversized-lexicon-noted` | 4 | 20/20 | 0 | 0 |
 | `says-what-is-new-and-what-changed` | `interview-lexicon-write-back` | 4 | 20/20 | 0 | 0 |
+| `boundary-closure-names-its-test` | `interview-boundary-closure-names-test` | 5 | 15/15, three gradings each, 2026-10-31 | 0 | 0 |
+| `threshold-closure-carries-no-architecture-test` | `interview-boundary-closure-names-test` | 5 | 15/15, three gradings each, 2026-10-31 | 0 | 0 |
 
 The review-cycle graders, calibrated on 2026-10-18 with three gradings each. Their known passes are real final reports judged by hand; their known fails are the same reports with one finding removed or one added that the rubric fails:
 

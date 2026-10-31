@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: threshold-closure-carries-no-architecture-test--pass-1
+context:
+  scaffold_script: scaffold.sh

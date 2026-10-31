@@ -12,6 +12,8 @@ The claim it makes concrete: **if test cases can be written from the design alon
 
 **A case per entry in the edge-case artifact.** Boundary values, malformed input, concurrency, partial failure, stuck states. These are the criteria that actually catch regressions; the happy-path cases mostly catch typos.
 
+**A case per boundary the tree decided**, from its closure's boundary line: crossing the boundary fails the architecture test that protects it. This is the one criterion that names structure, because there the structure is the decision.
+
 **Observable results only.** A criterion asserting on internal structure — a helper was called, a field is arranged a certain way — tests the implementation rather than the design, and will break on refactors that changed nothing anyone can see. Assert on what a caller, a user, or an operator can observe.
 
 **Explicit non-criteria**, where useful: behavior deliberately unspecified, so that an implementer knows they have latitude rather than guessing at an unstated requirement. Branches that closed *deferred-implementation* are exactly this, and naming them here is what makes that terminal state useful downstream.
