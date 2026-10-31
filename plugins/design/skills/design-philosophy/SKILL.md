@@ -9,8 +9,9 @@ description: >
   and at the start of a design interview, before any branch is seeded.
   Carries the structural principles that govern how software here is built —
   complexity as the thing to minimize, deep modules behind small interfaces,
-  information hiding, no pass-through layers, pushing complexity down, considering
-  alternatives before committing, long-term simplicity over short-term speed.
+  information hiding, not decomposing by time, no pass-through layers, pushing
+  complexity down, defining errors out of existence, considering alternatives
+  before committing, long-term simplicity over short-term speed.
   Trigger on implement, add, build, extend, refactor, restructure, design, plan.
   NOT for mechanical edits whose decisions are already made (a typo, a rename,
   formatting), and NOT for code-level style: formatting, naming conventions,
@@ -51,6 +52,14 @@ Decomposition should be based on what knowledge needs to stay encapsulated, not 
 
 **At implementation time:** splitting a file because it got long is not decomposition. Ask what each piece would own.
 
+### Don't decompose by time
+
+Splitting a task into the steps it happens in (read, parse, transform, write) looks tidy, and spreads the knowledge the steps share (a format, a schema, a protocol) across all of them. A pipeline is fine when its stages meet at something one module owns; it is this smell when two stages each carry their own copy of what the other produces.
+
+**At design time:** a boundary named for a phase (reader, loader, processor) gets the question from "Hide decisions, not just code" in its sharpest form: what does each side own that the other doesn't? Where both sides must know the same format, merge them or give the format one owner that both use.
+
+**At implementation time:** the signal is a format that two modules both parse or both produce, so that changing it edits both.
+
 ### No pass-through layers
 
 Each layer of abstraction should do something meaningfully different from the one above it. Layers that just forward calls or data unchanged are a smell.
@@ -66,6 +75,18 @@ When something has to be complicated, better it lives inside a module — writte
 **At design time:** count callers. Complexity in a module is paid once; the same complexity pushed to callers is paid per call site, forever, by people who have less context than the module's author had.
 
 **At implementation time:** this is the argument against making the caller handle a case the callee could have handled. A function that returns something the caller must always post-process has pushed its work outward.
+
+### Define errors out of existence
+
+An error case is complexity every caller pays for. Where every caller would react to it the same way (skip, use a default, carry on), change what the operation means so that reaction is its defined result, and callers have nothing to handle. Where callers would react differently, or one of them needs to know, it is a real error: surface it.
+
+Write the new contract as a guarantee: "delete guarantees the file is gone afterwards". A contract that can only be written with "ignore" or "swallow" masks a failure instead. A guarantee may be best effort if it says where it stops. And one failure can split: the outcome defined away, the fact that it happened still reported to whoever acts on it.
+
+A null object, an empty result and a no-op are ways to do this, and work only where such a guarantee holds. A missing optional decoration can be a no-op; a missing payment processor cannot.
+
+**At design time:** record each failure case on a module's surface as defined away, with its guarantee, or surfaced, with why callers differ.
+
+**At implementation time:** the signal is the same catch or null check, with the same body, repeated across callers.
 
 ### Consider alternatives before committing
 

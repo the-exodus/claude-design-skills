@@ -57,7 +57,7 @@ Consolidation applies the same tests to every entry of an existing lexicon — r
 
 #### `design-philosophy`
 
-The principles the interview seeds branches from, and that apply again when implementing from a spec: complexity as the thing to minimize, interfaces simpler than implementations, hiding decisions rather than just code, no pass-through layers, pushing complexity down rather than out, considering alternatives before committing, long-term simplicity over short-term speed, and modest generalization.
+The principles the interview seeds branches from, and that apply again when implementing from a spec: complexity as the thing to minimize, interfaces simpler than implementations, hiding decisions rather than just code, not decomposing by time, no pass-through layers, pushing complexity down rather than out, defining errors out of existence, considering alternatives before committing, long-term simplicity over short-term speed, and modest generalization.
 
 Separate from the interview because the same principles apply when there's no interview — an agent implementing from a prompt still makes structural decisions.
 
