@@ -1,5 +1,5 @@
 ---
-description: "Autonomous mode, a passing run that ends at the batch: it proceeds though the archive elsewhere in the repository is unprotected; the open fork is provisional; the ADR-0002-forced branch is decided and listed in the appendix; superseding ADR-0003 and changing the architecture test are provisional, marked forced, and name the protected path; the host question is answered by running Python; scope recap first; at most five items; two reviewer subagents."
+description: "Autonomous mode, a passing run that ends at the batch: it proceeds though the archive elsewhere in the repository is unprotected; the open fork is provisional; the ADR-0002-forced branch is decided and listed in the appendix; superseding ADR-0003 and changing the architecture test are provisional, marked forced, and name the protected path; the host question is answered by running Python; scope recap first; the counts line with the genuine forks within the floor of five; two reviewer subagents."
 tags: [autonomous, interview]
 plugins: ["../../plugins/design"]
 max_turns: 200

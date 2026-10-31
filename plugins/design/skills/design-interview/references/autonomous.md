@@ -17,7 +17,7 @@ Run at the end of Phase 2, before the scope recap and before anything is seeded.
 **Check, in order:**
 
 1. **The guard.** Read, without tripping it: the protected-paths list `.claude/protected-paths.txt` exists (what its entries match is defined in the `guard` plugin's README; no list means the repository has not opted in); it names itself, the architecture-test locations, `.claude/settings.json` and `.claude/settings.local.json`; and `.claude/settings.json` sets `permissions.disableBypassPermissionsMode`, enables the plugin `guard`, and sets `"disableAllHooks": false`.
-2. **The violation probe.** For each boundary in the blast radius, on a scratch branch, introduce the smallest realistic violation (the import the record forbids, say) and run the architecture tests. A boundary is protected only if something fails; reading the test and judging that it would is not the check. Where no branch can be made, make each violation in the working tree and undo it before the next. Either way, leave the working tree exactly as you found it. If the repository cannot be built or run here, map tests to boundaries by reading, and say the check was weaker.
+2. **The violation probe.** For each boundary in the blast radius, on a scratch branch, introduce the smallest realistic violation (the import the record forbids, say) and run the architecture tests. A boundary is protected only if something fails; reading the test and judging that it would is not the check. Only where no branch can be made, make the violation in place with your edit tool, and only in a file that is clean against `HEAD`; revert each violation before the next, and check that `git diff` is clean afterwards. If the repository cannot be built or run here, map tests to boundaries by reading, and say the check was weaker.
 
    A boundary this feature itself moves, by superseding or amending its record, is not a gap here: the closure that moves it is provisional and decides the test that protects the new one.
 3. **The tests are meaningful.** Each protects a boundary a record names (housekeeping checks do not count); together they cover every boundary in the blast radius, not only the outermost layer; they are allow-lists, so a new dependency fails by default; and they are protected, by the list above.
@@ -51,7 +51,7 @@ A provisional closure is an assumption node: record your recommended answer, the
    - **Blind**, first. Give it the pitch and the Phase 2 context, not your tree. It seeds its own tree, and for each of your decided closures, given only the question, lists the options and which constraint rules out each.
    - **Adversarial**, then, over your whole tree: what case breaks it, what is missing, which grounds fail, and what no test can judge: whether the modules are deep, whether each interface is simpler than what it hides.
 
-   A branch they find missing is seeded and walked. A decided closure whose grounds fail, or whose re-derivation diverges from yours, becomes provisional and is marked *close call*. A finding you dispute goes in the batch with both positions.
+   A branch they find missing is seeded and walked. A decided closure whose grounds fail, or whose re-derivation diverges from yours, becomes provisional and is marked *close call*. A finding you dispute goes in the batch with both positions. The design-vs-implementation gate applies to their findings as to any probe: a close call about units, precision or an interface's exact shape closes *deferred-implementation* and goes in the appendix, not the batch.
 4. **Explicit close** applies only to provisional closures, through the author's answers to the batch.
 
 ## Phases with the author absent
@@ -69,11 +69,15 @@ A provisional closure is an assumption node: record your recommended answer, the
 Wherever the invoking prompt puts it. The batch with the author's answers is the record of every provisional closure. In order:
 
 1. **The scope recap**, as Phase 3 states it.
-2. **The provisional items**, `P1`, `P2`, …, ordered by how much of the tree hangs on each. Each gives the question, your recommendation, the rejected alternatives and why, and which branches regrow if the author rejects it. One that changes a protected path or a record names those paths. Mark an item *forced* when it is provisional by rule (a supersede, a changed architecture test, a surface, a lexicon term) rather than by fork, and say which rule, up front, even when you also offer alternatives; mark it *close call* when a reviewer disagreed or a re-derivation diverged. Write each so that confirming it costs a word.
-3. **The appendix**: one line per decided closure with the record or constraint that forced it; the branches parked *stable-open*; the assumptions this interview added or invalidated; any override of an objection.
+2. **The provisional items**, `P1`, `P2`, …, ordered by how much of the tree hangs on each. Each gives the question, your recommendation, the rejected alternatives and why, and which branches regrow if the author rejects it. One that changes a protected path or a record names those paths. Mark each item's kind up front: *fork* when two or more options satisfy every constraint and the choice is open, even if a rule would also make it provisional; *forced* when the answer is settled (by the pitch, a record or a constraint) and only a rule makes it provisional (a supersede or addendum, a changed architecture test, a surface, a lexicon term), saying which rule; alternatives you raise against the author's own decision do not make it a fork. Add *close call* when a reviewer disagreed or a re-derivation diverged. One decision per item, both ways: never fold several into one item, never split one across several. Write each so that confirming it costs a word.
+3. **The appendix**: one line per decided closure with the record or constraint that forced it; the branches closed *deferred-implementation* or parked *stable-open*; the assumptions this interview added or invalidated; any override of an objection.
 
-**At most five provisional items** beyond the scope recap, lexicon sign-offs included. Count; do not weigh. One decision per item: folding several into one item to stay under five is weighing by another name.
+Right after the scope recap, state the two counts on one line, exactly in this form:
+
+> Forks: N genuine, M decided branches.
+
+N counts the *fork* items; M counts the branches closed *decided*. Items marked *forced* still need the author's word but do not count.
 
 ## When the feature is unsuited to this mode
 
-If the batch would hold more than five provisional items, or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend in so many words a live interview for this feature, and hand over the tree so far where the batch would have gone: every branch with its state, the provisional closures numbered `P1`, `P2`, … as they would have been. Write no brief.
+If the genuine forks exceed a third of the decided branches, with a floor of five (so up to five forks never stops a run), or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend in so many words a live interview for this feature, and hand over the tree so far where the batch would have gone: the counts line, every branch with its state, and the provisional closures numbered `P1`, `P2`, … and marked as they would have been. Write no brief.
