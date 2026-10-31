@@ -30,6 +30,8 @@ The two pulls are real and opposed; the skill needs both sets of mechanisms simu
 7. When all branches are terminal, wrap up and lay out the tree, the assumptions, and the lexicon.
 8. On request only, capture the tree as output artifacts.
 
+**Autonomous mode.** When the invoking prompt asks for the interview to run autonomously, without the author present, read `references/autonomous.md` now, before Phase 1. It changes who may close a branch, what the four locks are, and where the questions go: one batch at the end, not a conversation, and a suitability check that can stop the run before anything is seeded. Each place below where the modes differ says so in a line starting "In autonomous mode". Without that request none of it applies, and the interview runs as written here.
+
 ## Voice and interaction style
 
 - Talk like a senior engineer talking to a peer. Direct, technical, no padding.
@@ -50,6 +52,8 @@ While listening, note:
 - **Implicit change-type signals.** "Add", "extend", "rewrite", "replace", "migrate", "from scratch", names of existing modules.
 
 After the pitch, do not yet jump into questions. Move to phase 2.
+
+In autonomous mode the invoking prompt is the pitch, and the author's only turn before the batch.
 
 ## Phase 2: Codebase exploration, prior art, and lexicon ingestion
 
@@ -97,13 +101,13 @@ Prior interviews leave two kinds of promise. **Standing assumptions**, each with
 
 Index it the way ADRs are indexed: id, the assumption in one line, subject area, the observation that would falsify it. **Do not raise them yet.**
 
-**Open design questions** — branches an earlier interview closed *deferred-later*, *blocked*, or *stable-open* — live on the project's issue tracker, not in a file (an earlier version of this skill kept an open-items record; it turns into a backlog, which the tracker already is). Ask the user, once and in one line, which tracker items touch this work, and index what they name.
+**Open design questions** — branches an earlier interview closed *deferred-later*, *blocked*, or *stable-open* — live on the project's issue tracker, not in a file (an earlier version of this skill kept an open-items record; it turns into a backlog, which the tracker already is). Ask the user, once and in one line, which tracker items touch this work, and index what they name. In autonomous mode, query the tracker yourself where a connector reaches it, and ask nothing.
 
 Tell the user: "N assumptions and M open questions carried forward. I'll surface them when they touch something." Then say nothing more about them until they do.
 
 **Surface an item only when a branch's topic intersects it.** This is the whole discipline. A question about transport choice has no business appearing in a data-layer design, and a skill that recites its backlog at every interview trains the user to skip that section. Relevance is the test, not recency and not urgency — a question that has been open for a year and still doesn't touch this design stays quiet.
 
-When one does intersect, surface it with what would resolve it, and let the user decide whether this interview is the place: it can close now, stay open, or the current branch can be shaped to avoid depending on it. An assumption a branch contradicts is handled as invalidation (prune-and-regrow), and the record is corrected at capture.
+When one does intersect, surface it with what would resolve it, and let the user decide whether this interview is the place: it can close now, stay open, or the current branch can be shaped to avoid depending on it. An assumption a branch contradicts is handled as invalidation (prune-and-regrow), and the record is corrected at capture. In autonomous mode, before closing on a standing assumption, check its falsification signal (`references/autonomous.md`, *Stale grounds*).
 
 **Check items against the code at ingestion.** An item whose subject no longer exists is a retirement candidate — note it, don't act on it. Same posture as a retired lexicon term.
 
@@ -131,6 +135,10 @@ Record that location. Phase 9 writes everything there, and nothing in this skill
 
 If the scans found nothing, don't pick a location now. Capture will ask if it ever runs, and most interviews never need one.
 
+### Suitability check (autonomous mode only)
+
+In autonomous mode, Phase 2 ends with the suitability check of `references/autonomous.md`, before the scope recap and before anything is seeded: the guard's protected-paths list is read, and every boundary in the feature's blast radius is probed on a scratch branch by introducing a violation and running the architecture tests. Any boundary that nothing fails on, or any other property missing, is objected to first in your reply, with a recommendation to run the interview live, and the run stops there.
+
 ## Phase 3: Scope recap and confirmation
 
 Before seeding the tree, state your understanding back to the user and let them correct it. Cover:
@@ -141,6 +149,8 @@ Before seeding the tree, state your understanding back to the user and let them 
 - **The assumptions** you picked up in Phase 1, listed plainly. This is the user's first chance to shoot one down before the tree grows on top of it.
 
 Also state the **change-type** you're assuming — greenfield, additive, modifying, or mixed — since it sets how hard the Phase 2 exploration has to work and which branches will matter. State it as an inference; don't put it to a vote. "Mixed" is the honest answer when signals point both ways, and most non-trivial work is mixed: an addition that touches existing code, a rewrite that preserves an interface.
+
+In autonomous mode the recap is the first item of the batch, and you go on without waiting.
 
 Do not ask the user to classify the work. What *kind* of software this is — service, library, CLI, pipeline, UI — determines nothing about what the design needs. The properties of the work do, and those get checked in Phase 4 and rechecked throughout the walk. A confirmation turn spent ratifying a label is a turn not spent catching a wrong assumption.
 
@@ -245,6 +255,8 @@ A branch closes only when all four pass:
 
 4. **Explicit close.** The user must confirm closure with words. Drifting away from the branch in conversation does NOT close it.
 
+In autonomous mode the four locks are different: probes answered from the code, the records and by running something on the host; a written recap; two fresh reviewer subagents, blind then adversarial, after the walk; and explicit close only for provisional closures, through the batch. See *The four locks* in `references/autonomous.md`.
+
 ### Closure states
 
 When closing, record one of these terminal states with a sentence of rationale:
@@ -257,6 +269,8 @@ When closing, record one of these terminal states with a sentence of rationale:
 - **stable-open** — in tension with another branch, parked until that one moves
 
 "Decided" requires the actual answer in the rationale. The others require the reason.
+
+In autonomous mode you may close a branch *decided* only where nothing else was possible; a genuine fork, a supersede or addendum of an ADR, a change to an architecture test, a change to a user-visible surface, or a lexicon admission closes *provisionally*, as an assumption node the author confirms in the batch. See *Closure authority* in `references/autonomous.md`.
 
 **Three of these are promises, not conclusions.** *deferred-later*, *blocked*, and *stable-open* all mean the question outlives this interview, so each needs the thing that lets a later one pick it up: what would resolve it. For *blocked*, what's needed and from whom. For *deferred-later*, which phase or trigger brings it back. For *stable-open*, which branch it's in tension with. Without that field the item is a note that something is unfinished, which nobody can act on.
 
@@ -291,6 +305,8 @@ A branch may be reopened up to three times. After the third reopen, the underlyi
 
 If a single branch consumes a disproportionate share of the interview (rough rule: more than about a quarter of total questions asked), surface it: "We've spent a lot of time on this branch. Want to park it as stable-open, defer it, or keep going?"
 
+In autonomous mode a branch that hits the reopen cap becomes a batch item, and one over its budget is parked *stable-open* and listed in the batch's appendix.
+
 ## Phase 7: Contradictions and assumption invalidation
 
 When a new answer contradicts an earlier closed branch:
@@ -309,6 +325,8 @@ When a new answer contradicts an earlier closed branch:
    - The winning branch closes via the four locks.
 
 Surfacing contradictions, not auto-reopening, is deliberate. Auto-reopen interacts badly with the cycling failure mode; surfacing keeps the user in control.
+
+In autonomous mode, a contradiction the evidence settles you prune and regrow yourself; picking a side without evidence is a provisional closure. The author rejecting a provisional closure in the batch is an invalidation like any other.
 
 ## Phase 8: Wrap-up
 
@@ -330,9 +348,11 @@ Three things are worth offering explicitly, because they aren't deliverables —
 
 Offer all three in one line. If the user declines, the vocabulary, the assumptions and the open questions die with the conversation and the next design starts from nothing — which is worth the one line, and is exactly the failure that makes a design skill useless on the second run. Still an offer, not an action.
 
+In autonomous mode the wrap-up writes the batch where the invoking prompt says, in the order *The batch* in `references/autonomous.md` sets: the scope recap and the line counting genuine forks and decided branches; the provisional items `P1`…, one decision each, each marked *fork* or *forced* and naming the protected paths it changes; then the appendix of decided closures. The run ends there. Genuine forks beyond a third of the decided branches (and beyond five) stop the run instead: recommend a live interview and hand over the tree.
+
 ## Phase 9: Capture (on request only)
 
-The interview ends at Phase 8. This phase runs when the user asks for artifacts, and not otherwise.
+The interview ends at Phase 8. This phase runs when the user asks for artifacts, and not otherwise. In autonomous mode it always runs, once the author has answered the batch, since implementation follows.
 
 Read `references/artifacts.md` first. It owns which artifacts this design needs, the provenance rules all of them follow, and what makes each one complete.
 
