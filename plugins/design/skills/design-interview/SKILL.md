@@ -137,7 +137,7 @@ If the scans found nothing, don't pick a location now. Capture will ask if it ev
 
 ### Suitability check (autonomous mode only)
 
-In autonomous mode, Phase 2 ends with the suitability check of `references/autonomous.md`, before the scope recap and before anything is seeded: the guard's protected-paths list is read, and every boundary in the feature's blast radius is probed on a scratch branch by introducing a violation and running the architecture tests. Any boundary that nothing fails on, or any other property missing, is objected to first in your reply, and the run stops there.
+In autonomous mode, Phase 2 ends with the suitability check of `references/autonomous.md`, before the scope recap and before anything is seeded: the guard's protected-paths list is read, and every boundary in the feature's blast radius is probed on a scratch branch by introducing a violation and running the architecture tests. Any boundary that nothing fails on, or any other property missing, is objected to first in your reply, with a recommendation to run the interview live, and the run stops there.
 
 ## Phase 3: Scope recap and confirmation
 

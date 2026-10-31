@@ -25,7 +25,7 @@ Run at the end of Phase 2, before the scope recap and before anything is seeded.
 
 A blast radius with little established architecture is unsuited, not a reason to lean harder on `design:design-philosophy`: its decisions are the ones that establish boundaries, which is where the author's judgement is needed.
 
-**On any failure, object and stop.** The objection is the first thing in your reply, not a caveat after a recap: which boundaries or properties are missing (each unprotected boundary by its record), what each costs this mode, what would fix it, and a recommendation to run this interview live. Write it where the batch would have gone as well. Seed nothing. The author may override explicitly; an override is recorded in the tree as an assumption node and does not silence later objections.
+**On any failure, object and stop.** The objection is the first thing in your reply, not a caveat after a recap: which boundaries or properties are missing (each unprotected boundary by its record), what each costs this mode, what would fix it, and a recommendation, in so many words, to run this interview live, even when the fix looks small: whether to fix and rerun instead is the author's call. Write it where the batch would have gone as well. Seed nothing. The author may override explicitly; an override is recorded in the tree as an assumption node and does not silence later objections.
 
 ## Closure authority
 
@@ -76,4 +76,4 @@ Wherever the invoking prompt puts it. The batch with the author's answers is the
 
 ## When the feature is unsuited to this mode
 
-If the batch would hold more than five provisional items, or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend a live interview for this feature, and hand over the tree so far where the batch would have gone: every branch with its state, the provisional closures numbered as they would have been. Write no brief.
+If the batch would hold more than five provisional items, or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend in so many words a live interview for this feature, and hand over the tree so far where the batch would have gone: every branch with its state, the provisional closures numbered as they would have been. Write no brief.
