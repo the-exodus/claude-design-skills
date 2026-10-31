@@ -1,7 +1,7 @@
 ---
-# Superseding ADR-0003 is a provisional item marked forced.
+# Superseding ADR-0003 is a provisional item marked forced: both in one P item, before the appendix heading.
 type: regex
 target: { source: file, path: batch.md }
-pattern: '^(?:(?!\n[#*\d.\s:\u2014\u2013-]*appendix)[\s\S])*?\bP\d\b(?:(?!\n[#*\d.\s:\u2014\u2013-]*appendix)[\s\S])*?(?:ADR-?0003(?:(?!\n[#*\d.\s:\u2014\u2013-]*appendix)[\s\S]){0,600}?\bforced\b|\bforced\b(?:(?!\n[#*\d.\s:\u2014\u2013-]*appendix)[\s\S]){0,300}?ADR-?0003)'
+pattern: '(?:^|\n)[#*\s-]*P\d\b(?:(?!\n[#*\s-]*P\d\b)(?!\n(?:#{1,6}|\*\*)[^\n]{0,12}appendix|\nappendix\s*\n)[\s\S])*?(?:ADR-?0003(?:(?!\n[#*\s-]*P\d\b)(?!\n(?:#{1,6}|\*\*)[^\n]{0,12}appendix|\nappendix\s*\n)[\s\S])*?\bforced\b|\bforced\b(?:(?!\n[#*\s-]*P\d\b)(?!\n(?:#{1,6}|\*\*)[^\n]{0,12}appendix|\nappendix\s*\n)[\s\S])*?ADR-?0003)'
 flags: i
 ---
