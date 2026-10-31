@@ -27,9 +27,9 @@ ALLOWED = {
     "gaugefeed.archive": ({"csv", "json", "sys", "pathlib", "gaugefeed.fetcher"}, ARCHIVE_ADR),
 }
 
-# The only modules that may call open(), and why: the report reads no files
-# (ADR-0002) and no cycle keeps anything for the next (ADR-0003).
-FILE_READERS = {"gaugefeed.stations", "gaugefeed.archive"}
+# The only module of the cycle that may call open(), and why: the report reads
+# no files (ADR-0002) and no cycle keeps anything for the next (ADR-0003).
+FILE_READERS = {"gaugefeed.stations"}
 
 # The only module that may read the clock: the report is handed the cycle's
 # time (ADR-0002).

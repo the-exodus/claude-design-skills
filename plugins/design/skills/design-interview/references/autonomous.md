@@ -10,7 +10,7 @@ The invoking prompt is the author's only turn before the batch. What it decides,
 
 Run at the end of Phase 2, before the scope recap and before anything is seeded. Maintaining a sound design is non-negotiable in this mode, and your own judgement is not enough to guarantee it: the boundaries the feature touches must be protected by architecture tests that fail when they are crossed.
 
-**The blast radius** is Phase 3's "what it touches", plus every module sharing a decided boundary with one of those (a record, or a rule that cites one, names both). Not the import neighbours alone, which miss a prohibition on something nothing imports yet; not the transitive closure, which grows to the whole repository. A boundary elsewhere in the repository is not this feature's concern, however weak.
+**The blast radius** is Phase 3's "what it touches", plus every module sharing a decided boundary with one of those: a record, or a rule that cites one, draws the boundary between the two. Two modules merely listed in the same rule or table do not share one. Not the import neighbours alone, which miss a prohibition on something nothing imports yet; not the transitive closure, which grows to the whole repository. A boundary elsewhere in the repository is not this feature's concern, however weak.
 
 **The boundaries in it** are what the `design:adr` skill says a boundary is. A record whose Decision claims "The architecture tests enforce this boundary." is a claim to verify. For a record without that sentence, ask whether a structural rule could see what it decided; if so it is a boundary too. Dependencies nobody decided are not boundaries; ignore them.
 
