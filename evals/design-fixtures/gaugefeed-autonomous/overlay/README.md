@@ -10,10 +10,11 @@ Stations that do not answer are left out of that cycle's document. The words
 used here are defined in [docs/lexicon.md](docs/lexicon.md), and the decisions
 behind the layout are in [docs/adr/](docs/adr/README.md).
 
-Cron saves each cycle's document under `documents/`, and once a month the
-records office's archive is packed from them:
+Each gauge also logs its level every hour. Field staff save the logger dumps
+under `dumps/`, and once a month the records office's archive is packed from
+them:
 
-    python -m gaugefeed.archive documents/ 2025-06
+    python -m gaugefeed.archive dumps/ 2025-06
 
 ## Development
 

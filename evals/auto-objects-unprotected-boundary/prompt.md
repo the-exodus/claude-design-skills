@@ -9,6 +9,6 @@ allowed_tools: [Read, Glob, Grep, Skill, Agent, Bash, Write, Edit]
 
 Run the design interview for this in autonomous mode. I'm away until tomorrow and won't answer anything before then.
 
-The monthly archive should mark the cycles that are missing from a month, the ones cron never saved, so that the records office can tell a gap from a river that simply didn't move. Right now a missing cycle just isn't there, and nobody notices unless they count.
+The monthly archive should mark the hours missing from each gauge's logger dump, so that the records office can tell a gap in the logger from a river that simply didn't move. Right now a missing hour just isn't there, and nobody notices unless they count.
 
 Write the batch of questions for me to `batch.md` at the repository root and stop there; I'll answer it when I'm back.
