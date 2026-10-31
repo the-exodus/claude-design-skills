@@ -20,12 +20,13 @@ Existing ADRs in another format stand as valid historical records. They are not
 converted, split, or re-judged against the rules below, and they are not
 reference material. When a new ADR supersedes a decision recorded in one, the
 one edit it gets is to its status, in the field it already uses: a
-`**Status:**` line, a bare `Status:` line, or a `## Status` section. Where it
+`**Status:**` line, a bare `Status:` line, or a `## Status` section. Superseded
+replaces the status that was there; `Accepted` does not stay beside it. Where it
 carries no status at all, add the `**Status:**` line from this format. Leave the
 body alone either way.
 
-Where the existing ADR records other decisions that still stand, it keeps its
-status, and the supersede names the decision on both sides:
+Only where the existing ADR records other decisions that still stand does it
+keep its status, and the supersede names the decision on both sides:
 
 - Existing ADR: add `partly superseded by [ADR-NNNN](NNNN-slug.md)
   (<decision>, YYYY-MM-DD)` to its status field. Its index row reads
@@ -144,8 +145,9 @@ Decision section would have to be reworded to stay true. Narrowing or widening
 the decision's scope is a change in substance. Write a new ADR and mark the old
 one:
 
-- Old ADR: `Superseded by [ADR-NNNN](NNNN-slug.md) (YYYY-MM-DD)` in the status
-  field it already has.
+- Old ADR: `Superseded by [ADR-NNNN](NNNN-slug.md) (YYYY-MM-DD)` replaces its
+  status, in the status field it already has. The field reads that and nothing
+  else: not `Accepted. Superseded by …`.
 - New ADR: a `**Supersedes:**` field on its status line, after a ` · `, not on
   a line of its own. Its Context states what the old ADR decided and what
   changed.
