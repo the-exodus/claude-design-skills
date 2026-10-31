@@ -88,7 +88,7 @@ Two cases need care:
 - **A decision that contradicts an ADR indexed in Phase 2** is a supersession, not a new record. Say so and hand the `design:adr` skill both — it owns what happens next.
 - **A branch that closed *stable-open* or *blocked*** is not a decision and gets no ADR. Leave it in the tree where its openness is visible.
 
-Give the `design:adr` skill, per decision: the question, the options considered **and why each was rejected**, the chosen path, the rationale from the closure, and any ADR it supersedes. The rejection reasons are not optional padding — they are what makes the record load-bearing later, when someone is weighing the same option again and needs to know it was already ruled out and on what grounds. Then let it work.
+Give the `design:adr` skill, per decision: the question, the options considered **and why each was rejected**, the chosen path, the rationale from the closure, the closure's boundary line if it has one, and any ADR it supersedes. The rejection reasons are not optional padding — they are what makes the record load-bearing later, when someone is weighing the same option again and needs to know it was already ruled out and on what grounds. Then let it work.
 
 For an artifact marked *not yet templated*, write it from the general rules on this page: provenance, lexicon discipline, and a stated completeness test of your own before you start.
 

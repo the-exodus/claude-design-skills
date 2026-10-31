@@ -269,6 +269,8 @@ If a branch resolves an item carried in from a prior interview, say so at closur
 
 Don't manufacture a fork to make a closure look thorough. "No fork, forced by ADR-0012" is an honest and useful thing to write. Phase 9 reads this line directly rather than trying to infer from the rationale whether a choice ever existed.
 
+**A decided closure that draws a boundary also decides the architecture test that protects it**, in the same closure. A boundary is what the `design:adr` skill, loaded in Phase 2, says it is. Record it on one line: the boundary, and what the rule in the project's architecture tests permits or forbids, so that crossing the boundary fails. Phase 9 carries that line into the brief's acceptance criteria and to the boundary's ADR. If the project has no architecture tests, how they are written is a branch of its own; open it rather than assume a tool. If the user decides to leave the boundary unprotected, record that and why. A closure that draws no boundary carries no such line.
+
 **Lexicon admission happens here.** If closing this branch required a term to carry a specific meaning, admit it now against the `design:lexicon` skill's tests, and write its entry in that skill's shape. This is the only moment terms are admitted. Say which terms you added and why, in one line — a term entering the design's vocabulary is a small decision, not bookkeeping.
 
 ## Phase 6: Anti-cycling brakes
