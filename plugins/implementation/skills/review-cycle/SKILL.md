@@ -27,7 +27,8 @@ the PR.
   issue, with its comments, from the argument or the branch name. Otherwise the
   brief is the invocation's argument or what the conversation gave. **If there
   is no brief, ask for it and stop.** Never review against a brief inferred
-  from the commits, the code or the branch name.
+  from the commits, the code or the branch name. In autonomous mode, the batch
+  of provisional closures with the author's answers is part of the brief.
 - **The base:** the remote's default branch (`git symbolic-ref --short
   refs/remotes/origin/HEAD`), else the base branch the agent instructions name,
   else ask. Never assume `main`.
@@ -103,6 +104,22 @@ and lens bodies, nothing else.
    exist; and the decision records the change touches, by number and title. Do
    not summarise the diff: reviewers read it themselves.
 
+   **1b. Trace protected changes.** The cycle does this itself, in every mode,
+   records-only included; it is not a lens, and no lens argument drops it. It
+   runs when `.claude/protected-paths.txt` exists at the base or at HEAD; with
+   neither, the repository has not opted in. Its format is defined in the
+   `guard` plugin's README: one git pathspec per line, `#` comments. Take the
+   entries of both versions together, so that the change cannot unprotect a
+   path by editing the list, and list the protected changes with
+   `git diff --no-renames --name-only <base>...HEAD -- ':(glob,icase)<entry>' …`,
+   one pathspec per entry. A protected change is traced when a closure in the
+   brief that the author **approved** names its path or a glob covering it; a
+   closure that was declined or never answered traces nothing. Each untraced
+   change is a finding, worded `Protected change without an approved closure:
+   <path>`. It holds without triage, and its disposition is **needs the
+   author**: revert the change, or record a closure that names it and stop for
+   the author's answer. Never record the approval yourself.
+
 2. **Launch the reviewers in parallel**, one `Agent` call each in one response,
    `subagent_type: general-purpose`, never `fork`: a reviewer must not inherit
    this conversation. Reviewers run on the session's model; when the session
@@ -158,7 +175,11 @@ and lens bodies, nothing else.
 
 8. **Record and report.** Record on the brief, where the brief lives in a
    tracker, as one comment: what was fixed, what was rejected and why, what was
-   left as a follow-up, one line each. Then report in the conversation: the
-   findings, ranked, each with its disposition (fixed, rejected with the
-   reason, or follow-up), and, when the lens argument left out a lens the
-   table would have chosen, which and why. Then hand back to the PR step.
+   left as a follow-up, one line each. When step 1b ran, the comment has a
+   "Protected changes" section: one line per protected change, with the
+   closure id it traces to or the approval quoted, or its finding. Then report
+   in the conversation: the findings, ranked, each with its disposition (fixed,
+   rejected with the reason, follow-up, or needs the author), the "Protected
+   changes" section too where there is no tracker, and, when the lens argument
+   left out a lens the table would have chosen, which and why. Then hand back
+   to the PR step.
