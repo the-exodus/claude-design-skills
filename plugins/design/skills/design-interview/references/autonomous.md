@@ -72,8 +72,8 @@ Wherever the invoking prompt puts it. The batch with the author's answers is the
 2. **The provisional items**, `P1`, `P2`, …, ordered by how much of the tree hangs on each. Each gives the question, your recommendation, the rejected alternatives and why, and which branches regrow if the author rejects it. One that changes a protected path or a record names those paths. Mark an item *forced* when it is provisional by rule (a supersede, a changed architecture test, a surface, a lexicon term) rather than by fork, and say which rule, up front, even when you also offer alternatives; mark it *close call* when a reviewer disagreed or a re-derivation diverged. Write each so that confirming it costs a word.
 3. **The appendix**: one line per decided closure with the record or constraint that forced it; the branches parked *stable-open*; the assumptions this interview added or invalidated; any override of an objection.
 
-**At most five provisional items** beyond the scope recap, lexicon sign-offs included. Count; do not weigh.
+**At most five provisional items** beyond the scope recap, lexicon sign-offs included. Count; do not weigh. One decision per item: folding several into one item to stay under five is weighing by another name.
 
 ## When the feature is unsuited to this mode
 
-If the batch would hold more than five provisional items, or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend in so many words a live interview for this feature, and hand over the tree so far where the batch would have gone: every branch with its state, the provisional closures numbered as they would have been. Write no brief.
+If the batch would hold more than five provisional items, or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend in so many words a live interview for this feature, and hand over the tree so far where the batch would have gone: every branch with its state, the provisional closures numbered `P1`, `P2`, … as they would have been. Write no brief.

@@ -29,8 +29,9 @@ ALLOWED = {
     "archive.pack": ({"csv", "json", "sys", "pathlib", "gaugefeed.fetcher"}, ARCHIVE_ADR),
 }
 
-# The only module of the cycle that may call open(), and why: the report reads
-# no files (ADR-0002) and no cycle keeps anything for the next (ADR-0003).
+# The only module of the cycle that may call open(), and then only to read: the
+# report reads no files (ADR-0002) and no cycle keeps anything for the next
+# (ADR-0003).
 FILE_READERS = {"gaugefeed.stations"}
 
 # The only module that may read the clock: the report is handed the cycle's
@@ -88,6 +89,20 @@ def calls(name):
             yield node.func
 
 
+def open_calls(name):
+    return [node for node in ast.walk(tree(name))
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "open"]
+
+
+def reads_only(call):
+    """True when an open() call's mode is left out or is a literal that only reads."""
+    mode = call.args[1] if len(call.args) > 1 else next(
+        (keyword.value for keyword in call.keywords if keyword.arg == "mode"), None)
+    if mode is None:
+        return True
+    return isinstance(mode, ast.Constant) and isinstance(mode.value, str) and not set(mode.value) & set("wax+")
+
+
 class ArchitectureTest(unittest.TestCase):
     def test_every_module_is_declared(self):
         undeclared = sorted(MODULES.keys() - ALLOWED.keys())
@@ -113,8 +128,14 @@ class ArchitectureTest(unittest.TestCase):
     def test_only_the_file_readers_open_files(self):
         for name in sorted(MODULES.keys() - FILE_READERS):
             with self.subTest(module=name):
-                opens = [f for f in calls(name) if isinstance(f, ast.Name) and f.id == "open"]
+                opens = open_calls(name)
                 self.assertEqual(opens, [], f"{name} opens a file (see {REPORT_ADR} and {NO_STATE_ADR})")
+
+    def test_the_file_readers_only_read(self):
+        for name in sorted(FILE_READERS & MODULES.keys()):
+            for call in open_calls(name):
+                with self.subTest(module=name, line=call.lineno):
+                    self.assertTrue(reads_only(call), f"{name} opens a file to write (see {NO_STATE_ADR})")
 
     def test_only_main_reads_the_clock(self):
         for name in sorted(MODULES.keys() - CLOCK_READERS):
