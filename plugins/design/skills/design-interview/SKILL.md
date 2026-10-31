@@ -348,7 +348,7 @@ Three things are worth offering explicitly, because they aren't deliverables —
 
 Offer all three in one line. If the user declines, the vocabulary, the assumptions and the open questions die with the conversation and the next design starts from nothing — which is worth the one line, and is exactly the failure that makes a design skill useless on the second run. Still an offer, not an action.
 
-In autonomous mode the wrap-up writes the batch where the invoking prompt says, in the order *The batch* in `references/autonomous.md` sets (scope recap, provisional items `P1`… with their marks, then the appendix of decided closures), and the run ends there. More than five provisional items stops the run instead: recommend a live interview and hand over the tree.
+In autonomous mode the wrap-up writes the batch where the invoking prompt says, in the order *The batch* in `references/autonomous.md` sets: the scope recap; the provisional items `P1`…, each one that is provisional by rule marked *forced* and naming the protected paths it changes; then the appendix of decided closures. The run ends there. More than five provisional items stops the run instead: recommend a live interview and hand over the tree.
 
 ## Phase 9: Capture (on request only)
 

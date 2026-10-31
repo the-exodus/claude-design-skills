@@ -69,7 +69,7 @@ A provisional closure is an assumption node: record your recommended answer, the
 Wherever the invoking prompt puts it. The batch with the author's answers is the record of every provisional closure. In order:
 
 1. **The scope recap**, as Phase 3 states it.
-2. **The provisional items**, `P1`, `P2`, …, ordered by how much of the tree hangs on each. Each gives the question, your recommendation, the rejected alternatives and why, and which branches regrow if the author rejects it. One that changes a protected path or a record names those paths. Mark an item *forced* when it is provisional by rule rather than by fork, and say which rule, up front; mark it *close call* when a reviewer disagreed or a re-derivation diverged. Write each so that confirming it costs a word.
+2. **The provisional items**, `P1`, `P2`, …, ordered by how much of the tree hangs on each. Each gives the question, your recommendation, the rejected alternatives and why, and which branches regrow if the author rejects it. One that changes a protected path or a record names those paths. Mark an item *forced* when it is provisional by rule (a supersede, a changed architecture test, a surface, a lexicon term) rather than by fork, and say which rule, up front, even when you also offer alternatives; mark it *close call* when a reviewer disagreed or a re-derivation diverged. Write each so that confirming it costs a word.
 3. **The appendix**: one line per decided closure with the record or constraint that forced it; the branches parked *stable-open*; the assumptions this interview added or invalidated; any override of an objection.
 
 **At most five provisional items** beyond the scope recap, lexicon sign-offs included. Count; do not weigh.

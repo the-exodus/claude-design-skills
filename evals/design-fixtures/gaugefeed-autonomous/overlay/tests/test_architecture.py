@@ -1,18 +1,19 @@
-"""Checks what each of gaugefeed's modules may import, and which may read files or the clock."""
+"""Checks what each module of gaugefeed and the archive may import, and which may read files or the clock."""
 
 import ast
 import unittest
 from pathlib import Path
 
-PACKAGE = Path(__file__).resolve().parent.parent / "gaugefeed"
+ROOT = Path(__file__).resolve().parent.parent
+PACKAGES = [ROOT / "gaugefeed", ROOT / "archive"]
 
 NETWORK_ADR = "docs/adr/0001-only-the-fetcher-talks-to-the-network.md"
 REPORT_ADR = "docs/adr/0002-the-report-is-built-from-readings-alone.md"
 NO_STATE_ADR = "docs/adr/0003-each-cycle-is-a-fresh-process-that-keeps-no-state.md"
 ARCHIVE_ADR = "docs/adr/0004-the-archive-is-packed-from-logger-dumps-alone.md"
 
-# Every module in the package, everything it may import (standard library and
-# gaugefeed modules alike, by top-level name for the standard library), and the
+# Every module in the two packages, everything it may import (standard library
+# and our own modules alike, by top-level name for the standard library), and the
 # decision record that drew that list (None where nobody decided it). Anything
 # not listed fails, so a new dependency is a visible change.
 ALLOWED = {
@@ -24,7 +25,8 @@ ALLOWED = {
     "gaugefeed.stations": (set(), None),
     "gaugefeed.fetcher": ({"json", "urllib"}, NETWORK_ADR),
     "gaugefeed.report": ({"json", "datetime"}, REPORT_ADR),
-    "gaugefeed.archive": ({"csv", "json", "sys", "pathlib", "gaugefeed.fetcher"}, ARCHIVE_ADR),
+    "archive": (set(), None),
+    "archive.pack": ({"csv", "json", "sys", "pathlib", "gaugefeed.fetcher"}, ARCHIVE_ADR),
 }
 
 # The only module of the cycle that may call open(), and why: the report reads
@@ -41,11 +43,11 @@ NETWORK_MODULES = {"gaugefeed.fetcher"}
 
 
 def module_name(path):
-    parts = list(path.relative_to(PACKAGE.parent).with_suffix("").parts)
+    parts = list(path.relative_to(ROOT).with_suffix("").parts)
     return ".".join(parts[:-1] if parts[-1] == "__init__" else parts)
 
 
-MODULES = {module_name(path): path for path in PACKAGE.rglob("*.py")}
+MODULES = {module_name(path): path for package in PACKAGES for path in package.rglob("*.py")}
 
 
 def tree(name):
@@ -72,7 +74,7 @@ def imported_names(name):
 
 
 def declared(imported):
-    """The name an import is declared by: a gaugefeed module whole, anything else by top level."""
+    """The name an import is declared by: one of our modules whole, anything else by top level."""
     return imported if imported in MODULES else imported.split(".")[0]
 
 
@@ -89,7 +91,7 @@ def calls(name):
 class ArchitectureTest(unittest.TestCase):
     def test_every_module_is_declared(self):
         undeclared = sorted(MODULES.keys() - ALLOWED.keys())
-        self.assertEqual(undeclared, [], "declare in ALLOWED what each gaugefeed module may import")
+        self.assertEqual(undeclared, [], "declare in ALLOWED what each module may import")
 
     def test_imports_are_on_the_allow_list(self):
         for name in sorted(MODULES.keys() & ALLOWED.keys()):

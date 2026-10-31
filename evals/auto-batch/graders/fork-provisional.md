@@ -1,7 +1,7 @@
 ---
-# The open fork, what a station shows when it missed the previous cycle, is a provisional item (after a P id, before the appendix).
+# The open fork, what a station shows when it missed the previous cycle, is a provisional item: a line that starts with its P id asks it.
 type: regex
 target: { source: file, path: batch.md }
-pattern: '\bP\d\b(?:(?!appendix)[\s\S])*?(?:(?:previous|last|prior|earlier)[^\n]{0,60}(?:cycle|reading)[^\n]{0,120}(?:miss|absent|no reading|didn.t answer|did not answer|unanswered|gap|silent)|(?:miss|absent|no reading|didn.t answer|did not answer|unanswered|silent)[^\n]{0,120}(?:previous|last|prior|earlier) cycle)'
+pattern: '(?:^|\n)[#*\s-]*P\d\b[^\n]{0,300}?(?:did(?:n.t| not) answer|nothing to compare|no previous|without a previous|no (?:earlier|prior|last|previous) (?:reading|level|cycle)|miss(?:ed|es|ing)? (?:the |a |one |its )?(?:previous |last |prior )?(?:cycle|reading)|absent|unanswered|silent|went quiet|was down|down last|no baseline|gap)'
 flags: i
 ---

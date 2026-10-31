@@ -3,7 +3,7 @@ import os
 import tempfile
 import unittest
 
-from gaugefeed.archive import pack_month
+from archive.pack import pack_month
 
 
 def save(directory, name, text):

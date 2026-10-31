@@ -29,7 +29,7 @@ def pack_month(dump_dir: str, month: str) -> str:
 def main(argv: list[str]) -> int:
     """Print the archive of the month named in argv; return the exit status."""
     if len(argv) != 3:
-        print("usage: python -m gaugefeed.archive DUMP_DIR YYYY-MM", file=sys.stderr)
+        print("usage: python -m archive.pack DUMP_DIR YYYY-MM", file=sys.stderr)
         return 2
     print(pack_month(argv[1], argv[2]))
     return 0
