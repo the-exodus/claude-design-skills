@@ -28,6 +28,16 @@ Every other case is a regression case and fair to iterate against.
 - A regex grader of a lexicon fixture: change the table in `evals/tools/lexicon-graders/gen-graders.mjs`, run `test-graders.mjs`, then `gen-graders.mjs write`.
 - The Tileand cases' graders and `expected.md` are generated from the owner's labels, which live outside this repository; `code-style-tileand`'s are gitignored as well, since they quote Tileand's comments. Do not edit them by hand, and do not copy Tileand's lexicon, ADRs or source into this repository: naming its terms is fine, holding its content is not.
 
+## Keep the suite small
+
+Every case is paid for again each time a change is judged, at eight runs or more. Build the fewest cases that could change a decision.
+
+- A case guards something named: a defect seen in a real run, or a decision a skill change depends on. Not coverage, and not a behaviour nobody has seen fail: such a case costs as much as any other and can only ever pass.
+- One trap per kind of defect, in the smallest fixture that springs it. Plant it in an existing fixture before building a new one; a new fixture needs a trap no existing one can carry.
+- A regex or a script wherever one can decide the trap; an `llm` grader only where nothing sharper can, and one grader per trap. An `llm` grader is calibrated before it is believed, at about $0.30 to $0.70 a grading, and most first-run failures here were a grader's.
+- Before building, put the plan on the issue: the cases, what each guards, and what judging them once costs. That is cases × eight runs × the cost of a run like it (`README.md`: about $0.20 for a smoke case, $0.30 for an ADR case, $1.30 for a lexicon fixture, $4.50 for Tileand, $6 to $12 for a review-cycle case), plus calibrating each new `llm` grader. The author approves the plan, not the cases one by one.
+- A case that has passed every run since it was written, and guards nothing that has changed since, is a candidate for retirement. Say so when a change is judged.
+
 ## Writing a grader or a case
 
 - Three dashes in a row anywhere in a grader's frontmatter, comments and patterns included, end the frontmatter and stop the case loading. Write `-{3}` in a pattern.
