@@ -326,7 +326,9 @@ def expand_home(word, home):
 
 
 def resolve(word, cwd, home, drive):
-    word = expand_home(word, home).replace("\\", "/")
+    word = expand_home(word, home)
+    word = re.sub(r"\$env:(\w+)", lambda m: os.environ.get(m.group(1), m.group(0)), word, flags=re.I)
+    word = os.path.expandvars(word).replace("\\", "/")
     if drive and GIT_BASH_DRIVE.match(word):
         word = GIT_BASH_DRIVE.sub(lambda m: m.group(1).upper() + ":", word)
     return join(cwd, word)

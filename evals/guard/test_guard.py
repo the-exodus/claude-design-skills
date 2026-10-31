@@ -248,6 +248,7 @@ class ShellCommands(GuardTest):
             "sed -i 's/a/b/' tests/*.py",
             f"sed -i 's/a/b/' {self.repo}/tests/test_architecture.py",
             "sed -i 's/a/b/' \"tests/test_architecture.py\"",
+            "sed -i 's/a/b/' \"$CLAUDE_PROJECT_DIR/tests/test_architecture.py\"",
             "cat > Directory.Build.props <<'EOF'\n<Project/>\nEOF",
         ]
         for command in commands:
