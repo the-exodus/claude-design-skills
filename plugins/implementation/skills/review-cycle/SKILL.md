@@ -133,7 +133,9 @@ and lens bodies, nothing else.
    checked and found sound, and not to edit files (the adversarial reviewer may
    add throwaway tests, nothing else). Wait for every reviewer's report before
    triage. Reviewers may run in the background: do not end your turn while one
-   is still running, here or at step 7.
+   is still running, here or at step 7. Anything you start to hold the turn
+   open, such as a background `sleep`, is stopped or finished before the
+   report, so that the report is the last thing you say.
 
 3. **Triage.** For each finding, decide: holds, or rejected with a reason. A
    finding holds when it names a defect, a missed criterion, a broken contract,
