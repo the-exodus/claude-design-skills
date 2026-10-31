@@ -1,6 +1,6 @@
 # claude-design-skills
 
-Two plugins, each a directory the marketplace installs as it is: `design` (`plugins/design/skills/`) and `implementation` (`plugins/implementation/skills/`). `implementation` depends on `design`, never the reverse. The eval suite that checks them is under `evals/`, `evals-tileand/` and `evals-calibration/`.
+Three plugins, each a directory the marketplace installs as it is: `design` (`plugins/design/skills/`), `implementation` (`plugins/implementation/skills/`) and `guard` (`plugins/guard/hooks/`). `implementation` depends on `design`, never the reverse; `guard` depends on neither. The eval suite that checks them is under `evals/`, `evals-tileand/` and `evals-calibration/`.
 
 ## Before editing a skill because of an eval result
 

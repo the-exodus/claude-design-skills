@@ -1,9 +1,10 @@
 # claude-design-skills
 
-Skills for [Claude Code](https://claude.ai/code) for designing software and for making the code, packaged as a plugin marketplace with two plugins:
+Skills for [Claude Code](https://claude.ai/code) for designing software and for making the code, packaged as a plugin marketplace with three plugins:
 
 - **`design`**: what design work needs, whenever it comes up — design interviews, decision records, a project lexicon, and the structural principles behind them.
 - **`implementation`**: how the code gets made — how names and comments read, and the review cycle a change goes through before its pull request. It depends on `design` and uses its skills; `design` never depends on it.
+- **`guard`**: a hook that makes a change to a repository's protected paths, such as its architecture tests, reach the author. A repository opts in; it is what `design-interview`'s [autonomous mode](autonomous-mode.md) relies on.
 
 ## Install
 
@@ -12,7 +13,7 @@ claude plugin marketplace add the-exodus/claude-design-skills
 claude plugin install implementation@claude-design-skills
 ```
 
-Installing `implementation` installs `design` with it, since `implementation` declares it as a dependency (`>=0.7.0`): Claude Code installs and enables a plugin's dependencies at the same scope, from the same marketplace, and the success message lists them. To have only the design skills, install `design@claude-design-skills` on its own instead.
+Installing `implementation` installs `design` with it, since `implementation` declares it as a dependency (`>=0.7.0`): Claude Code installs and enables a plugin's dependencies at the same scope, from the same marketplace, and the success message lists them. To have only the design skills, install `design@claude-design-skills` on its own instead. `guard` is installed on its own (`claude plugin install guard@claude-design-skills`) and does nothing until a repository opts in; it needs Python 3.
 
 Restart Claude Code to load. To pick up changes pushed since:
 
@@ -20,6 +21,7 @@ Restart Claude Code to load. To pick up changes pushed since:
 claude plugin marketplace update claude-design-skills
 claude plugin update design
 claude plugin update implementation
+claude plugin update guard
 ```
 
 ## What's in it
@@ -34,6 +36,8 @@ Takes a rough pitch to a complete design before any code is written, as a tree o
 - **Four locks before any branch closes:** probes addressed, summary recap, adversarial check, explicit confirmation from the user.
 - **Anti-cycling brakes:** a design-vs-implementation gate, a reopen cap, and a per-branch budget, because the failure modes of premature closure and runaway depth are opposed and both real.
 - **Capture on request** into a functional spec, edge cases, acceptance criteria, interface contracts, a domain model, and ADRs — with provenance, so decided and inferred content never look alike.
+- **Boundaries come with their tests.** A closure that draws a boundary decides the architecture test that protects it, and capture carries that test into the brief and the boundary's ADR.
+- **[Autonomous mode](autonomous-mode.md)**, on request: the interview runs without the author, closes what the repository already decides, and brings one batch of questions for the rest. It first checks that the boundaries the feature touches are protected by architecture tests, and stops if they are not.
 
 Three things persist across a project's lifetime and are read back at the start of every interview:
 
@@ -72,6 +76,8 @@ The review a change gets before its pull request goes up, so that less is left f
 - **simplification** — complexity the change added that `design-philosophy` would not, at most five findings, each cheaper than what it replaces.
 - **platform reality** — what the change assumes about the platform, runtime or outside services, classified as documented, probed or recalled.
 
+In a repository that opts in to `guard`, the cycle also traces every change to a protected path to a closure the author approved, lists them in its closing comment, and reports an untraced one as needing the author.
+
 Lenses are chosen by what the change does, not by its paths. The cycle then triages what the reviewers found, searches the repository for each defect's whole class, fixes test-first, records forced decisions through `adr`, and re-runs a lens after large fixes. Context comes from what the repository already has — its agent instructions, README and build files — and the brief from the tracker those name, or from the user; the cycle never reviews against a brief it inferred.
 
 A repository adds knowledge of its own as **review lenses**: ordinary skills in its own tree that declare themselves in frontmatter and never load in an ordinary session.
@@ -92,6 +98,10 @@ How names and comments read, loaded before any code, name or comment is written 
 
 Comments are judged clause by clause, and locality is the test. A clause the name, the signature or the code in view already says goes; a clause that carries context from elsewhere — a platform behaviour, a recorded decision, an invariant another type holds, a caller's contract, a reason — stays; a comment with both is shrunk. Keeping is the common case, and keeping is not encouraging: a comment is written only when it carries something from elsewhere. Because a cut clause can quietly break the sentence left behind, every shrink is re-read on its own. A citation never stands in for a claim, cites by number, and follows the project's convention for where citations may appear.
 
+### The `guard` plugin
+
+A PreToolUse hook on Edit, Write, NotebookEdit, Bash and PowerShell. In a repository with a `.claude/protected-paths.txt`, a call that would change a listed path gets `ask`, with a message: the change is a provisional closure for the author; approve it only if one naming the path is recorded; the agent records one and stops instead of finding another route. An absent list means the repository has not opted in. It fails closed, runs on Linux, macOS and Windows (Python 3; pwsh 7 where there is no Git Bash), and its README defines the list's format and how a repository opts in.
+
 ## Layout
 
 ```
@@ -106,6 +116,10 @@ plugins/implementation/
   .claude-plugin/plugin.json      # depends on design >=0.7.0
   skills/review-cycle/
   skills/code-style/
+plugins/guard/
+  .claude-plugin/plugin.json
+  hooks/                          # hooks.json, guard.py
+autonomous-mode.md                # design-interview without the author present
 evals/                            # the plugins' eval suite; not shipped
 ```
 
@@ -118,6 +132,8 @@ claude plugin eval . --model claude-opus-5 --judge-model claude-opus-5 --ablatio
 claude plugin validate .
 claude plugin validate ./plugins/design
 claude plugin validate ./plugins/implementation
+claude plugin validate ./plugins/guard
 claude plugin tag ./plugins/design           # creates design--v<version>, checks manifests agree
 claude plugin tag ./plugins/implementation   # creates implementation--v<version>
+claude plugin tag ./plugins/guard            # creates guard--v<version>
 ```
