@@ -384,9 +384,6 @@ def decide(raw):
     project = norm(os.environ.get("CLAUDE_PROJECT_DIR") or cwd)
     home = norm(os.path.expanduser("~"))
     drive = split_drive(project)[0] or split_drive(cwd)[0]
-    user_settings = [home + "/.claude/settings.json"]
-    if os.environ.get("CLAUDE_CONFIG_DIR"):
-        user_settings.append(norm(os.environ["CLAUDE_CONFIG_DIR"]) + "/settings.json")
 
     cache = {}
     session_roots = [project] + [r for r in [root_of(cwd, project)] if r]
@@ -411,9 +408,6 @@ def decide(raw):
             return None
 
     for target in targets:
-        if opted_in and any(same(target, s) for s in user_settings):
-            return protected_message("~/.claude/settings.json" if same(target, user_settings[0]) else target,
-                                     "user settings can switch every hook off")
         root = root_of(target, project)
         if root is None:
             continue

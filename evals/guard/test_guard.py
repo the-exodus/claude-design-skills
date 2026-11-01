@@ -336,18 +336,10 @@ class Failures(GuardTest):
 
 
 class UserSettings(GuardTest):
-    def test_user_settings_are_guarded_in_a_repository_with_a_list(self):
-        self.assertAsks(self.run_guard("Write", {"file_path": str(self.home / ".claude/settings.json"), "content": "{}"}))
-        self.assertAsks(self.bash("echo '{\"disableAllHooks\": true}' > ~/.claude/settings.json"))
-        self.assertAsks(self.bash("jq '.disableAllHooks=true' x > $HOME/.claude/settings.json"))
-        self.assertAsks(self.pwsh("Set-Content $env:USERPROFILE\\.claude\\settings.json '{}'"))
-        self.assertAllows(self.run_guard("Write", {"file_path": str(self.home / ".claude/notes.md")}))
-
-    def test_claude_config_dir_is_guarded_too(self):
-        config = self.tmp / "config"
-        config.mkdir()
-        out = self.run_guard("Edit", {"file_path": str(config / "settings.json")}, env={"CLAUDE_CONFIG_DIR": str(config)})
-        self.assertAsks(out)
+    def test_user_settings_are_outside_the_guard(self):
+        # The repository's "disableAllHooks": false wins over a user-scope true, so the guard stays inside the repository.
+        self.assertAllows(self.run_guard("Write", {"file_path": str(self.home / ".claude/settings.json"), "content": "{}"}))
+        self.assertAllows(self.bash("echo '{\"disableAllHooks\": true}' > ~/.claude/settings.json"))
 
 
 class Worktrees(GuardTest):

@@ -8,7 +8,6 @@ A PreToolUse hook that makes a change to a repository's protected paths, such as
 - Every protected change asks. No approval carries over to the next one.
 - Headless (`-p`), nobody can answer an `ask`: the call is denied and the agent reads the message in the tool result.
 - Edit, Write and NotebookEdit are matched on the file they name. Bash and PowerShell are matched on the command's text, best effort: a command asks when it names a protected path and contains a write (a redirect to a file, `sed -i`, `tee`, `mv`, `cp`, `rm`, `git checkout|restore|apply|mv|rm`, `patch`, `dd`, `truncate`; `Set-Content`, `Add-Content`, `Out-File`, `New-Item`, `Copy-Item`, `Move-Item`, `Remove-Item`, `Rename-Item`, `Clear-Content` and their aliases, `[IO.File]::Write*`). A test run or a read that names the path goes ahead.
-- Fixed rule, in a repository that has a list: writes to the user's `~/.claude/settings.json` (and `$CLAUDE_CONFIG_DIR/settings.json`) ask too, since user settings can switch every hook off and no repository-relative list can name them.
 - An absent list means the repository has not opted in: everything goes ahead.
 - It fails closed. An unreadable list, input it cannot parse, or an error in the hook ends in `ask` saying why; no interpreter, a crash or a timeout blocks the call (`onFailure: "block"`).
 
