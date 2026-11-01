@@ -103,6 +103,23 @@ and lens bodies, nothing else.
    exist; and the decision records the change touches, by number and title. Do
    not summarise the diff: reviewers read it themselves.
 
+   **1b. Trace protected changes.** The cycle does this itself, in every mode,
+   records-only included; it is not a lens, and no lens argument drops it. It
+   runs when `.claude/protected-paths.txt` exists at the base or at HEAD; with
+   neither, the repository has not opted in. Its format is defined in the
+   `guard` plugin's README: one git pathspec per line, `#` comments. Take the
+   entries of both versions together, so that the change cannot unprotect a
+   path by editing the list, and list the protected changes with
+   `git diff --no-renames --name-only <base>...HEAD -- ':(glob,icase)<entry>' …`,
+   one pathspec per entry. A protected change is traced when a closure in the
+   brief that the author **approved** names its path or a glob covering it; a
+   closure that was declined or never answered traces nothing. Each untraced
+   change is a finding, written exactly `Protected change without an approved
+   closure: <path>`, the path after the colon, wherever it appears, so that a
+   search finds it. It holds without triage, and its disposition is **needs the
+   author**: revert the change, or record a closure that names it and stop for
+   the author's answer. Never record the approval yourself.
+
 2. **Launch the reviewers in parallel**, one `Agent` call each in one response,
    `subagent_type: general-purpose`, never `fork`: a reviewer must not inherit
    this conversation. Reviewers run on the session's model; when the session
@@ -115,7 +132,9 @@ and lens bodies, nothing else.
    checked and found sound, and not to edit files (the adversarial reviewer may
    add throwaway tests, nothing else). Wait for every reviewer's report before
    triage. Reviewers may run in the background: do not end your turn while one
-   is still running, here or at step 7.
+   is still running, here or at step 7. Anything you start to hold the turn
+   open, such as a background `sleep`, is stopped or finished before the
+   report, so that the report is the last thing you say.
 
 3. **Triage.** For each finding, decide: holds, or rejected with a reason. A
    finding holds when it names a defect, a missed criterion, a broken contract,
@@ -158,7 +177,12 @@ and lens bodies, nothing else.
 
 8. **Record and report.** Record on the brief, where the brief lives in a
    tracker, as one comment: what was fixed, what was rejected and why, what was
-   left as a follow-up, one line each. Then report in the conversation: the
-   findings, ranked, each with its disposition (fixed, rejected with the
-   reason, or follow-up), and, when the lens argument left out a lens the
-   table would have chosen, which and why. Then hand back to the PR step.
+   left as a follow-up, one line each. When step 1b ran, the comment has a
+   "Protected changes" section: one line per protected change, its path then
+   the closure id it traces to or the approval quoted, or else its finding's
+   exact words. Then report
+   in the conversation: the findings, ranked, each with its disposition (fixed,
+   rejected with the reason, follow-up, or needs the author), the "Protected
+   changes" section too where there is no tracker, and, when the lens argument
+   left out a lens the table would have chosen, which and why. Then hand back
+   to the PR step.

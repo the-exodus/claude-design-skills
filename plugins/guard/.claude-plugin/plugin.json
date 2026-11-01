@@ -1,0 +1,9 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "guard",
+  "version": "0.1.0",
+  "description": "Makes a change to a repository's protected paths, such as its architecture tests, reach the author: a hook asks before any edit or shell write to a path the repository lists, with a message telling the agent to record a provisional closure and stop.",
+  "author": {
+    "name": "Tobias Karlsson"
+  }
+}

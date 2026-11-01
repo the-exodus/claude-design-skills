@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "implementation",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "How the code gets made: how names and comments read, and the pre-PR review cycle, with fresh-context reviewers by lens, and lenses a repository adds as skills of its own.",
   "author": {
     "name": "Tobias Karlsson"
