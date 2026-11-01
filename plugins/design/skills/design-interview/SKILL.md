@@ -270,7 +270,7 @@ When closing, record one of these terminal states with a sentence of rationale:
 
 "Decided" requires the actual answer in the rationale. The others require the reason.
 
-In autonomous mode you may close a branch *decided* only where nothing else was possible; a genuine fork, a supersede or addendum of an ADR, a change to an architecture test, a change to a user-visible surface, or a lexicon admission closes *provisionally*, as an assumption node the author confirms in the batch. See *Closure authority* in `references/autonomous.md`.
+In autonomous mode you may close a branch *decided* only where nothing else was possible, quoting the text that states the answer; a genuine fork, a supersede or addendum of an ADR, a change to an architecture test, a change to a user-visible surface, or a lexicon admission closes *provisionally*, as an assumption node the author confirms in the batch. See *Closure authority* in `references/autonomous.md`.
 
 **Three of these are promises, not conclusions.** *deferred-later*, *blocked*, and *stable-open* all mean the question outlives this interview, so each needs the thing that lets a later one pick it up: what would resolve it. For *blocked*, what's needed and from whom. For *deferred-later*, which phase or trigger brings it back. For *stable-open*, which branch it's in tension with. Without that field the item is a note that something is unfinished, which nobody can act on.
 
@@ -348,7 +348,7 @@ Three things are worth offering explicitly, because they aren't deliverables —
 
 Offer all three in one line. If the user declines, the vocabulary, the assumptions and the open questions die with the conversation and the next design starts from nothing — which is worth the one line, and is exactly the failure that makes a design skill useless on the second run. Still an offer, not an action.
 
-In autonomous mode the wrap-up writes the batch where the invoking prompt says, in the order *The batch* in `references/autonomous.md` sets: the scope recap and the line counting genuine forks and decided branches; the provisional items `P1`…, one decision each, each marked *fork* or *forced* and naming the protected paths it changes; then the appendix of decided closures. The run ends there. Genuine forks beyond a third of the decided branches (and beyond five) stop the run instead: recommend a live interview and hand over the tree.
+In autonomous mode the wrap-up writes the batch where the invoking prompt says, in the order *The batch* in `references/autonomous.md` sets: the scope recap and the line counting genuine forks; the provisional items `P1`…, one decision each, each marked *fork* or *forced* and naming the protected paths it changes; then the appendix of decided closures. The run ends there. More than seven genuine forks stop the run instead: recommend a live interview and hand over the tree.
 
 ## Phase 9: Capture (on request only)
 

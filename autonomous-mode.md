@@ -30,7 +30,7 @@ A missing requirement is an objection: the run says what is missing, what it cos
 
 ## What the run closes, and what it asks
 
-A branch closes **decided** only when nothing else was possible: an ADR, a standing constraint, an existing interface or the platform's documentation forces it, or every alternative violates one of them. A question about how the host behaves is answered by running something.
+A branch closes **decided** only when nothing else was possible: an ADR, a standing constraint, an existing interface or the platform's documentation forces it, or every alternative violates one of them. The closure quotes the text that states the answer; without a quotation it is a fork. Anything the prompt names as open is always a fork. A question about how the host behaves is answered by running something.
 
 A branch closes **provisionally**, as an assumption the walk continues on, when:
 
@@ -41,25 +41,26 @@ A branch closes **provisionally**, as an assumption the walk continues on, when:
 - it admits or amends a lexicon term,
 - it rests on a standing assumption whose falsification signal cannot be checked.
 
-Questions only someone reading the code would care about (an interface's exact shape, units or precision inside a module) close *deferred-implementation* and are listed in the appendix.
+Questions only someone reading the code would care about (exit codes, an interface's exact shape, units or precision inside a module) go on a list left to implementation, neither asked nor counted.
 
-Before the batch, two reviewer subagents read the work: a **blind** one, which seeds its own tree and re-derives each decided closure from its question alone, and an **adversarial** one, over the whole tree. A decided closure that fails either becomes provisional and is marked *close call*.
+Before the batch, two reviewer subagents always read the work: a **blind** one, which checks that each decided closure's quotation states its answer and re-derives it from the question alone, and an **adversarial** one, over the whole tree. A decided closure that fails either becomes a fork and is marked *close call*.
 
 ## The batch
 
-1. The scope recap, then one line: `Forks: N genuine, M decided branches.`
+1. The scope recap, then one line: `Forks: N genuine.`
 2. The provisional items, `P1`, `P2`, …, one decision each, ordered by how much of the tree hangs on it. Each gives the question, the recommendation, the rejected alternatives and why, the branches that regrow if it is rejected, and the protected paths it would change. Each is marked:
-   - *fork*: the choice is open;
+   - *fork*: the choice is open, including any item that offers options;
    - *forced*: the answer is settled, and a rule (a supersede, an architecture-test change, a surface, a lexicon term) makes it provisional;
    - *close call*, as well, where a reviewer disagreed.
-3. The appendix: each decided closure with what forced it, the branches deferred or parked, the assumptions added or invalidated, any override.
+3. The appendix: each decided closure with its grounds quoted, the branches parked, the assumptions added or invalidated, any override.
+4. What is left to implementation.
 
 Confirming an item costs a word. A rejected item is an invalidated assumption: the branches on it are pruned and regrown.
 
 ## When the run stops
 
 - **The repository is unsuited** to the mode for this feature: see above.
-- **The feature is unsuited:** the genuine forks exceed a third of the decided branches, with a floor of five, or the author's answers regrow new provisional items more than once. The run recommends a live interview and hands over the tree so far. *Forced* items do not count toward this.
+- **The feature is unsuited:** more than seven genuine forks, or the author's answers regrow new provisional items more than once. The run recommends a live interview and hands over the tree so far. *Forced* items do not count toward this.
 
 ## After the batch
 

@@ -29,7 +29,11 @@ A blast radius with little established architecture is unsuited, not a reason to
 
 ## Closure authority
 
-Close a branch **decided** on your own only when there is no fork (an ADR, a standing constraint, an existing interface or the platform's documentation forces it), or when every rejected alternative violates one of those.
+Close a branch **decided** on your own only when there is no fork (an ADR, a standing constraint, an existing interface or the platform's documentation forces it), or when every rejected alternative violates one of those. **Quote the grounds:** the ADR sentence, the `file:line`, the documentation passage or the pitch's phrase that states the answer, word for word. "Follows from", "simpler", "the house style", "design philosophy", "the cost we already accept" or your own reasoning are not grounds. If you cannot quote something that states the answer, it is not decided: it is a fork. Two runs could close it differently, and the author has to choose.
+
+**Anything the invoking prompt names as open, undecided or unknown is a fork.** Never close it decided, defer it or mark it *forced*, however strong the evidence looks; a fact you found that bears on it goes into the item as the recommendation's grounds.
+
+**A restatement is not a closure.** The scope, the consumers, what the pitch already decided, how this mode works: none of it is a branch to close or count. Implementation detail is not one either (below).
 
 Close it **provisionally** when:
 
@@ -39,6 +43,8 @@ Close it **provisionally** when:
 - it changes a user-visible surface: commands, configuration, a protocol, anything a user's files or scripts depend on;
 - it admits or amends a lexicon term.
 
+**Labels follow the alternatives.** A closure that offers the author options (an addendum or a supersede, a partial or a full supersede, (a)/(b)/(c)) is a *fork*, whatever rule also applies to it. A closure a reviewer dissented from is provisional.
+
 A provisional closure is an assumption node: record your recommended answer, the rejected alternatives and why, and walk on top of it. The author rejecting it later is ordinary Phase 7 invalidation: prune and regrow.
 
 **Stale grounds.** Before closing on a standing assumption, check the signal its record says would show it stopped holding, wherever the code, the records or the host can answer. If nothing here can, a closure that depends on it is provisional.
@@ -47,11 +53,11 @@ A provisional closure is an assumption node: record your recommended answer, the
 
 1. **Probes** are answered from the code, the records and, where the question is how the platform or host behaves, by running something that asks it (`python3 -c …`, a command's own output). A question about the host is not a question for the author until that has been tried.
 2. **The recap** is written into the tree.
-3. **The adversarial check** is two fresh-context reviewer subagents, run after the walk and before the batch, each a general-purpose agent and never a fork of this conversation:
-   - **Blind**, first. Give it the pitch and the Phase 2 context, not your tree. It seeds its own tree, and for each of your decided closures, given only the question, lists the options and which constraint rules out each.
+3. **The adversarial check** is two fresh-context reviewer subagents, run after the walk and before the batch, each a general-purpose agent and never a fork of this conversation. They are not optional, and no run writes a batch without both:
+   - **Blind**, first. Give it the pitch, the Phase 2 context, and your decided closures as question plus quoted grounds only, not your answers or your tree. For each, it checks whether the quoted text states the answer, and lists the options and which constraint rules out each; it also seeds its own tree.
    - **Adversarial**, then, over your whole tree: what case breaks it, what is missing, which grounds fail, and what no test can judge: whether the modules are deep, whether each interface is simpler than what it hides.
 
-   A branch they find missing is seeded and walked. A decided closure whose grounds fail, or whose re-derivation diverges from yours, becomes provisional and is marked *close call*. A finding you dispute goes in the batch with both positions. The design-vs-implementation gate applies to their findings as to any probe: a close call about units, precision or an interface's exact shape closes *deferred-implementation* and goes in the appendix, not the batch.
+   A branch they find missing is seeded and walked. A decided closure whose quoted grounds do not state the answer, or whose re-derivation diverges from yours, becomes a *fork* and is marked *close call*. A finding you dispute goes in the batch with both positions.
 4. **Explicit close** applies only to provisional closures, through the author's answers to the batch.
 
 ## Phases with the author absent
@@ -69,15 +75,16 @@ A provisional closure is an assumption node: record your recommended answer, the
 Wherever the invoking prompt puts it. The batch with the author's answers is the record of every provisional closure. In order:
 
 1. **The scope recap**, as Phase 3 states it.
-2. **The provisional items**, each headed by its id, `P1`, `P2`, …, ordered by how much of the tree hangs on each. Before an item goes in, put it through the design-vs-implementation gate: one whose answer would matter only to someone reading the code (an interface's exact shape, units or precision inside a module, a file's version field) closes *deferred-implementation* and goes in the appendix. Each gives the question, your recommendation, the rejected alternatives and why, and which branches regrow if the author rejects it. One that changes a protected path or a record names those paths. Mark each item's kind up front: *fork* when two or more options satisfy every constraint and the choice is open, even if a rule would also make it provisional; *forced* when the answer is settled (by the pitch, a record or a constraint) and only a rule makes it provisional (a supersede or addendum, a changed architecture test, a surface, a lexicon term), saying which rule; alternatives you raise against the author's own decision do not make it a fork. Add *close call* when a reviewer disagreed or a re-derivation diverged. One decision per item, both ways: never fold several into one item, never split one across several. Write each so that confirming it costs a word.
-3. **The appendix**: one line per decided closure with the record or constraint that forced it; the branches closed *deferred-implementation* or parked *stable-open*; the assumptions this interview added or invalidated; any override of an objection.
+2. **The provisional items**, each headed by its id, `P1`, `P2`, …, ordered by how much of the tree hangs on each. Each gives the question, your recommendation, the rejected alternatives and why, and which branches regrow if the author rejects it. One that changes a protected path or a record names those paths. Mark each item's kind up front: *fork* when two or more options satisfy every constraint and the choice is open, even if a rule would also make it provisional; *forced* when the answer is settled (by the pitch, a record or a constraint) and only a rule makes it provisional (a supersede or addendum, a changed architecture test, a surface, a lexicon term), saying which rule; alternatives you raise against the author's own decision do not make it a fork. Add *close call* when a reviewer disagreed or a re-derivation diverged. One decision per item, both ways: never fold several into one item, never split one across several. Write each so that confirming it costs a word.
+3. **The appendix**: one line per decided closure with its grounds quoted; the branches parked *stable-open*; the assumptions this interview added or invalidated; any override of an objection.
+4. **Left to implementation**: a plain list, outside the tree, of what only someone reading the code would care about (exit codes, fsync, an interface's exact shape, units or precision inside a module, a file's format marker, where a helper lives). Neither asked nor counted. A question the author named as open never goes here.
 
-Right after the scope recap, state the two counts on one line, exactly in this form:
+Right after the scope recap, state the count on one line, exactly in this form:
 
-> Forks: N genuine, M decided branches.
+> Forks: N genuine.
 
-N counts the *fork* items; M counts the branches closed *decided*. Items marked *forced* still need the author's word but do not count.
+N counts the *fork* items. Items marked *forced* still need the author's word but do not count.
 
 ## When the feature is unsuited to this mode
 
-If the genuine forks exceed a third of the decided branches, with a floor of five (so up to five forks never stops a run), or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend in so many words a live interview for this feature, and hand over the tree so far where the batch would have gone: the counts line, every branch with its state, and the provisional closures numbered `P1`, `P2`, … and marked as they would have been. Write no brief.
+If there are more than seven genuine forks, or if, after the author's answers, regrowth produces new provisional items more than once, stop. Say so first in your reply, recommend in so many words a live interview for this feature, and hand over the tree so far where the batch would have gone: the count line, every branch with its state, and the provisional closures numbered `P1`, `P2`, … and marked as they would have been. Write no brief.
