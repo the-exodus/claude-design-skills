@@ -39,9 +39,15 @@ tests/architecture/**
 
 ## Opting a repository in
 
-Install it with `claude plugin install guard@claude-design-skills`. It does nothing until a repository opts in:
+Install it at project scope, from inside the repository that opts in:
 
-1. Enable the plugin in the project's `.claude/settings.json`, and set the two keys beside it:
+```sh
+claude plugin install guard@claude-design-skills --scope project
+```
+
+That enables it in the project's `.claude/settings.json`, so the hook runs in that repository only. Installed at the default user scope, the hook runs in every project: it lets everything through where there is no list, but on a machine with no Python it blocks every edit everywhere.
+
+1. In the project's `.claude/settings.json`, beside the `enabledPlugins` entry the install wrote, set two keys:
 
    ```json
    {
