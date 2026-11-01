@@ -27,8 +27,7 @@ the PR.
   issue, with its comments, from the argument or the branch name. Otherwise the
   brief is the invocation's argument or what the conversation gave. **If there
   is no brief, ask for it and stop.** Never review against a brief inferred
-  from the commits, the code or the branch name. In autonomous mode, the batch
-  of provisional closures with the author's answers is part of the brief.
+  from the commits, the code or the branch name.
 - **The base:** the remote's default branch (`git symbolic-ref --short
   refs/remotes/origin/HEAD`), else the base branch the agent instructions name,
   else ask. Never assume `main`.
