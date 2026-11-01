@@ -1,11 +1,12 @@
 # guard
 
-A PreToolUse hook that makes a change to a repository's protected paths, such as its architecture tests, reach the author. Changing one is a provisional closure: the author decides it, not the build.
+A PreToolUse hook that makes a change to a repository's protected paths, such as its architecture tests, reach the author. Changing one is a design decision for the author, not for the build: a *provisional closure*, recorded where the work is tracked and approved by the author before the change is made.
 
 ## What it does
 
 - On every Edit, Write, NotebookEdit, Bash and PowerShell call, it reads the repository's list, `.claude/protected-paths.txt`. A call that would change a listed path gets `ask`, with a message: the path is protected; the author approves only if a provisional closure naming it is already recorded; the agent does not try another way, records a closure naming the path, and stops.
 - Every protected change asks. No approval carries over to the next one.
+- Interactively, the `ask` raises a permission dialog in every mode, auto and acceptEdits included, and for a subagent's edit too. The dialog does not show the message (Claude Code 2.1.316), so a Yes/No dialog on a protected file in acceptEdits or auto mode is the guard's.
 - Headless (`-p`), nobody can answer an `ask`: the call is denied and the agent reads the message in the tool result.
 - Edit, Write and NotebookEdit are matched on the file they name. Bash and PowerShell are matched on the command's text, best effort: a command asks when it names a protected path and contains a write (a redirect to a file, `sed -i`, `tee`, `mv`, `cp`, `rm`, `git checkout|restore|apply|mv|rm`, `patch`, `dd`, `truncate`; `Set-Content`, `Add-Content`, `Out-File`, `New-Item`, `Copy-Item`, `Move-Item`, `Remove-Item`, `Rename-Item`, `Clear-Content` and their aliases, `[IO.File]::Write*`). A test run or a read that names the path goes ahead.
 - An absent list means the repository has not opted in: everything goes ahead.
@@ -38,7 +39,7 @@ tests/architecture/**
 
 ## Opting a repository in
 
-The plugin is installed like the marketplace's others (`claude plugin install guard@claude-design-skills`), but it is a repository that opts in:
+Install it with `claude plugin install guard@claude-design-skills`. It does nothing until a repository opts in:
 
 1. Enable the plugin in the project's `.claude/settings.json`, and set the two keys beside it:
 
@@ -52,7 +53,7 @@ The plugin is installed like the marketplace's others (`claude plugin install gu
 
    `disableBypassPermissionsMode` because whether a hook's `ask` prompts under bypassPermissions is not documented, and that mode would let the agent edit `.claude/` unasked; a local settings file cannot undo it. `"disableAllHooks": false` because project settings override user settings, so a `true` in the user's file does not switch the guard off here.
 
-2. Write `.claude/protected-paths.txt` naming the architecture tests and what decides how they run, the list itself, `.claude/settings.json` and `.claude/settings.local.json`. The local settings file is usually untracked, so the guard is the only thing that sees a change to it.
+2. Write `.claude/protected-paths.txt` naming the architecture tests and what decides how they run, the list itself, `.claude/settings.json` and `.claude/settings.local.json`. The local file has to be listed because local settings override project settings, so a `"disableAllHooks": true` written there would switch the guard off; it is usually untracked, so no review of the diff would see that.
 
 ## Requirements
 
@@ -62,7 +63,7 @@ The plugin is installed like the marketplace's others (`claude plugin install gu
 
 ## Gaps
 
-What the hook cannot see. The review cycle's traceability check is the backstop for all of them.
+What the hook cannot see. `implementation:review-cycle`'s trace of protected changes is the backstop for all of them.
 
 - A script, test or build step that opens and writes a file itself.
 - A nested `claude` started through Bash with its own `--settings`, which can set `disableAllHooks`.

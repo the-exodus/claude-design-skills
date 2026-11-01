@@ -76,7 +76,7 @@ How names and comments read, loaded before code, names or comments are written o
 
 ## `guard`
 
-A PreToolUse hook on Edit, Write, NotebookEdit, Bash and PowerShell. In a repository with `.claude/protected-paths.txt`, a change to a listed path asks the author, and the agent records a provisional closure and stops. Without the list it does nothing. Runs on Linux, macOS and Windows (Python 3; pwsh 7 where there is no Git Bash). [Its README](plugins/guard/README.md) defines the list and how a repository opts in.
+A PreToolUse hook on Edit, Write, NotebookEdit, Bash and PowerShell. In a repository with `.claude/protected-paths.txt`, a change to a listed path asks the author, and the agent records a provisional closure and stops. Without the list it does nothing. Needs Python 3, and pwsh 7 on Windows without Git Bash. [Its README](plugins/guard/README.md) defines the list and how a repository opts in.
 
 ## Releasing
 

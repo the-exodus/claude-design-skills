@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-design-skills",
-  "description": "Skills for designing software and for making the code: design interviews, decision records and a project lexicon; code style and the pre-PR review cycle",
+  "description": "Skills for designing software and for making the code: design interviews, decision records and a project lexicon; code style and the pre-PR review cycle; a guard hook for protected paths",
   "owner": {
     "name": "Tobias Karlsson"
   },
