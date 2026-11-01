@@ -11,7 +11,12 @@ A [Claude Code](https://claude.ai/code) plugin marketplace with three plugins:
 ```sh
 claude plugin marketplace add the-exodus/claude-design-skills
 claude plugin install implementation@claude-design-skills   # brings design with it
-claude plugin install guard@claude-design-skills            # optional; needs Python 3
+```
+
+`guard` is installed per repository, from inside one that opts in (see [its README](plugins/guard/README.md)):
+
+```sh
+claude plugin install guard@claude-design-skills --scope project
 ```
 
 For the design skills alone, install `design@claude-design-skills`. Restart Claude Code to load. To update:
