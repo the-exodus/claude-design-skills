@@ -6,5 +6,6 @@
   "author": {
     "name": "Tobias Karlsson"
   },
+  "license": "AGPL-3.0-or-later",
   "dependencies": [{ "name": "design", "version": ">=0.7.0" }]
 }
