@@ -36,7 +36,7 @@ Every case is paid for again each time a change is judged, at eight runs or more
 - A case guards something named: a defect seen in a real run, or a decision a skill change depends on. Not coverage, and not a behaviour nobody has seen fail: such a case costs as much as any other and can only ever pass.
 - One trap per kind of defect, in the smallest fixture that springs it. Plant it in an existing fixture before building a new one; a new fixture needs a trap no existing one can carry.
 - A regex or a script wherever one can decide the trap; an `llm` grader only where nothing sharper can, and one grader per trap. An `llm` grader is calibrated before it is believed, at about $0.30 to $0.70 a grading, and most first-run failures here were a grader's.
-- Before building, put the plan on the issue: the cases, what each guards, and what judging them once costs. That is cases × eight runs × the cost of a run like it (`README.md`: about $0.20 for a smoke case, $0.30 for an ADR case, $1.30 for a lexicon fixture, $4.50 for Tileand, $6 to $12 for a review-cycle case), plus calibrating each new `llm` grader. The author approves the plan, not the cases one by one.
+- Before building, put the plan on the issue: the cases, what each guards, and what judging them once costs. That is cases × eight runs × the cost of a run like it (the cost table in `README.md`), plus calibrating each new `llm` grader. The author approves the plan, not the cases one by one.
 - A case that has passed every run since it was written, and guards nothing that has changed since, is a candidate for retirement. Say so when a change is judged.
 
 ## Writing a grader or a case

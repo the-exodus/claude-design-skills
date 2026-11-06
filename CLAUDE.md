@@ -8,7 +8,7 @@ Four eval cases are held out:
 
 | Held out | Guards | Regression fixtures to iterate on instead |
 |---|---|---|
-| `lexicon-tessera`, `lexicon-byre` | `plugins/design/` | `lexicon-shelfwise`, `lexicon-stockroom` |
+| `lexicon-tessera`, `lexicon-byre` | `plugins/design/` | `lexicon-shelfwise`, `lexicon-stockroom`, `lexicon-tileand` |
 | `review-heldout-quarry` | `plugins/implementation/` | the ferry cases: `lens-ferry`, `cycle-*` (fixture in `evals/review-fixtures/ferry/`) |
 | `code-style-heldout-cinder` | `plugins/implementation/` | `code-style-lockerline` and the `code-style-authoring-*` cases; `code-style-tileand` is a read-only check, never iterated against |
 
