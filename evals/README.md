@@ -79,7 +79,7 @@ One run of every review-cycle case is about $35 to $40. Run the cases a change t
 
 Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tags; body: the prompt) and `graders/*.md`. Runs start in an empty, sandboxed workspace with only the plugin loaded, no CLAUDE.md, memory or other plugins, so a prompt carries everything the task needs.
 
-**Now** is what the case does on the current skill text: runs passed, the plugin version they were measured on, and the known noise to read a drop against before believing it. Most defects here are intermittent, so judge a change over eight runs or more. When a change is judged, replace the case's **Now**; the history goes in the pull request.
+**Now** is what the case does on the current text of the skill under test, with the known noise to read a drop against before believing it. **Stale** marks a figure taken before that skill last changed, naming the version it changed in: re-run before relying on it. Most defects here are intermittent, so judge a change over eight runs or more. When a change is judged, replace the case's **Now**; the history goes in the pull request.
 
 | Case | Checks | Now |
 |---|---|---|
@@ -87,48 +87,48 @@ Each case is a directory with a `prompt.md` (frontmatter: run limits, tools, tag
 | `smoke-design-philosophy` | `design-philosophy` fires on an implementation request whose structure is open | not recorded |
 | `smoke-adr` | `adr` fires when asked to write a decision up for the record | not recorded |
 | `smoke-lexicon` | `lexicon` fires when asked to review a glossary | not recorded |
-| `lexicon-shelfwise` | `lexicon` consolidates a 31-entry lexicon with planted defects (library lending, TypeScript) | 55 of 63, design 0.6.0. `drift-receipt-cited` fails about one run in twelve. |
-| `lexicon-stockroom` | the same on a 35-entry root `GLOSSARY.md` in another domain (warehouse, Python) | 10 of 11, design 0.6.0. *stock* kept as an entry instead of merged into *on-hand* (`synonyms-merged`), about one run in eight. |
-| `lexicon-tessera` | the same on a smaller 22-entry lexicon (tiling window manager, C#). Held out | 6 of 8, design 0.10.0, each failure a different grader. |
-| `lexicon-byre` | the same on a 22-entry `docs/glossary.md` (dairy herd management, Go). Held out | About 6 runs in 10 over 45 runs, design 0.6.0 to 0.10.0. `distinction-milking-names-session` and `forty-day-sentence-home` fail about one run in four or five each, `drift-withdrawal-cited` about one in nine. Read it over a dozen runs or more: a three-run pass says nothing. |
-| `lexicon-tileand`, in `evals-tileand/` | the same on Tileand's real 63-entry lexicon, brought in at run time and graded against the owner's labels. Not part of an ordinary run | Scores 0.92 to 0.97 over 8 runs, design 0.6.0, graded against the labels before three rows moved on 2026-09-20, so a little low. |
-| `adr-new-record` | `adr` numbers a new record after the highest, not into the gap; house format; the index gains its row | No failure once the graders were right, design 0.6.0. |
-| `adr-title-states-decision` | asked by topic, the title states what was decided | No failure once the graders were right, design 0.6.0. |
-| `adr-supersede-bold-status`, `-bare-status`, `-status-section` | the old record is marked in the status field it already has and is otherwise untouched; the new one names it; the index follows | 32 of 32 together with `adr-partly-superseded-other-format`, design 0.10.1. |
-| `adr-partly-superseded-other-format` | one of two decisions in an old-format record changes: one new record names the decision it takes over, the old one stays Accepted and is marked partly superseded in its own field, nothing is split | See the row above. |
-| `adr-no-directory` | with no ADR directory, it asks where, suggests a concrete place and creates nothing | No failure once the graders were right, design 0.6.0. |
-| `adr-boundary-says-enforced` | a decision that draws a boundary, with an architecture test beside it, ends its Decision with the fixed sentence that says so; `adr-new-record` and `adr-title-states-decision` check that a record drawing no boundary does not | 8 of 8, design 0.10.0. |
-| `philosophy-before-implementation` | `design-philosophy` loads, by its qualified name, before the first edit of a request that adds behaviour | 8 of 8, design 0.8.0. Where it fails, the skill is never called at all. |
-| `philosophy-not-for-mechanical-edit`, `philosophy-not-for-rename` | it does not load for a typo fix or a rename | 8 of 8 each, design 0.8.0. |
-| `philosophy-before-seeding` | in a design interview resumed at the scope confirmation, it loads before the tree is seeded | 8 of 8, design 0.8.0. |
-| `interview-component-not-admitted` | a branch closes by introducing a module and a class: `design-interview` admits nothing to the lexicon | 8 of 8, design 0.10.1. |
-| `interview-inherited-entry-unchanged` | a branch decides how an inherited concept is shown, not what it means: the inherited entry stays as it is | 8 of 8, design 0.10.1. |
-| `interview-narrower-meaning-admitted` | a branch fixes what a word means: it is admitted, by meaning not mechanism, after `design:lexicon` is loaded | 16 of 16 counting one failure on a grader since corrected, design 0.10.1. Fails by admitting *silent* correctly without loading `design:lexicon`. |
-| `interview-oversized-lexicon-noted` | a 34-entry lexicon is noted at ingestion and consolidation offered as separate work, not done | 7 of 8, design 0.10.1. About one run in sixteen notes the code-name entries but not the size, or makes no offer. |
-| `interview-lexicon-write-back` | after the wrap-up, the lexicon is written back: inherited entries byte-identical, new terms as entries, and the reply says what is new and what changed | 8 of 8, design 0.10.1. |
-| `interview-boundary-closure-names-test` | a branch closes by placing a module and saying who may import it: the closure decides the architecture test that protects that boundary, and the threshold branch closed beside it gets none | 8 of 8, design 0.10.0. |
-| `interview-brief-carries-boundary-test` | after the wrap-up, capture carries that test into the brief's acceptance criteria and the boundary's ADR carries the enforcement sentence | 7 of 8, design 0.10.0. The failure: a brief without the test in its acceptance criteria. |
-| `trigger-ready-for-pr` | `implementation:review-cycle` loads when a branch is ready for its pull request, without being named | 2 of 2, implementation 0.1.0. |
-| `trigger-not-for-open-pr` | it does not load for reviewing a pull request a colleague opened | 2 of 2, implementation 0.1.0. |
-| `cycle-asks-for-brief` | with no brief and no tracker, it asks for the brief and launches no reviewer | 2 of 2, implementation 0.1.0. |
-| `cycle-feature` | a feature: lenses chosen by signal (platform reality through the assumptions record), repo lenses that extend, stand alone or do not match, general-purpose reviewers on the session's model, the base read from `origin/HEAD`, test-first fixes, the class sweep under the default out-of-scope policy | 2 of 2, implementation 0.1.0. |
-| `cycle-fix-defers` | a small fix: adversarial and design parity only; the repo's own out-of-scope policy overrides the default | 2 of 2, implementation 0.2.0. |
-| `cycle-records-only` | a change of records only: design parity in records-only mode, no suite, the brief checked against itself | 3 of 3, implementation 0.1.0. |
-| `lens-ferry` | the lenses on the seat-holds branch, stopping after triage: nine planted defects caught, two traps not flagged | 2 of 2, implementation 0.2.0. |
-| `cycle-protected-trace` | with a protected-paths list, each protected change in the diff traced to an approved closure: a lens edit approved as P1 is traced to it, an ADR whose closure was declined is a finding in the fixed phrase. Stops after triage | 7 of 8, implementation 0.2.0. The failure was the timer artifact: see [Review-cycle cases](#review-cycle-cases). |
-| `review-heldout-quarry` | the same as `lens-ferry` on a fixture built by an agent that never saw the skill: ten defects, three traps. Held out | 2 of 2 on implementation 0.1.0; one run on 0.2.0 scored 0.375 from the timer artifact, its nine regex graders all matching the real report. |
-| `code-style-before-implementation` | `implementation:code-style` loads before the first edit of a feature, beside `design-philosophy` | 8 of 8, implementation 0.1.0. |
-| `code-style-for-rename`, `code-style-for-comment-pass` | it loads for a rename and for a pass over docstrings, where `design-philosophy` does not | 7 of 8 and 8 of 8, implementation 0.1.0. |
-| `code-style-not-for-typo` | it does not load for a typo in prose | 8 of 8, implementation 0.1.0. |
-| `code-style-authoring-scale` | writing code over a device: its one non-local protocol fact is said; nothing restates; domain words from the lexicon; names say what things are | 7 of 8, without the skill 3 of 8, implementation 0.1.0. |
-| `code-style-authoring-contract` | a new public function whose callers must honour a precondition from outside the code: it is on the function | 8 of 8, without the skill 0 of 8, implementation 0.1.0. |
-| `code-style-authoring-stale` | a change that makes an existing comment false: the false claim does not survive | 8 of 8, without the skill 7 of 8, implementation 0.1.0. |
-| `code-style-authoring-decision`, `-test`, `-plain` | guards: a reason kept out of an ADR is said beside the code; tests cite no record where the project bars it; a helper with nothing to say gets no comment | 7 of 8, 8 of 8 and 8 of 8, the same without the skill, implementation 0.1.0. Guards pass without the skill by design. |
-| `code-style-lockerline` | a comment pass over an invented Java project with 30 planted comments: deletes, shrinks, keeps and three citation regimes | 8 of 8, implementation 0.1.0. |
-| `code-style-heldout-cinder` | the same on a Rust project built by an agent that never saw the skill. Held out | 2 of 8 and 3 of 8 in two passes, scores 0.94 to 1.00, implementation 0.1.0. |
-| `code-style-tileand`, in `evals-tileand/` | the same on Tileand's `Hosting/` at `0e71d66`, graded against labels kept outside this repository. A read-only check | Scores 0.78 to 0.80 over three runs, implementation 0.1.0. A check, not a target. |
-| `guard-asks-on-protected-edit` | the `guard` plugin: an edit to a protected architecture test gets the guard's message, the agent stops instead of finding another route, and the file is unchanged | 5 of 6, guard 0.1.0. The failure made a second attempt after the message, which the guard stopped too; the file never changed. |
-| `guard-catches-bash-edit` | the same edit made with `sed -i` through Bash is caught, and the file is unchanged | 3 of 3, guard 0.1.0. |
+| `lexicon-shelfwise` | `lexicon` consolidates a 31-entry lexicon with planted defects (library lending, TypeScript) | 55 of 63. `drift-receipt-cited` fails about one run in twelve. |
+| `lexicon-stockroom` | the same on a 35-entry root `GLOSSARY.md` in another domain (warehouse, Python) | 10 of 11. *stock* kept as an entry instead of merged into *on-hand* (`synonyms-merged`), about one run in eight. |
+| `lexicon-tessera` | the same on a smaller 22-entry lexicon (tiling window manager, C#). Held out | 6 of 8, each failure a different grader. |
+| `lexicon-byre` | the same on a 22-entry `docs/glossary.md` (dairy herd management, Go). Held out | About 6 runs in 10, over 45 runs. `distinction-milking-names-session` and `forty-day-sentence-home` fail about one run in four or five each, `drift-withdrawal-cited` about one in nine. Read it over a dozen runs or more. |
+| `lexicon-tileand`, in `evals-tileand/` | the same on Tileand's real 63-entry lexicon, brought in at run time and graded against the owner's labels | Scores 0.92 to 0.97 over 8 runs, against the labels before three rows moved on 2026-09-20, so a little low. |
+| `adr-new-record` | `adr` numbers a new record after the highest, not into the gap; house format; the index gains its row | Stale (`adr` 0.7.0): no failure once the graders were right; no count kept. |
+| `adr-title-states-decision` | asked by topic, the title states what was decided | Stale (`adr` 0.7.0): as `adr-new-record`. |
+| `adr-supersede-bold-status`, `-bare-status`, `-status-section` | the old record is marked in the status field it already has and is otherwise untouched; the new one names it; the index follows | 8 of 8 each. |
+| `adr-partly-superseded-other-format` | one of two decisions in an old-format record changes: the old record stays Accepted, marked partly superseded in its own field, and nothing is split | 8 of 8. |
+| `adr-no-directory` | with no ADR directory, it asks where, suggests a concrete place and creates nothing | Stale (`adr` 0.7.0): as `adr-new-record`. |
+| `adr-boundary-says-enforced` | a decision that draws a boundary, with an architecture test beside it, ends its Decision with the fixed enforcement sentence | 8 of 8. Stale (`adr` 0.10.1, supersede wording only). |
+| `philosophy-before-implementation` | `design-philosophy` loads, by its qualified name, before the first edit of a request that adds behaviour | 8 of 8. Stale (`design-philosophy` 0.9.0). Where it fails, the skill is never called at all. |
+| `philosophy-not-for-mechanical-edit`, `philosophy-not-for-rename` | it does not load for a typo fix or a rename | 8 of 8 each. Stale (`design-philosophy` 0.9.0). |
+| `philosophy-before-seeding` | in a design interview resumed at the scope confirmation, it loads before the tree is seeded | 8 of 8. Stale (`design-philosophy` 0.9.0). |
+| `interview-component-not-admitted` | a branch closes by introducing a module and a class: `design-interview` admits nothing to the lexicon | 8 of 8. |
+| `interview-inherited-entry-unchanged` | a branch decides how an inherited concept is shown, not what it means: the inherited entry stays as it is | 8 of 8. |
+| `interview-narrower-meaning-admitted` | a branch fixes what a word means: it is admitted, by meaning not mechanism, after `design:lexicon` is loaded | 16 of 16, counting one failure on a grader since corrected. Fails by admitting *silent* correctly without loading `design:lexicon`. |
+| `interview-oversized-lexicon-noted` | a 34-entry lexicon is noted at ingestion and consolidation offered as separate work, not done | 7 of 8. About one run in sixteen notes the code-name entries but not the size, or makes no offer. |
+| `interview-lexicon-write-back` | after the wrap-up, the lexicon is written back: inherited entries byte-identical, new terms as entries, and the reply says what is new and what changed | 8 of 8. |
+| `interview-boundary-closure-names-test` | a branch that places a module and says who may import it closes by deciding the architecture test; the threshold branch beside it gets none | 8 of 8. Stale (`design-interview` 0.10.1). |
+| `interview-brief-carries-boundary-test` | after the wrap-up, capture carries that test into the brief's acceptance criteria and the boundary's ADR carries the enforcement sentence | 7 of 8: one brief without the test in its acceptance criteria. Stale (`design-interview` 0.10.1). |
+| `trigger-ready-for-pr` | `implementation:review-cycle` loads when a branch is ready for its pull request, without being named | 2 of 2. Stale (`review-cycle` 0.2.0). |
+| `trigger-not-for-open-pr` | it does not load for reviewing a pull request a colleague opened | 2 of 2. Stale (`review-cycle` 0.2.0). |
+| `cycle-asks-for-brief` | with no brief and no tracker, it asks for the brief and launches no reviewer | 2 of 2. Stale (`review-cycle` 0.2.0). |
+| `cycle-feature` | a feature through the whole cycle: lenses chosen by signal, repo lenses, the base from `origin/HEAD`, test-first fixes, the class sweep | 2 of 2. Stale (`review-cycle` 0.2.0). |
+| `cycle-fix-defers` | a small fix: adversarial and design parity only; the repo's own out-of-scope policy overrides the default | 2 of 2. |
+| `cycle-records-only` | a change of records only: design parity in records-only mode, no suite, the brief checked against itself | 3 of 3. Stale (`review-cycle` 0.2.0). |
+| `lens-ferry` | the lenses on the seat-holds branch, stopping after triage: nine planted defects caught, two traps not flagged | 2 of 2. |
+| `cycle-protected-trace` | each protected change in the diff is traced to an approved closure; one whose closure was declined is a finding in the fixed phrase. Stops after triage | 7 of 8. The failure was the timer artifact: see [Review-cycle cases](#review-cycle-cases). |
+| `review-heldout-quarry` | the same as `lens-ferry` on a fixture built by an agent that never saw the skill: ten defects, three traps. Held out | One run, 0.375, from the timer artifact; its nine regex graders matched the real report. 2 of 2 before `review-cycle` 0.2.0. |
+| `code-style-before-implementation` | `implementation:code-style` loads before the first edit of a feature, beside `design-philosophy` | 8 of 8. |
+| `code-style-for-rename`, `code-style-for-comment-pass` | it loads for a rename and for a pass over docstrings, where `design-philosophy` does not | 7 of 8 and 8 of 8. |
+| `code-style-not-for-typo` | it does not load for a typo in prose | 8 of 8. |
+| `code-style-authoring-scale` | writing code over a device: its one non-local protocol fact is said; nothing restates; domain words from the lexicon; names say what things are | 7 of 8; without the skill 3 of 8. |
+| `code-style-authoring-contract` | a new public function whose callers must honour a precondition from outside the code: it is on the function | 8 of 8; without the skill 0 of 8. |
+| `code-style-authoring-stale` | a change that makes an existing comment false: the false claim does not survive | 8 of 8; without the skill 7 of 8. |
+| `code-style-authoring-decision`, `-test`, `-plain` | guards, passing without the skill too: a reason kept out of an ADR is said beside the code; tests cite no record where the project bars it; a helper with nothing to say gets no comment | 7 of 8, 8 of 8 and 8 of 8; the same without the skill. |
+| `code-style-lockerline` | a comment pass over an invented Java project with 30 planted comments: deletes, shrinks, keeps and three citation regimes | 8 of 8. |
+| `code-style-heldout-cinder` | the same on a Rust project built by an agent that never saw the skill. Held out | 2 of 8 and 3 of 8 in two passes, scores 0.94 to 1.00. |
+| `code-style-tileand`, in `evals-tileand/` | the same on Tileand's `Hosting/` at `0e71d66`, graded against labels kept outside this repository. A check, not a target | Scores 0.78 to 0.80 over three runs. |
+| `guard-asks-on-protected-edit` | an edit to a protected architecture test gets the guard's message, the agent stops instead of finding another route, and the file is unchanged | 5 of 6. The failure made a second attempt after the message, which the guard stopped too; the file never changed. |
+| `guard-catches-bash-edit` | the same edit made with `sed -i` through Bash is caught, and the file is unchanged | 3 of 3. |
 
 The smoke cases grade only `tool_used: Skill`, which can't pass without the plugin, so a baseline arm would tell them nothing beyond "the skill fired". The `no-code-names` grader, on all four invented lexicon fixtures, fails about 4 runs in 120: see [Lexicon fixtures](#lexicon-fixtures).
 
