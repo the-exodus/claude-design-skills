@@ -23,7 +23,7 @@ Every other case is a regression case and fair to iterate against.
 
 ## After changing something
 
-- A change judged by runs: replace the case's row in `README.md`'s Baselines table. The run-by-run story of how it got there goes in the commit message and pull request, never in `README.md`.
+- A change judged by runs: replace the case's **Now** in `README.md`'s Cases table. The run-by-run story of how it got there goes in the commit message and pull request, never in `README.md`.
 - A skill that a resumed case loaded (any `history.jsonl`): `python3 evals/refresh-histories.py`, and commit the result. The transcript embeds the skill's text, and the case goes on testing the old wording otherwise.
 - An `llm` grader's rubric: `python3 evals/tools/sync-calibration-rubrics.py`, then re-run that grader's calibration (`evals-calibration/`, about $0.30 to $0.70 a grading, so one grader at a time).
 - A regex grader of a lexicon fixture: change the table in `evals/tools/lexicon-graders/gen-graders.mjs`, run `test-graders.mjs`, then `gen-graders.mjs write`.
