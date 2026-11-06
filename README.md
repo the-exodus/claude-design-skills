@@ -100,3 +100,5 @@ Copyright (C) 2026 Tobias Karlsson
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See [`LICENSE`](LICENSE) for the full text.
+
+What the plugins produce, such as specifications, decision records, lexicon entries and code, is yours to use under any terms, including in proprietary codebases: see [`OUTPUT-EXCEPTION`](OUTPUT-EXCEPTION), an additional permission under section 7 of the GPL. It does not extend to the plugins themselves, or to copies of their skills used as instructions for an AI agent.

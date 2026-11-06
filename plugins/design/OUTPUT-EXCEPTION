@@ -1,0 +1,25 @@
+Additional permission under GNU GPL version 3 section 7
+
+The plugins in this repository (design, implementation and guard) are
+licensed under the GNU General Public License, version 3 or (at your
+option) any later version. This file grants an additional permission for
+what they produce. It does not change the license of the plugins
+themselves.
+
+"Output" means material that an AI agent produces while running the
+plugins: for example specifications, acceptance criteria, interface
+contracts, decision records, lexicon entries, review findings, code and
+comments, and the messages the guard hook shows.
+
+As a special exception, you may use, modify and distribute Output under
+terms of your choice, including where it reproduces text from the plugins'
+templates, examples or other reference files.
+
+This exception does not cover the plugins, or works based on them. In
+particular, it does not cover Output that reproduces a substantial part of
+the plugins' skills, hooks or reference files for use as instructions to an
+AI agent; such material stays under the GNU General Public License.
+
+If you modify the plugins, you may extend this exception to your version,
+but you are not obliged to do so. If you do not wish to do so, delete this
+exception statement from your version.
