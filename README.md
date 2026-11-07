@@ -65,6 +65,8 @@ Before a pull request, fresh-context subagents review the change against its bri
 
 The cycle triages the findings, sweeps for each defect's whole class, fixes test-first and records forced decisions through `adr`. The brief comes from the tracker or the user, never inferred. In a repository that uses `guard`, it also traces every change to a protected path to a closure the author approved.
 
+> **Not guaranteed: weakened tests.** The cycle does not check whether a change weakened an existing test to make the suite pass, by loosening an assertion, adding a skip marker or deleting a test. A reviewer may notice, but no step looks for it, and a weakened suite passes the cycle's own test run. Only changes to paths on `guard`'s list are guaranteed to reach the author. Read changes to other existing tests yourself, in the pull request.
+
 A repository adds lenses of its own as skills in its tree:
 
 ```yaml
