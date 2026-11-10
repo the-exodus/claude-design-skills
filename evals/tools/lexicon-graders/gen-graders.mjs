@@ -118,7 +118,7 @@ FAIL if there is no cycle count entry, or the entry no longer says how it differ
       { name: "drift-movement-cited", why: "Drift at a known line: MovementKind at stockroom/models.py:38-43 against 'from one bin to another bin'.", pattern: FL("models.py", "3[5-9]|4[0-3]") },
       { name: "edge-contributing-cited", why: "A convention that feeds class names into the glossary: CONTRIBUTING.md:4 (and :8).", pattern: FL("CONTRIBUTING.md", "[3-4]|8") },
       { name: "homeless-sales-guidance", why: "The 'below five, call the warehouse' sentence has no other home and is listed as such.", flags: "i", pattern: near("below five|call the warehouse") },
-      { name: "gap-wave-proposed", why: "The gap: wave is used everywhere and never defined. The file has no gaps line, so it is presented in the report.", flags: "i", pattern: String.raw`\bgaps?\b[\s\S]{0,1200}?\bwave\b` },
+      { name: "gap-wave-proposed", why: "The gap: wave is used everywhere and never defined. The file has no gaps line, so it is presented in the report, under a gaps heading, under one that calls the words proposed, or as a word said to have no definition.", flags: "i", pattern: String.raw`(?:\bgaps?\b|\bproposed\b)[\s\S]{0,1200}?\bwave\b|\bwave\b[^\n]{0,300}?(?:never defined|not defined|undefined|without a definition|no definition)` },
     ],
   },
   "lexicon-tessera": {
