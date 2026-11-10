@@ -3,4 +3,5 @@
 type: regex
 target: last_message
 pattern: 'surge|car_fare'
+flags: i
 ---
